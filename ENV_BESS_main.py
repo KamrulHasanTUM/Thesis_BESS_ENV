@@ -126,7 +126,7 @@ class ENV_BESS(gymnasium.Env):
         # to existing grid observations (vm_pu, line loading, etc.)
 
         action_space = helpers.create_bess_action_space(self)  # TODO: Will be finalized in Step 4
-        observation_space = helpers.create_observation_space(self.net)
+        observation_space = helpers.create_bess_observation_space(self.net, self.num_bess, self.bess_power_mw)
         return action_space, observation_space
 
 

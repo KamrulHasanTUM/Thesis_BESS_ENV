@@ -229,31 +229,147 @@ def create_bess_action_space(env):
     return action_space
 
 
-def create_observation_space(net):
-    """Create observation space with discrete and continuous components."""
-    # Discrete space: switches and line status
-    num_lines = net.line.shape[0]
-    discrete_space = MultiDiscrete([2] * net.switch.shape[0] + [2] * num_lines)
+def create_bess_observation_space(net, num_bess, bess_power_mw):
+    """
+    Create observation space combining grid state and BESS state information.
 
-    # Get dimensions for continuous spaces
-    num_line_loadings = net.line.shape[0]
+    This function extends the standard grid observation space by adding BESS-specific
+    state variables that enable the RL agent to make informed dispatch decisions
+    considering both grid conditions and battery status.
+
+    Observation Space Structure:
+    - Type: Dict (multi-modal observation space)
+    - Components: 7 grid observations + 2 BESS observations
+
+    Grid Observations (from ENV_RHV):
+    1. discrete_switches: Switch states and line status (binary)
+       - Provides network topology information
+       - Helps agent understand current grid configuration
+
+    2. continuous_vm_bus: Bus voltages in per-unit (0.5-1.5 p.u.)
+       - Critical for voltage stability monitoring
+       - Agent learns to prevent over/under-voltage violations
+
+    3. continuous_sgen_data: Generator power output (0-100000 MW)
+       - Renewable generation profile (solar, wind)
+       - Agent adapts BESS dispatch to generation patterns
+
+    4. continuous_load_data: Load power consumption (0-100000 MW)
+       - Demand profile
+       - Agent learns peak shaving and valley filling strategies
+
+    5. continuous_line_loadings: Line loading percentages (0-800%)
+       - Primary congestion indicator
+       - Agent optimizes BESS to reduce overloading
+
+    6. continuous_space_ext_grid_p_mw: External grid active power (±50M MW)
+       - Grid import/export
+       - Agent minimizes grid dependency using BESS
+
+    7. continuous_space_ext_grid_q_mvar: External grid reactive power (±50M MVAr)
+       - Reactive power flow
+       - Supports voltage control decisions
+
+    BESS Observations (new):
+    8. bess_soc: State of Charge for each BESS (0.0-1.0, normalized)
+       - 0.0 = completely empty (0% SoC)
+       - 1.0 = completely full (100% SoC)
+       - Normalized for RL algorithm stability (avoids large value ranges)
+       - Enables agent to track available energy capacity
+       - Critical for planning multi-step discharge/charge sequences
+
+    9. bess_power: Current power output for each BESS (±bess_power_mw)
+       - Negative values: charging (e.g., -50 MW)
+       - Positive values: discharging (e.g., +50 MW)
+       - Zero: idle/standby
+       - Agent observes current dispatch state for temporal consistency
+       - Helps learn smooth power ramp rates (avoid sudden changes)
+
+    Example Observation (5 BESS units, 50 MW rating):
+        observation = {
+            'discrete_switches': np.array([1, 0, 1, 1, 0, ...]),  # Binary topology
+            'continuous_vm_bus': np.array([1.02, 0.98, 1.00, ...]),  # Voltages (p.u.)
+            'continuous_sgen_data': np.array([120.5, 80.3, ...]),  # Gen power (MW)
+            'continuous_load_data': np.array([200.0, 150.0, ...]),  # Load power (MW)
+            'continuous_line_loadings': np.array([85.2, 120.5, ...]),  # Loading (%)
+            'continuous_space_ext_grid_p_mw': np.array([500.0]),  # Grid import (MW)
+            'continuous_space_ext_grid_q_mvar': np.array([50.0]),  # Grid Q (MVAr)
+
+            # BESS observations
+            'bess_soc': np.array([0.5, 0.3, 0.8, 0.6, 0.4]),  # SoC: 50%, 30%, 80%, 60%, 40%
+            'bess_power': np.array([-20.0, 0.0, 50.0, 30.0, -40.0])  # MW dispatch
+        }
+
+        Interpretation:
+        - BESS 0: 50% SoC, charging at 20 MW (building reserves)
+        - BESS 1: 30% SoC, idle (low energy, ready to charge)
+        - BESS 2: 80% SoC, discharging at max 50 MW (peak support)
+        - BESS 3: 60% SoC, discharging at 30 MW (partial support)
+        - BESS 4: 40% SoC, charging at 40 MW (storing excess generation)
+
+    Why These Observations Matter for RL:
+    - SoC tracking: Agent learns when BESS can charge/discharge without violating limits
+    - Power observability: Agent maintains awareness of current dispatch for smooth control
+    - Grid-BESS coupling: Agent correlates grid stress (line loading) with BESS availability
+    - Multi-step planning: SoC enables lookahead (e.g., reserve capacity for predicted peak)
+    - Constraint learning: Agent implicitly learns operational bounds from observation ranges
+
+    Args:
+        net: Pandapower network object with grid topology
+        num_bess: Number of BESS units in the system
+        bess_power_mw: Maximum power rating per BESS unit (MW)
+
+    Returns:
+        spaces.Dict: Combined observation space with grid and BESS state
+    """
+    # Get grid dimensions (same as create_observation_space)
+    num_lines = net.line.shape[0]
     num_bus = net.bus.shape[0]
     num_sgenerators = net.sgen.shape[0]
     num_loads = net.load.shape[0]
     num_ext_grid = net.ext_grid.shape[0]
 
-    # Define continuous spaces
-    continuous_spaces = {
+    # Discrete space: switches and line status (preserved from ENV_RHV)
+    discrete_space = MultiDiscrete([2] * net.switch.shape[0] + [2] * num_lines)
+
+    # Define combined observation space
+    observation_spaces = {
+        # ========== Grid Observations (from ENV_RHV) ==========
         "discrete_switches": discrete_space,
         "continuous_vm_bus": Box(low=0.5, high=1.5, shape=(num_bus,), dtype=np.float32),
         "continuous_sgen_data": Box(low=0.0, high=100000, shape=(num_sgenerators,), dtype=np.float32),
         "continuous_load_data": Box(low=0.0, high=100000, shape=(num_loads,), dtype=np.float32),
-        "continuous_line_loadings": Box(low=0.0, high=800.0, shape=(num_line_loadings,), dtype=np.float32),
+        "continuous_line_loadings": Box(low=0.0, high=800.0, shape=(num_lines,), dtype=np.float32),
         "continuous_space_ext_grid_p_mw": Box(low=-50000000, high=50000000, shape=(num_ext_grid,), dtype=np.float32),
-        "continuous_space_ext_grid_q_mvar": Box(low=-50000000, high=50000000, shape=(num_ext_grid,), dtype=np.float32)
+        "continuous_space_ext_grid_q_mvar": Box(low=-50000000, high=50000000, shape=(num_ext_grid,), dtype=np.float32),
+
+        # ========== BESS Observations (new) ==========
+        # State of Charge (SoC) - normalized to [0, 1] range
+        # - Normalization benefits: (1) RL algorithms prefer inputs in similar ranges (0-1)
+        #   (2) avoids large gradients, (3) easier to interpret (0=empty, 1=full)
+        # - Agent uses SoC to decide: Can I discharge more? Should I stop charging?
+        # - Enables multi-step reasoning: "Save 20% SoC for evening peak"
+        "bess_soc": Box(
+            low=0.0,              # 0% SoC (completely empty, but actual min is soc_min=10%)
+            high=1.0,             # 100% SoC (completely full, but actual max is soc_max=90%)
+            shape=(num_bess,),    # One SoC value per BESS unit
+            dtype=np.float32
+        ),
+
+        # Current power output - same range as action space for consistency
+        # - Agent observes previous dispatch decision effects
+        # - Enables learning of smooth control (avoid power jumps that stress inverters)
+        # - Temporal correlation: Agent can detect if actions are being executed correctly
+        # - Example: If agent commanded -50 MW but observes -30 MW, it learns grid constraints
+        "bess_power": Box(
+            low=-bess_power_mw,   # Maximum charging power (negative convention)
+            high=bess_power_mw,   # Maximum discharging power (positive convention)
+            shape=(num_bess,),    # One power value per BESS unit
+            dtype=np.float32
+        ),
     }
 
-    return spaces.Dict(continuous_spaces)
+    return spaces.Dict(observation_spaces)
 
 
 # ==================== Reset Helpers ====================
