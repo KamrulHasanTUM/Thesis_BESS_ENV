@@ -95,7 +95,7 @@ def create_bess_env_config(init_meta):
         # Power rating per BESS unit (MW)
         # Maximum rate at which the battery can charge or discharge
         # Action space will be continuous: [-bess_power_mw, +bess_power_mw]
-        'bess_power_mw': 25.0,
+        'bess_power_mw': 50.0,
 
         # ========== BESS Operating Constraints ==========
         # Minimum state of charge (10%)
