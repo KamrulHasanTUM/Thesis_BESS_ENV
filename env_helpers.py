@@ -76,6 +76,139 @@ def initialize_state_variables(env):
     env.override_timestep = None
 
 
+def initialize_bess_state(env, bess_locations=None):
+    """
+    Initialize BESS state variables including SoC, power, and grid connection points.
+
+    This function sets up the initial state for all BESS units in the environment,
+    including their State of Charge (SoC), power output, and physical locations
+    (bus connections) in the power grid. The initialization ensures BESS units
+    start in a neutral, ready-to-dispatch state.
+
+    BESS State Initialization:
+    - bess_soc: State of Charge for each unit (0.0-1.0, normalized)
+      * Initialized to env.initial_soc (typically 0.5 = 50%)
+      * 50% provides bidirectional flexibility: can charge OR discharge
+      * Represents a "ready" state with reserves for both peak shaving and valley filling
+
+    - bess_power: Current power dispatch for each unit (MW)
+      * Initialized to 0.0 (all units idle/standby at episode start)
+      * Agent will determine first dispatch action based on grid conditions
+      * Zero output prevents initial grid disturbance
+
+    - bess_locations: Bus indices where BESS units are physically connected
+      * If provided: Uses specified bus indices
+      * If None: Automatically selects from 110kV buses
+      * 110kV level is appropriate for grid-scale BESS (subtransmission voltage)
+
+    Automatic Bus Selection (when bess_locations=None):
+    - Filters network to find all 110kV buses (vn_kv == 110)
+    - Randomly selects num_bess buses from this filtered set
+    - Uses env.np_random if available (for reproducibility), else numpy.random
+    - Rationale for 110kV:
+      * Standard voltage for distribution grid BESS connections
+      * High enough for MW-scale power injection without voltage issues
+      * Low enough to directly impact congestion in HV distribution networks
+      * Typical SimBench HV network voltage level
+
+    Validation:
+    - Verifies num_bess matches length of provided bess_locations
+    - Checks all bus indices exist in the network
+    - Raises ValueError with descriptive message if validation fails
+
+    Parameters:
+        env: Environment instance with BESS configuration:
+            - env.num_bess: Number of BESS units
+            - env.initial_soc: Starting SoC (e.g., 0.5 for 50%)
+            - env.net: Pandapower network object
+            - env.np_random (optional): NumPy random generator for reproducibility
+
+        bess_locations (array-like, optional): Bus indices for BESS placement
+            - If None: Auto-select from 110kV buses
+            - If provided: Must be valid bus indices, length must equal num_bess
+
+    Raises:
+        ValueError: If validation fails (length mismatch, invalid bus indices)
+
+    Example Usage:
+        # Automatic bus selection (recommended for initial experiments)
+        initialize_bess_state(env)
+        # Result: env.bess_locations = [5, 12, 18, 25, 30] (random 110kV buses)
+        #         env.bess_soc = [0.5, 0.5, 0.5, 0.5, 0.5] (50% SoC)
+        #         env.bess_power = [0.0, 0.0, 0.0, 0.0, 0.0] (idle)
+
+        # Manual bus specification (for targeted placement studies)
+        initialize_bess_state(env, bess_locations=np.array([5, 12, 18, 25, 30]))
+        # Result: BESS placed at specified buses, same SoC/power initialization
+
+        # Access initialized state
+        print(f"BESS at buses: {env.bess_locations}")
+        print(f"Initial SoC: {env.bess_soc}")
+        print(f"Initial power: {env.bess_power}")
+    """
+    # Initialize State of Charge (SoC) array
+    # - Start at initial_soc (typically 50%) for bidirectional flexibility
+    # - Agent can charge (absorb excess generation) OR discharge (support peak demand)
+    # - Normalized to [0, 1] range for RL algorithm stability
+    env.bess_soc = np.full(env.num_bess, env.initial_soc, dtype=np.float32)
+
+    # Initialize power dispatch array
+    # - Start at 0.0 MW (all BESS units idle)
+    # - Prevents initial grid disturbance from arbitrary power injection
+    # - Agent determines first action based on observed grid conditions
+    env.bess_power = np.zeros(env.num_bess, dtype=np.float32)
+
+    # Initialize BESS grid connection locations
+    if bess_locations is not None:
+        # Manual bus specification: validate provided locations
+        bess_locations = np.array(bess_locations, dtype=np.int32)
+
+        # Validation 1: Check length matches number of BESS units
+        if len(bess_locations) != env.num_bess:
+            raise ValueError(
+                f"Length of bess_locations ({len(bess_locations)}) must match "
+                f"num_bess ({env.num_bess})"
+            )
+
+        # Validation 2: Check all bus indices exist in network
+        valid_bus_indices = set(env.net.bus.index)
+        invalid_buses = [bus for bus in bess_locations if bus not in valid_bus_indices]
+        if invalid_buses:
+            raise ValueError(
+                f"Invalid bus indices in bess_locations: {invalid_buses}. "
+                f"Valid bus indices are: {sorted(valid_bus_indices)}"
+            )
+
+        env.bess_locations = bess_locations
+
+    else:
+        # Automatic bus selection: choose from 110kV buses
+        # 110kV is the standard HV distribution voltage level for grid-scale BESS
+        # - High enough for MW-scale injection without voltage regulation issues
+        # - Low enough to directly mitigate congestion in distribution networks
+        # - Typical voltage level in SimBench HV networks
+        buses_110kv = env.net.bus[env.net.bus['vn_kv'] == 110].index.values
+
+        if len(buses_110kv) < env.num_bess:
+            raise ValueError(
+                f"Not enough 110kV buses ({len(buses_110kv)}) to place "
+                f"{env.num_bess} BESS units. Consider reducing num_bess or "
+                f"manually specifying bess_locations with other voltage levels."
+            )
+
+        # Use environment's random generator if available (for reproducibility)
+        # Otherwise fall back to numpy.random
+        if hasattr(env, 'np_random') and env.np_random is not None:
+            selected_buses = env.np_random.choice(buses_110kv, size=env.num_bess, replace=False)
+        else:
+            selected_buses = np.random.choice(buses_110kv, size=env.num_bess, replace=False)
+
+        env.bess_locations = selected_buses.astype(np.int32)
+
+    print(f"BESS initialized: {env.num_bess} units at buses {env.bess_locations}")
+    print(f"Initial SoC: {env.bess_soc * 100}% | Initial power: {env.bess_power} MW")
+
+
 # ==================== Data Loading and Preparation ====================
 
 def load_simbench_profiles_and_cases(net, case_study):
