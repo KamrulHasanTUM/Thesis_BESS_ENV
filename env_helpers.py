@@ -564,7 +564,33 @@ def validate_grid_state_after_reset(env):
 
 
 def build_observation_from_grid_state(env):
-    """Build observation dictionary from current grid state."""
+    """
+    Build observation dictionary from current grid state.
+
+    This function constructs the observation space for the RL agent by extracting
+    relevant grid state variables from the power flow results and time series data.
+    For BESS environments, it also includes battery state information.
+
+    Grid Observations (always included):
+    - discrete_switches: Switch states and line status
+    - continuous_vm_bus: Bus voltages (per-unit)
+    - continuous_sgen_data: Generator power from time series
+    - continuous_load_data: Load power from time series
+    - continuous_line_loadings: Line loading percentages
+    - continuous_space_ext_grid_p_mw: External grid active power
+    - continuous_space_ext_grid_q_mvar: External grid reactive power
+
+    BESS Observations (included only if BESS exists):
+    - bess_soc: State of charge for each BESS unit (0-1, normalized)
+    - bess_power: Current power output for each BESS unit (MW)
+
+    Args:
+        env: Environment instance with grid state and optional BESS state
+
+    Returns:
+        dict: Observation dictionary with grid state (and BESS state if applicable)
+    """
+    # Extract grid state from power flow results
     loading_percent = env.net.res_line['loading_percent'].fillna(0).values.astype(np.float32)
     vm_pu = env.net.res_bus['vm_pu'].fillna(0).values.astype(np.float32)
 
@@ -573,7 +599,8 @@ def build_observation_from_grid_state(env):
         env.net.line['in_service'].astype(int).values
     ])
 
-    return {
+    # Build base observation with grid state
+    observation = {
         "discrete_switches": discrete_switches,
         "continuous_vm_bus": vm_pu,
         "continuous_sgen_data": env.sgen_data.values[env.time_step].astype(np.float32),
@@ -582,6 +609,25 @@ def build_observation_from_grid_state(env):
         "continuous_space_ext_grid_p_mw": env.net.res_ext_grid['p_mw'].fillna(0).values.astype(np.float32),
         "continuous_space_ext_grid_q_mvar": env.net.res_ext_grid['q_mvar'].fillna(0).values.astype(np.float32)
     }
+
+    # Add BESS observations if BESS exists in the environment
+    # Backward compatibility: ENV_RHV doesn't have BESS, ENV_BESS does
+    if hasattr(env, 'bess_soc') and hasattr(env, 'bess_power'):
+        # State of Charge (SoC) - Normalized energy level for each BESS
+        # - Agent needs SoC to make informed dispatch decisions
+        # - Enables multi-step planning: "Can I discharge now and still have energy for peak later?"
+        # - Prevents SoC violations: Agent learns not to discharge when SoC is low
+        # - Critical for temporal reasoning: Links current action to future consequences
+        observation["bess_soc"] = env.bess_soc.astype(np.float32)
+
+        # Current Power Output - Actual power flow for each BESS
+        # - Agent observes effects of its previous action (action feedback)
+        # - Enables smooth control: Agent sees if power ramped as intended
+        # - Temporal consistency: Links observation(t) to action(t-1)
+        # - Helps detect grid constraints: If commanded 50 MW but observe 30 MW
+        observation["bess_power"] = env.bess_power.astype(np.float32)
+
+    return observation
 
 
 # ==================== Step Helpers ====================
