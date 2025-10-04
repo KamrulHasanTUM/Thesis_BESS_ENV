@@ -943,6 +943,173 @@ def update_bess_soc(env):
     # print(f"SoC update: P={actual_power} MW, ΔSoC={delta_soc*100:.2f}%, New SoC={clipped_soc*100:.1f}%")
 
 
+def calculate_bess_reward(env, max_loading_before, max_loading_after):
+    """
+    Calculate reward for BESS dispatch actions focused on congestion management.
+
+    This function computes a multi-objective reward signal that primarily incentivizes
+    reducing grid congestion (line overloading) while maintaining operational sustainability
+    through secondary objectives (SoC management, energy efficiency).
+
+    Reward Structure (3 components):
+
+    1. PRIMARY: Congestion Relief (Dominant, ~10× larger than others)
+       - Objective: Reduce maximum line loading percentage
+       - Formula: R_congestion = bonus_constant × (loading_before - loading_after)
+       - Rationale: This is the thesis's main goal - use BESS to alleviate congestion
+       - Why max loading: Worst-case congestion is the critical grid constraint
+       - Weight: ~10.0 (default bonus_constant)
+
+    2. SECONDARY: SoC Boundary Penalties (Medium, ~10× smaller than congestion)
+       - Objective: Prevent BESS from getting stuck near SoC limits
+       - Formula: R_soc = -soc_penalty_weight × num_units_near_bounds
+       - Near bounds: SoC < (soc_min + 5%) OR SoC > (soc_max - 5%)
+       - Rationale: Maintains operational flexibility for future dispatch
+       - Why needed: Without this, agent might discharge to 10% and get stuck
+       - Weight: ~-1.0
+
+    3. TERTIARY: Energy Efficiency (Small, ~100× smaller than congestion)
+       - Objective: Encourage smooth operation, battery longevity
+       - Formula: R_efficiency = -efficiency_weight × Σ(|power_i| / max_power)²
+       - Rationale: Extreme charge/discharge rates degrade battery faster
+       - Why quadratic: Penalizes full-power operation more than partial
+       - Weight: ~-0.1
+
+    Weight Hierarchy Rationale:
+    - Congestion (10.0) >> SoC (-1.0) >> Efficiency (-0.1)
+    - This ensures agent prioritizes thesis goal (congestion) while learning sustainable operation
+    - If weights were equal, agent might preserve battery instead of helping grid
+    - If SoC penalty too high, agent becomes overly conservative
+
+    Example Calculations:
+
+    Scenario 1: Good Action - Reduces Congestion, Maintains Flexibility
+    - Before: max_loading = 120%
+    - After: max_loading = 95% (reduced by 25%)
+    - BESS state: 3 units, SoCs = [0.45, 0.55, 0.60], powers = [20, -10, 30] MW (max=50)
+    - Congestion reward: 10.0 × (120 - 95) = +250.0 ✓ Large positive
+    - SoC penalty: 0 units near bounds (all in 0.15-0.85 safe zone) = 0.0 ✓ No penalty
+    - Efficiency: -0.1 × ((20/50)² + (10/50)² + (30/50)²) = -0.1 × 0.53 = -0.053 ✓ Small
+    - TOTAL: 250.0 + 0.0 - 0.053 = +249.95 → EXCELLENT ACTION
+
+    Scenario 2: Bad Action - Helps Congestion but Depletes Battery
+    - Before: max_loading = 120%
+    - After: max_loading = 100% (reduced by 20%)
+    - BESS state: 3 units, SoCs = [0.12, 0.11, 0.88], powers = [50, 50, -50] MW
+    - Congestion reward: 10.0 × (120 - 100) = +200.0 ✓ Good
+    - SoC penalty: 3 units near bounds (0.12 < 0.15, 0.11 < 0.15, 0.88 > 0.85) = -1.0 × 3 = -3.0 ✗ Penalty
+    - Efficiency: -0.1 × (1² + 1² + 1²) = -0.1 × 3 = -0.3 ✗ Max power usage
+    - TOTAL: 200.0 - 3.0 - 0.3 = +196.7 → SUBOPTIMAL (lower than Scenario 1)
+
+    Scenario 3: Neutral Action - No Congestion Change
+    - Before: max_loading = 95%
+    - After: max_loading = 95% (no change)
+    - BESS state: 3 units, SoCs = [0.50, 0.50, 0.50], powers = [0, 0, 0] MW (idle)
+    - Congestion reward: 10.0 × (95 - 95) = 0.0 ⊘ Neutral
+    - SoC penalty: 0 units near bounds = 0.0 ✓
+    - Efficiency: 0.0 (no power) = 0.0 ✓
+    - TOTAL: 0.0 → NEUTRAL (no help, no harm)
+
+    Scenario 4: Very Bad Action - Worsens Congestion
+    - Before: max_loading = 95%
+    - After: max_loading = 110% (increased by 15% - wrong direction!)
+    - BESS state: irrelevant (action was harmful)
+    - Congestion reward: 10.0 × (95 - 110) = -150.0 ✗ Large negative
+    - SoC penalty: assume -2.0 ✗
+    - Efficiency: assume -0.2 ✗
+    - TOTAL: -150.0 - 2.0 - 0.2 = -152.2 → VERY BAD ACTION
+
+    Parameter Tuning Guidance:
+    - bonus_constant (default 10.0):
+      * Increase if agent ignores congestion → makes congestion relief more valuable
+      * Decrease if agent is too aggressive → reduces congestion reward magnitude
+    - soc_penalty_weight (default -1.0):
+      * Increase magnitude if agent gets stuck at bounds → stronger discouragement
+      * Decrease magnitude if agent is too conservative → allows more aggressive dispatch
+    - efficiency_penalty_weight (default -0.1):
+      * Increase magnitude to encourage smoother operation
+      * Usually keep small (battery longevity is secondary to grid operation)
+
+    Relationship to Thesis Goal:
+    - Thesis: "BESS for congestion management in HV distribution grids"
+    - This reward directly optimizes that: max weight on (loading_before - loading_after)
+    - SoC and efficiency penalties ensure sustainable operation (not one-shot solutions)
+    - Agent learns: "Reduce congestion while maintaining long-term operational capability"
+
+    Parameters:
+        env: Environment instance with:
+            - env.bess_soc: Current SoC array (shape: num_bess,)
+            - env.bess_power: Current power array (shape: num_bess,)
+            - env.bess_power_mw: Maximum power rating (MW)
+            - env.soc_min, env.soc_max: SoC constraints
+            - env.bonus_constant (optional): Congestion reward weight (default 10.0)
+            - env.soc_penalty_weight (optional): SoC penalty weight (default -1.0)
+            - env.efficiency_penalty_weight (optional): Efficiency penalty (default -0.1)
+
+        max_loading_before: Maximum line loading before action (%)
+        max_loading_after: Maximum line loading after action (%)
+
+    Returns:
+        tuple: (total_reward, reward_breakdown)
+            - total_reward (float): Sum of all reward components
+            - reward_breakdown (dict): Individual components for logging/debugging
+              {'congestion': float, 'soc_penalty': float, 'efficiency_penalty': float}
+    """
+    # ========== 1. PRIMARY: Congestion Relief Reward ==========
+    # This is the main thesis objective: reduce grid congestion using BESS
+    # - Positive loading reduction → positive reward (good action)
+    # - Negative loading reduction (worsening) → negative reward (bad action)
+    # - Zero change → zero reward (neutral action)
+    #
+    # Why use max_loading not average:
+    # - Grid operators care about worst-case (preventing equipment damage)
+    # - Single overloaded line can cause cascading failures
+    # - Max loading directly relates to grid security
+    bonus_constant = getattr(env, 'bonus_constant', 10.0)
+    congestion_reward = bonus_constant * (max_loading_before - max_loading_after)
+
+    # ========== 2. SECONDARY: SoC Boundary Penalties ==========
+    # Penalize operating too close to SoC limits (prevents getting stuck)
+    # - If SoC < (soc_min + 5%): Can't discharge much → limited future flexibility
+    # - If SoC > (soc_max - 5%): Can't charge much → can't absorb excess generation
+    # - Agent learns to maintain "operational headroom" for future dispatch
+    soc_penalty_weight = getattr(env, 'soc_penalty_weight', -1.0)
+    boundary_margin = 0.05  # 5% margin from bounds
+
+    num_near_lower = np.sum(env.bess_soc < (env.soc_min + boundary_margin))
+    num_near_upper = np.sum(env.bess_soc > (env.soc_max - boundary_margin))
+    num_near_bounds = num_near_lower + num_near_upper
+
+    soc_penalty = soc_penalty_weight * num_near_bounds
+
+    # ========== 3. TERTIARY: Energy Efficiency Penalty ==========
+    # Encourage partial power dispatch over full-power operation
+    # - Extreme charge/discharge rates degrade battery faster (real-world concern)
+    # - Quadratic penalty: 100% power penalized 4× more than 50% power
+    # - Agent learns smooth, sustainable operation when possible
+    #
+    # Weight balance: This is 100× smaller than congestion reward
+    # - Congestion management is primary, efficiency is secondary
+    # - Only influences decisions when congestion impact is similar
+    efficiency_penalty_weight = getattr(env, 'efficiency_penalty_weight', -0.1)
+
+    # Calculate normalized power utilization for each BESS
+    normalized_power = np.abs(env.bess_power) / env.bess_power_mw  # 0.0 to 1.0
+    efficiency_penalty = efficiency_penalty_weight * np.sum(normalized_power ** 2)
+
+    # ========== Total Reward ==========
+    total_reward = congestion_reward + soc_penalty + efficiency_penalty
+
+    # Breakdown for logging/debugging
+    reward_breakdown = {
+        'congestion': float(congestion_reward),
+        'soc_penalty': float(soc_penalty),
+        'efficiency_penalty': float(efficiency_penalty)
+    }
+
+    return total_reward, reward_breakdown
+
+
 def validate_grid_state_after_action(env):
     """Validate grid state after action and return error result if invalid."""
     # Run load flow calculations
