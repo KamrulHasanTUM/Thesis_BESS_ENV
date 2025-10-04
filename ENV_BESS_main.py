@@ -125,7 +125,7 @@ class ENV_BESS(gymnasium.Env):
         # Observation space: Add BESS state variables (SoC %, available capacity, current power, location info)
         # to existing grid observations (vm_pu, line loading, etc.)
 
-        action_space = helpers.create_action_space(self)
+        action_space = helpers.create_bess_action_space(self)  # TODO: Will be finalized in Step 4
         observation_space = helpers.create_observation_space(self.net)
         return action_space, observation_space
 
@@ -183,7 +183,8 @@ class ENV_BESS(gymnasium.Env):
         # Update pandapower network: add/modify storage elements with P_mw values
         # Validate BESS constraints (SoC limits, power limits)
 
-        helpers.apply_action_to_switches(self, action)
+        # TODO: Apply BESS actions (will be implemented in Step 7)
+        pass
 
         # Validate action results
         error_result = helpers.validate_grid_state_after_action(self)

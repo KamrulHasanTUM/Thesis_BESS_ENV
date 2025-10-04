@@ -140,7 +140,6 @@ def save_environment_metadata(env, data_splits):
         "total_CBs": env.net.switch[(env.net.switch['et'] == 'b') & (env.net.switch['type'] == 'CB')].shape[0],
         "total_switches": env.net.switch.shape[0],
         "bonus_constant": env.bonus_constant,
-        "num_cbs_excluding_EHVCBs": get_circuit_breakers_excluding_extra_high_voltage(env.net).shape[0]
     }
 
     with open("env_meta.json", "w") as file:
@@ -162,23 +161,6 @@ def apply_absolute_values_to_network(net, absolute_values_dict, case_or_time_ste
 
 
 # ==================== Action and Observation Space Creation ====================
-
-def get_circuit_breakers_excluding_extra_high_voltage(net):
-    """Filter circuit breakers excluding those connected to EHV buses (220kV, 380kV)."""
-    cb_switches = net.switch[(net.switch['et'] == 'b') & (net.switch['type'] == 'CB')]
-
-    def is_valid_bus(bus_id):
-        bus_vn_kv = net.bus.loc[bus_id, 'vn_kv']
-        return bus_vn_kv not in [220, 380]
-
-    valid_cbs = cb_switches[
-        cb_switches.apply(
-            lambda row: is_valid_bus(row['bus']) and is_valid_bus(row['element']), axis=1
-        )
-    ]
-
-    return valid_cbs
-
 
 def create_bess_action_space(env):
     """
@@ -245,19 +227,6 @@ def create_bess_action_space(env):
     # - Continuous actions enable the agent to learn optimal power-lifetime tradeoffs
 
     return action_space
-
-
-def create_action_space(env):
-    """Create action space based on action_type configuration."""
-    if env.action_type == "NodeSplitting":
-        env.cb_switches = env.net.switch[(env.net.switch['et'] == 'b') & (env.net.switch['type'] == 'CB')]
-        return spaces.MultiDiscrete([2] * env.cb_switches.shape[0])
-    elif env.action_type == "NodeSplittingExEHVCBs":
-        env.cb_switches = env.net.switch[(env.net.switch['et'] == 'b') & (env.net.switch['type'] == 'CB')]
-        env.cb_excluding_ehv = get_circuit_breakers_excluding_extra_high_voltage(env.net)
-        return spaces.MultiDiscrete([2] * env.cb_excluding_ehv.shape[0])
-    else:
-        return spaces.MultiDiscrete([2] * env.net.switch.shape[0])
 
 
 def create_observation_space(net):
@@ -367,20 +336,6 @@ def build_observation_from_grid_state(env):
 
 
 # ==================== Step Helpers ====================
-
-def apply_action_to_switches(env, action):
-    """Apply action to update switch states."""
-    if env.action_type == "NodeSplitting":
-        for i, switch_idx in enumerate(env.cb_switches.index):
-            env.net.switch.at[switch_idx, 'closed'] = bool(action[i])
-    elif env.action_type == "NodeSplittingExEHVCBs":
-        print("Action type is NodeSplittingExEHVCBs")
-        for i, switch_idx in enumerate(env.cb_excluding_ehv.index):
-            env.net.switch.at[switch_idx, 'closed'] = bool(action[i])
-    else:
-        for i in range(env.net.switch.shape[0]):
-            env.net.switch.at[i, 'closed'] = bool(action[i])
-
 
 def validate_grid_state_after_action(env):
     """Validate grid state after action and return error result if invalid."""
