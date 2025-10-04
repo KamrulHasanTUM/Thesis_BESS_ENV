@@ -180,6 +180,73 @@ def get_circuit_breakers_excluding_extra_high_voltage(net):
     return valid_cbs
 
 
+def create_bess_action_space(env):
+    """
+    Create continuous action space for BESS power dispatch control.
+
+    This function defines a Box (continuous) action space where each dimension corresponds
+    to the power setpoint (MW) for one BESS unit. The action space enables fine-grained
+    control of battery charging/discharging for optimal congestion management.
+
+    Action Space Structure:
+    - Type: Box (continuous)
+    - Shape: (num_bess,) - one action per BESS unit
+    - Range: [-bess_power_mw, +bess_power_mw] per unit
+    - dtype: np.float32
+
+    Sign Convention:
+    - Negative values: Charging (energy flows INTO battery from grid)
+    - Positive values: Discharging (energy flows OUT OF battery to grid)
+    - Zero: Idle/standby
+
+    Physical Interpretation (Example: 5 BESS units, 50 MW rating, 50 MWh capacity):
+    - bess_power_mw = 50 MW represents 1C-rate (1-hour discharge/charge time)
+    - Action bounds ±50 MW allow full utilization of battery power capability
+    - 50 MW × 1 hour = 50 MWh (matches capacity for complete charge/discharge cycle)
+
+    Example Action:
+        action = np.array([-50.0, 0.0, 50.0, 30.0, -40.0])
+
+        Interpretation:
+        - BESS 0: Charging at maximum power (50 MW) - absorbing excess generation
+        - BESS 1: Idle (0 MW) - standby mode
+        - BESS 2: Discharging at maximum power (50 MW) - supporting grid during peak load
+        - BESS 3: Discharging at 30 MW (60% of capacity) - partial grid support
+        - BESS 4: Charging at 40 MW (80% of capacity) - absorbing moderate excess generation
+
+    Args:
+        env: Environment instance with BESS configuration parameters:
+            - env.num_bess: Number of BESS units
+            - env.bess_power_mw: Maximum charge/discharge power per unit (MW)
+
+    Returns:
+        spaces.Box: Continuous action space for BESS power control
+
+    Note:
+        - Continuous Box space is essential for optimal dispatch (vs. discrete actions)
+        - Enables gradient-based RL algorithms (PPO, SAC, DDPG) to learn smooth control policies
+        - Physical power limits (±bess_power_mw) correspond to inverter rating constraints
+        - SoC constraints will be enforced separately during step() execution
+    """
+    # Use Box space for continuous power control
+    # This allows fine-grained dispatch optimization (e.g., action = 23.7 MW, not just discrete levels)
+    # Essential for congestion management where partial power adjustments are often needed
+    action_space = Box(
+        low=-env.bess_power_mw,      # Maximum charging power (negative = charging)
+        high=env.bess_power_mw,      # Maximum discharging power (positive = discharging)
+        shape=(env.num_bess,),       # One power setpoint per BESS unit
+        dtype=np.float32             # Float32 for RL framework compatibility
+    )
+
+    # Physical meaning of bounds:
+    # - For 50 MW rating: ±50 MW corresponds to 1C-rate (1-hour full charge/discharge)
+    # - Lower C-rates (e.g., 25 MW = 0.5C) extend battery lifetime
+    # - Higher utilization provides more grid flexibility but increases degradation
+    # - Continuous actions enable the agent to learn optimal power-lifetime tradeoffs
+
+    return action_space
+
+
 def create_action_space(env):
     """Create action space based on action_type configuration."""
     if env.action_type == "NodeSplitting":
