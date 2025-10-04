@@ -711,6 +711,192 @@ def apply_bess_action(env, action):
     env.bess_power = clipped_action.copy()
 
 
+def update_bess_soc(env):
+    """
+    Update BESS State of Charge (SoC) based on actual power flow and energy balance physics.
+
+    This function calculates the energy exchanged by each BESS unit during the timestep
+    and updates the SoC accordingly. It uses the actual power output from the AC power
+    flow results (not the commanded action) to account for grid constraints and losses.
+
+    Energy Balance Physics:
+
+    The fundamental relationship is: Energy = Power × Time
+
+    For BESS, the change in stored energy depends on:
+    1. Actual power exchange with the grid (P, in MW)
+    2. Duration of the timestep (Δt, in hours)
+    3. Round-trip efficiency (η, dimensionless)
+    4. Battery capacity (C, in MWh)
+
+    Energy Balance Equations:
+
+    Discharging (P > 0, energy flows OUT of battery):
+    - Energy delivered to grid: E_out = P × Δt (MWh)
+    - Energy taken from battery: E_battery = E_out / η
+    - SoC decreases: ΔSoC = -E_battery / C = -(P × Δt) / (η × C)
+    - Efficiency η < 1 means more energy is taken from battery than delivered to grid
+
+    Charging (P < 0, energy flows INTO battery):
+    - Energy taken from grid: E_in = |P| × Δt (MWh)
+    - Energy stored in battery: E_battery = E_in × η
+    - SoC increases: ΔSoC = +E_battery / C = (|P| × Δt × η) / C
+    - Efficiency η < 1 means less energy is stored than taken from grid
+
+    Unified Formula:
+    For implementation, we use a unified formula that handles both cases:
+
+        ΔSoC = (P × Δt × efficiency_factor) / capacity
+
+    Where efficiency_factor = {
+        η         if P > 0 (discharging, apply losses to energy removed)
+        1/η       if P < 0 (charging, apply losses to energy stored)
+    }
+
+    Round-Trip Efficiency:
+    - If we discharge E_out energy and then charge it back:
+      * Discharge: E_battery decreases by E_out / η
+      * Charge: E_battery increases by E_out × η
+      * Net: E_battery decreases by E_out × (1 - η²)
+    - For η = 0.9: round-trip efficiency = 0.9² = 81% (matches real Li-ion)
+
+    Why Use Actual Power (res_sgen) Not Commanded Action:
+    - Grid constraints may limit actual power (e.g., voltage violations)
+    - Commanded action may be infeasible due to network state
+    - res_sgen gives the power that actually flowed through the grid
+    - Using actual power ensures energy balance consistency with power flow
+
+    Example Calculation:
+        BESS Configuration:
+        - Capacity: 50 MWh
+        - Efficiency: 90% (η = 0.9)
+        - Timestep: 1 hour (Δt = 1)
+        - Current SoC: 50% (0.5)
+
+        Case 1: Discharging at 50 MW
+        - Actual power from res_sgen: P = +50 MW
+        - Energy delivered to grid: 50 MW × 1 h = 50 MWh
+        - Energy removed from battery: 50 / 0.9 = 55.56 MWh (losses!)
+        - ΔSoC = -55.56 / 50 = -1.111 → clipped to -0.4 (SoC can't go below 10%)
+        - New SoC: 0.5 - 0.4 = 0.1 (10%, at lower bound)
+
+        Case 2: Charging at 50 MW
+        - Actual power from res_sgen: P = -50 MW
+        - Energy taken from grid: 50 MW × 1 h = 50 MWh
+        - Energy stored in battery: 50 × 0.9 = 45 MWh (losses!)
+        - ΔSoC = +45 / 50 = +0.9
+        - New SoC: 0.5 + 0.9 = 1.4 → clipped to 0.9 (SoC can't exceed 90%)
+
+        Case 3: Partial discharge at 20 MW
+        - Actual power: P = +20 MW
+        - Energy removed: (20 × 1) / 0.9 = 22.22 MWh
+        - ΔSoC = -22.22 / 50 = -0.444
+        - New SoC: 0.5 - 0.444 = 0.056 → clipped to 0.1 (below soc_min)
+
+    Parameters:
+        env: Environment instance with BESS configuration and power flow results:
+            - env.bess_soc: Current SoC array (shape: num_bess,)
+            - env.bess_sgen_indices: Sgen indices for BESS units
+            - env.net.res_sgen: Power flow results with actual p_mw values
+            - env.bess_capacity_mwh: Energy capacity per unit (MWh)
+            - env.time_step_hours: Timestep duration (hours)
+            - env.efficiency: Round-trip efficiency (0 < η ≤ 1)
+            - env.soc_min, env.soc_max: SoC constraints (e.g., 0.1, 0.9)
+
+    Updates:
+        env.bess_soc: Updated SoC array (clipped to [soc_min, soc_max])
+        env.bess_power: Updated with actual power from res_sgen
+
+    Note:
+        - This function must be called AFTER pp.runpp() (power flow calculation)
+        - SoC clipping enforces physical constraints (agent learns these implicitly)
+        - If commanded action violates SoC limits, actual power may be reduced by grid
+    """
+    # Read actual power output from power flow results
+    # - res_sgen contains the power that actually flowed through the grid
+    # - May differ from commanded action due to grid constraints (voltage, thermal limits)
+    # - Using actual power ensures energy balance consistency
+    actual_power = env.net.res_sgen.loc[env.bess_sgen_indices, 'p_mw'].values
+
+    # Calculate SoC change for each BESS unit
+    delta_soc = np.zeros(env.num_bess, dtype=np.float32)
+
+    for i in range(env.num_bess):
+        P = actual_power[i]  # MW (positive = discharge, negative = charge)
+
+        # Apply efficiency based on charge/discharge direction
+        # Round-trip efficiency concept:
+        # - Discharging: Energy out of battery > Energy to grid (losses in conversion)
+        # - Charging: Energy into battery < Energy from grid (losses in storage)
+        if P > 0:
+            # DISCHARGING (P > 0): Battery LOSES energy
+            # Energy delivered to grid: E_grid = P × Δt = 50 × 1 = 50 MWh
+            # Energy removed from battery: E_battery = E_grid / η = 50 / 0.9 = 55.6 MWh
+            # Battery loses MORE than it delivers (conversion losses)
+            # ΔE_battery = -55.6 MWh (negative = decrease)
+            #
+            # Formula: ΔE = -(P × Δt / η)
+            # Example: P=50, Δt=1, η=0.9 → ΔE = -(50×1/0.9) = -55.6 MWh ✓
+            energy_change = -P * env.time_step_hours / env.efficiency
+
+        elif P < 0:
+            # CHARGING (P < 0): Battery GAINS energy
+            # P = -50 MW means 50 MW flowing INTO battery from grid
+            # Energy taken from grid: E_grid = |P| × Δt = 50 × 1 = 50 MWh
+            # Energy stored in battery: E_battery = E_grid × η = 50 × 0.9 = 45 MWh
+            # Battery stores LESS than taken from grid (storage losses)
+            # ΔE_battery = +45 MWh (positive = increase)
+            #
+            # Formula: ΔE = |P| × Δt × η = -P × Δt × η (since P is negative, -P is positive)
+            # Example: P=-50, Δt=1, η=0.9 → ΔE = -(-50)×1×0.9 = 50×0.9 = +45 MWh ✓
+            energy_change = -P * env.time_step_hours * env.efficiency  # -P converts negative to positive
+
+        else:
+            # Idle: No power exchange, no SoC change
+            energy_change = 0.0
+
+        # Convert energy change (MWh) to SoC change (fraction)
+        # SoC is normalized: 0.0 = empty (0 MWh), 1.0 = full (capacity MWh)
+        # ΔSoC = ΔEnergy / Capacity
+        # Units: MWh / MWh = dimensionless (fraction)
+        #
+        # Examples:
+        # - Discharge: ΔE = -55.6 MWh, C = 50 MWh → ΔSoC = -55.6/50 = -1.11 (decrease)
+        # - Charge: ΔE = +45 MWh, C = 50 MWh → ΔSoC = +45/50 = +0.9 (increase)
+        delta_soc[i] = energy_change / env.bess_capacity_mwh
+
+    # Update SoC with calculated changes
+    new_soc = env.bess_soc + delta_soc
+
+    # Enforce SoC constraints
+    # - soc_min (e.g., 0.1 = 10%): Prevents deep discharge, extends battery life
+    # - soc_max (e.g., 0.9 = 90%): Prevents overcharge, maintains safety margins
+    # - Clipping teaches agent the operational bounds (via reward penalties when hitting limits)
+    clipped_soc = np.clip(new_soc, env.soc_min, env.soc_max)
+
+    # Check if any SoC values were clipped (hit constraints)
+    if not np.allclose(new_soc, clipped_soc):
+        clipped_indices = np.where(~np.isclose(new_soc, clipped_soc))[0]
+        for idx in clipped_indices:
+            if new_soc[idx] < env.soc_min:
+                print(f"Warning: BESS {idx} SoC hit lower bound ({env.soc_min*100:.0f}%)")
+                print(f"  Attempted: {new_soc[idx]*100:.1f}%, Clipped to: {env.soc_min*100:.0f}%")
+            elif new_soc[idx] > env.soc_max:
+                print(f"Warning: BESS {idx} SoC hit upper bound ({env.soc_max*100:.0f}%)")
+                print(f"  Attempted: {new_soc[idx]*100:.1f}%, Clipped to: {env.soc_max*100:.0f}%")
+
+    # Store updated SoC
+    env.bess_soc = clipped_soc
+
+    # Update env.bess_power with actual power from power flow
+    # - This reflects what actually happened (vs. what was commanded)
+    # - Will be included in the next observation for agent feedback
+    env.bess_power = actual_power.astype(np.float32)
+
+    # Optional: Print debug info
+    # print(f"SoC update: P={actual_power} MW, ΔSoC={delta_soc*100:.2f}%, New SoC={clipped_soc*100:.1f}%")
+
+
 def validate_grid_state_after_action(env):
     """Validate grid state after action and return error result if invalid."""
     # Run load flow calculations
