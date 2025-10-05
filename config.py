@@ -78,10 +78,8 @@ def create_bess_env_config(init_meta):
         'convergence_penalty': -200,
         'line_disconnect_penalty': -200,
         'nan_vm_pu_penalty': "dynamic",
-        'rho_min': 0.45,
         'penalty_scalar': -10,
         'bonus_constant': 10,
-        'action_type': init_meta["action_type"],
         'exp_code': init_meta["exp_code"],
 
         # ========== BESS Unit Configuration ==========

@@ -26,6 +26,7 @@ import gymnasium
 import simbench as sb
 import pandapower as pp
 import warnings
+import numpy as np
 
 import env_helpers as helpers
 
@@ -38,39 +39,79 @@ class ENV_BESS(gymnasium.Env):
     """
 
     def __init__(self,
+                 # ========== Grid parameters (from ENV_RHV) ==========
                  simbench_code="1-HV-mixed--0-sw",
-                 case_study= 'bc',
-                 is_train = True,
-                 is_normalize = False,
-                 max_step = 50,
-                 allowed_lines = 200,
-                 convergence_penalty = -200,
-                 line_disconnect_penalty = -200,
-                 nan_vm_pu_penalty = -200,
-                 rho_min = 0.45,
-                 action_type = 'NodeSplittingExEHVCBs',
-                 exp_code = None,
-                 penalty_scalar = -10,
-                 bonus_constant = 10,
+                 case_study='bc',
+                 is_train=True,
+                 is_normalize=False,
+                 max_step=50,
+                 allowed_lines=200,
+                 convergence_penalty=-200,
+                 line_disconnect_penalty=-200,
+                 nan_vm_pu_penalty=-200,
+                 penalty_scalar=-10,
+                 bonus_constant=10,
+                 exp_code=None,
+
+                 # ========== BESS parameters (new) ==========
+                 num_bess=5,
+                 bess_capacity_mwh=50.0,
+                 bess_power_mw=50.0,
+                 soc_min=0.1,
+                 soc_max=0.9,
+                 initial_soc=0.5,
+                 efficiency=0.9,
+                 time_step_hours=1.0
                  ):
         """
         Initialize the BESS environment with network and training parameters.
+
+        Grid Parameters (inherited from ENV_RHV):
+            simbench_code: SimBench network identifier
+            case_study: Load case ('bc' = base case)
+            is_train: Training mode flag
+            is_normalize: Data normalization flag
+            max_step: Maximum steps per episode
+            allowed_lines: Number of lines allowed to be disconnected
+            convergence_penalty: Penalty for power flow non-convergence
+            line_disconnect_penalty: Penalty for excessive line disconnections
+            nan_vm_pu_penalty: Penalty for invalid voltage values
+            penalty_scalar: Scaling factor for dynamic penalties
+            bonus_constant: Reward weight for congestion relief
+            exp_code: Experiment identifier
+
+        BESS Parameters (new):
+            num_bess: Number of BESS units (default: 5)
+            bess_capacity_mwh: Energy capacity per unit in MWh (default: 50.0)
+            bess_power_mw: Maximum charge/discharge power per unit in MW (default: 50.0)
+            soc_min: Minimum allowed state of charge (default: 0.1 = 10%)
+            soc_max: Maximum allowed state of charge (default: 0.9 = 90%)
+            initial_soc: Starting SoC for all units (default: 0.5 = 50%)
+            efficiency: Round-trip efficiency (default: 0.9 = 90%)
+            time_step_hours: Duration of each timestep in hours (default: 1.0)
         """
         super().__init__()
 
         # Load network first
         self.net = self.load_simbench_network(simbench_code)
 
-        # Initialize all parameters using helper functions
+        # Initialize grid parameters using helper functions
         helpers.initialize_config_parameters(self, simbench_code, case_study, is_train, is_normalize,
-                                            max_step, action_type, exp_code, bonus_constant)
+                                            max_step, 'BESS', exp_code, bonus_constant)
         helpers.initialize_penalty_parameters(self, allowed_lines, convergence_penalty, line_disconnect_penalty,
-                                             nan_vm_pu_penalty, rho_min, penalty_scalar)
+                                             nan_vm_pu_penalty, 0.0, penalty_scalar)
         helpers.initialize_state_variables(self)
 
-        # TODO: Add BESS initialization here
-        # Initialize BESS parameters: number of units, capacity (MWh), max power (MW),
-        # initial SoC (%), placement strategy, efficiency, etc.
+        # Initialize BESS parameters
+        # These will be used by BESS-specific helper functions (initialize_bess_state, apply_bess_action, etc.)
+        self.num_bess = num_bess
+        self.bess_capacity_mwh = bess_capacity_mwh
+        self.bess_power_mw = bess_power_mw
+        self.soc_min = soc_min
+        self.soc_max = soc_max
+        self.initial_soc = initial_soc
+        self.efficiency = efficiency
+        self.time_step_hours = time_step_hours
 
         # Load network and setup environment
         self.initial_net = self.setup_study_case(case_study, self.is_train, load_all=True)
@@ -149,10 +190,19 @@ class ENV_BESS(gymnasium.Env):
         helpers.update_timestep_index(self, ts)
         helpers.reset_network_to_initial_state(self)
 
-        # TODO: Initialize BESS state (SoC, locations)
-        # Reset BESS SoC to initial values (e.g., 50% or specified initial_soc)
-        # Set BESS locations if dynamic placement is used
-        # Reset BESS power output to 0
+        # Initialize BESS state: SoC, power, and grid connection locations
+        # - Sets SoC to initial_soc (typically 50%) for all BESS units
+        # - Auto-selects 110kV buses for BESS placement (or uses manual locations if specified)
+        # - Initializes power output to 0 MW (all units idle at episode start)
+        # - This creates the BESS state arrays: bess_soc, bess_power, bess_locations
+        helpers.initialize_bess_state(self)
+
+        # Apply initial BESS action: all zeros (idle state)
+        # - Creates sgen (static generator) elements in pandapower network at BESS locations
+        # - Sets all BESS power outputs to 0 MW (no grid interaction initially)
+        # - Ensures power flow calculation includes BESS elements from the start
+        # - Subsequent steps will update these sgen elements with actual dispatch actions
+        helpers.apply_bess_action(self, np.zeros(self.num_bess, dtype=np.float32))
 
         # Validate grid state
         validation_error = helpers.validate_grid_state_after_reset(self)
@@ -160,6 +210,8 @@ class ENV_BESS(gymnasium.Env):
             return self.observation, self.info
 
         # Build and return observation
+        # Note: build_observation_from_grid_state() now automatically includes BESS observations
+        # (bess_soc, bess_power) if they exist in the environment
         self.observation = helpers.build_observation_from_grid_state(self)
         return self.observation, self.info
 
