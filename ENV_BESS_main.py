@@ -178,44 +178,22 @@ class ENV_BESS(gymnasium.Env):
         self.load_data = self.load_data_normalized
         self.sgen_data = self.sgen_data_normalized
         return
-
-
+    
     def reset(self, options=None, seed=None, ts=None):
-        """
-        Reset the environment to initial state.
-        Returns initial observation and info dict following Gymnasium API.
-        """
-        # Reset episode state variables
+        """Reset the environment to initial state."""
         helpers.reset_episode_state(self)
         helpers.update_timestep_index(self, ts)
         helpers.reset_network_to_initial_state(self)
-
-        # Initialize BESS state: SoC, power, and grid connection locations
-        # - Sets SoC to initial_soc (typically 50%) for all BESS units
-        # - Auto-selects 110kV buses for BESS placement (or uses manual locations if specified)
-        # - Initializes power output to 0 MW (all units idle at episode start)
-        # - This creates the BESS state arrays: bess_soc, bess_power, bess_locations
+        
         helpers.initialize_bess_state(self)
-
-        # Apply initial BESS action: all zeros (idle state)
-        # - Creates sgen (static generator) elements in pandapower network at BESS locations
-        # - Sets all BESS power outputs to 0 MW (no grid interaction initially)
-        # - Ensures power flow calculation includes BESS elements from the start
-        # - Subsequent steps will update these sgen elements with actual dispatch actions
-        helpers.apply_bess_action(self, np.zeros(self.num_bess, dtype=np.float32))
-
-        # Validate grid state
+        self.bess_sgen_indices = None
+        
         validation_error = helpers.validate_grid_state_after_reset(self)
         if validation_error:
-            return self.observation, self.info
-
-        # Build and return observation
-        # Note: build_observation_from_grid_state() now automatically includes BESS observations
-        # (bess_soc, bess_power) if they exist in the environment
+            return self.observation if hasattr(self, 'observation') else {}, self.info
+        
         self.observation = helpers.build_observation_from_grid_state(self)
         return self.observation, self.info
-
-
 
     def step(self, action):
         """
@@ -226,38 +204,46 @@ class ENV_BESS(gymnasium.Env):
             print("Reset Needed")
             return self.observation, 0, self.terminated, self.truncated, self.info
 
-        # Apply action and check for errors
+        # Get max loading before action
         max_loading_before = self.net.res_line['loading_percent'].max()
         print(f"Max loading before: {max_loading_before}")
 
-        # TODO: Apply BESS actions before power flow
-        # Convert action to BESS power setpoints (MW)
-        # Update pandapower network: add/modify storage elements with P_mw values
-        # Validate BESS constraints (SoC limits, power limits)
+        # Apply BESS action: update sgen elements in network
+        # - Converts continuous action array to power setpoints (MW)
+        # - Updates pandapower sgen elements at BESS locations with commanded power
+        # - Clips actions to [-bess_power_mw, +bess_power_mw] if needed
+        # - Stores commanded action in env.bess_power for observation
+        # - Power flow validation happens next to compute actual grid response
+        helpers.apply_bess_action(self, action)
 
-        # TODO: Apply BESS actions (will be implemented in Step 7)
-        pass
-
-        # Validate action results
+        # Validate grid state and run power flow
+        # - Runs AC power flow with BESS injections/absorptions
+        # - Checks for convergence errors, line disconnections, voltage violations
+        # - Returns early with penalty if grid state is invalid
+        # - Power flow results (res_sgen) contain actual BESS power after grid constraints
         error_result = helpers.validate_grid_state_after_action(self)
         if error_result:
             return error_result
 
-        # TODO: Update BESS SoC after power flow
-        # Calculate energy change: delta_E = P_bess * time_step_hours
-        # Update SoC: new_soc = old_soc + (delta_E / capacity) * 100
-        # Clip SoC to valid range (0-100%)
+        # Update BESS State of Charge based on actual power flow results
+        # - Reads actual power from res_sgen (may differ from commanded action due to grid limits)
+        # - Applies energy balance physics: ΔE = P × Δt with efficiency losses
+        # - Updates env.bess_soc with new SoC values
+        # - Clips SoC to [soc_min, soc_max] range (e.g., 10-90%)
+        # - Updates env.bess_power with actual power for next observation
+        # - MUST happen AFTER power flow (needs res_sgen results)
+        helpers.update_bess_soc(self)
 
-        # Calculate reward
+        # Get max loading after action
         max_loading_after = self.net.res_line['loading_percent'].max()
         print(f"Max loading after: {max_loading_after}")
 
-        # TODO: Calculate BESS-aware reward
-        # Include BESS operational costs (cycling, energy throughput)
-        # Penalize SoC violations or deep discharge
-        # Bonus for congestion relief while managing BESS efficiently
-
-        reward = helpers.calculate_reward_for_step(self, max_loading_before, max_loading_after)
+        # Calculate BESS-aware reward for congestion management
+        # - Primary objective: Congestion relief (reward = bonus × loading reduction)
+        # - Secondary: SoC boundary penalties (prevent getting stuck at limits)
+        # - Tertiary: Energy efficiency penalties (encourage smooth operation)
+        # - Returns total reward and breakdown dict for logging
+        reward, reward_breakdown = helpers.calculate_bess_reward(self, max_loading_before, max_loading_after)
 
         # Check episode completion
         if self.count >= self.max_step:
@@ -265,7 +251,12 @@ class ENV_BESS(gymnasium.Env):
             self.terminated = True
             return self.observation, reward, self.terminated, self.truncated, self.info
 
-        # Update to next state
+        # Update to next timestep
+        # - Advances time_step index
+        # - Resets network to initial topology
+        # - Applies new load/generation profile from time series
+        # - Runs power flow with updated conditions
+        # - Builds new observation (includes updated grid state and BESS state)
         self.observation, self.terminated = helpers.update_to_next_timestep(self)
         self.count += 1
         print('count=', self.count)
@@ -281,16 +272,14 @@ class ENV_BESS(gymnasium.Env):
 
 
 # Import configuration and training functions
-from config import load_config, create_env_config, create_training_config, save_training_metadata
+from config import load_config, create_bess_env_config, create_training_config, save_training_metadata
 from training import setup_environment, create_model, train_model, get_logdir
 from utils import TQDMProgressCallback
 
 
 def main():
-    """Main training pipeline."""
-    # Load configurations
     init_meta = load_config()
-    env_config = create_env_config(init_meta)
+    env_config = create_bess_env_config(init_meta) 
     training_config = create_training_config(init_meta)
 
     # Setup environment and logging

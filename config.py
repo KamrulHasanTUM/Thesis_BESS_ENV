@@ -6,36 +6,12 @@ Handles loading from JSON files and creating environment and training configurat
 """
 
 import json
-
-
 def load_config():
     """Load configuration from init_meta.json file."""
     with open("init_meta.json", "r") as file:
         init_meta = json.load(file)
-    import pdb; pdb.set_trace()
     print(init_meta)
     return init_meta
-
-
-def create_env_config(init_meta):
-    """Create environment configuration parameters."""
-    return {
-        'simbench_code': "1-HV-mixed--0-sw",
-        'case_study': 'bc',
-        'is_train': True,
-        'is_normalize': False,
-        'max_step': 50,
-        'allowed_lines': 100,
-        'convergence_penalty': -200,
-        'line_disconnect_penalty': -200,
-        'nan_vm_pu_penalty': "dynamic",
-        'rho_min': 0.45,
-        'penalty_scalar': -10,
-        'bonus_constant': 10,
-        'action_type': init_meta["action_type"],
-        'exp_code': init_meta["exp_code"]
-    }
-
 
 def create_bess_env_config(init_meta):
     """

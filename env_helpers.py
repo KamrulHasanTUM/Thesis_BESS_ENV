@@ -1152,29 +1152,6 @@ def calculate_voltage_violation_penalty(env):
         return env.nan_vm_pu_penalty
 
 
-def calculate_reward_for_step(env, max_loading_before, max_loading_after):
-    """Calculate reward for the current step."""
-    env.net.res_line['loading_percent'] = env.net.res_line['loading_percent'].fillna(0)
-    P_j_t = np.array([line['loading_percent'] / 100 for _, line in env.net.res_line.iterrows()])
-    return calculate_congestion_reward(env, P_j_t, max_loading_before, max_loading_after)
-
-
-def calculate_congestion_reward(env, rho, max_loading_before, max_loading_after):
-    """Calculate congestion-based reward with bonus for reducing loading."""
-    _temp = np.zeros(len(rho))
-    for i in range(len(rho)):
-        _temp[i] = np.max([env.rho_min, rho[i]])
-    u_t = np.sum(1 - (_temp - env.rho_min))
-    print(f"Congestion: {u_t}")
-
-    bonus = env.bonus_constant * (max_loading_before - max_loading_after)
-    print(f"Bonus: {bonus}")
-
-    R_congestion = u_t + bonus
-    print(f"R_congestion: {R_congestion}")
-    return R_congestion
-
-
 # ==================== Update State Helpers ====================
 
 def update_to_next_timestep(env):
@@ -1186,6 +1163,11 @@ def update_to_next_timestep(env):
     env.net = copy.deepcopy(env.initial_net)
     env.relative_index = env.sgen_data.index.values[env.time_step]
     env.net = apply_absolute_values_to_network(env.net, env.profiles, env.relative_index)
+
+    # Re-create BESS sgen elements AFTER profile update
+    if hasattr(env, 'bess_sgen_indices') and env.bess_sgen_indices is not None:
+        env.bess_sgen_indices = None
+        apply_bess_action(env, env.bess_power)
 
     # Run load flow calculations
     try:
