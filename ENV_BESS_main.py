@@ -244,7 +244,7 @@ class ENV_BESS(gymnasium.Env):
         # - Tertiary: Energy efficiency penalties (encourage smooth operation)
         # - Returns total reward and breakdown dict for logging
         reward, reward_breakdown = helpers.calculate_bess_reward(self, max_loading_before, max_loading_after)
-
+        self.count += 1
         # Check episode completion
         if self.count >= self.max_step:
             self.truncated = True
@@ -258,7 +258,7 @@ class ENV_BESS(gymnasium.Env):
         # - Runs power flow with updated conditions
         # - Builds new observation (includes updated grid state and BESS state)
         self.observation, self.terminated = helpers.update_to_next_timestep(self)
-        self.count += 1
+        
         print('count=', self.count)
 
         return self.observation, reward, self.terminated, self.truncated, self.info
