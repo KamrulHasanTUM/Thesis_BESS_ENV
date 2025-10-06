@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🔋 ENV_BESS
+# ENV_BESS
 
 ### Battery Energy Storage System Reinforcement Learning Environment
 
@@ -22,29 +22,11 @@
 - [Overview](#overview)
 - [Key Features](#key-features)
 - [Installation](#installation)
-  - [Prerequisites](#prerequisites)
-  - [Quick Setup](#quick-setup)
-  - [Verify Installation](#verify-installation)
 - [Quick Start](#quick-start)
-  - [Configure Your Experiment](#configure-your-experiment)
-  - [Train an Agent](#train-an-agent)
-  - [Evaluate Performance](#evaluate-performance)
 - [Environment Details](#environment-details)
-  - [Action Space](#action-space)
-  - [Observation Space](#observation-space)
-  - [Reward Function](#reward-function)
-  - [Episode Configuration](#episode-configuration)
 - [Configuration](#configuration)
-  - [BESS Parameters](#bess-parameters)
-  - [Training Hyperparameters](#training-hyperparameters)
 - [Project Structure](#project-structure)
 - [Research Context](#research-context)
-  - [Thesis Background](#thesis-background)
-  - [Problem Statement](#problem-statement)
-  - [Approach](#approach)
-  - [Performance Metrics](#performance-metrics)
-  - [Current Limitations](#current-limitations)
-  - [Future Roadmap](#future-roadmap)
 - [Citation](#citation)
 - [License](#license)
 - [Acknowledgments](#acknowledgments)
@@ -55,16 +37,12 @@
 
 ## Overview
 
-**ENV_BESS** is a cutting-edge reinforcement learning environment designed to tackle one of the most critical challenges in modern power systems: **grid congestion management**. By integrating battery energy storage systems (BESS) with advanced RL algorithms, this environment enables intelligent, real-time decision-making for optimal power dispatch.
+ENV_BESS is a cutting-edge reinforcement learning environment designed to tackle one of the most critical challenges in modern power systems: grid congestion management. By integrating battery energy storage systems (BESS) with advanced RL algorithms, this environment enables intelligent, real-time decision-making for optimal power dispatch.
 
 ### What Makes ENV_BESS Special?
 
-| 🔌 Real-World Physics | 🤖 RL-Ready Design |
-|---|---|
-| SimBench benchmark networks (110 kV) | Gymnasium API compatibility |
-| Pandapower AC power flow simulation | Continuous action space (±50 MW) |
-| Physics-based BESS energy balance | Multi-modal observation space |
-| 35,136 hourly timesteps (~4 years data) | Validated with 9 comprehensive tests |
+- **Real-World Physics**: SimBench benchmark networks (110 kV), Pandapower AC power flow simulation, Physics-based BESS energy balance, 35,136 hourly timesteps (~4 years data)
+- **RL-Ready Design**: Gymnasium API compatibility, Continuous action space (±50 MW), Multi-modal observation space, Validated with 9 comprehensive tests
 
 ---
 
@@ -72,14 +50,14 @@
 
 | Feature | Description | Value |
 |---------|-------------|-------|
-| 🎮 **Action Space** | Continuous power dispatch | Box(-50, 50) MW |
-| 👁️ **Observations** | Multi-modal grid + BESS state | 9 components |
-| 🎯 **Primary Goal** | Line congestion reduction | Reward-based |
-| ⚡ **BESS Units** | Configurable battery systems | Default: 5 units |
-| 🔋 **Capacity** | Energy storage per unit | 50 MWh |
-| ⚙️ **Efficiency** | Round-trip efficiency | 90% |
-| 📊 **Constraints** | Realistic operational limits | SoC: 10-90% |
-| ✅ **Validation** | Comprehensive test suite | 9 tests passed |
+| **Action Space** | Continuous power dispatch | Box(-50, 50) MW |
+| **Observations** | Multi-modal grid + BESS state | 9 components |
+| **Primary Goal** | Line congestion reduction | Reward-based |
+| **BESS Units** | Configurable battery systems | Default: 5 units |
+| **Capacity** | Energy storage per unit | 50 MWh |
+| **Efficiency** | Round-trip efficiency | 90% |
+| **Constraints** | Realistic operational limits | SoC: 10-90% |
+| **Validation** | Comprehensive test suite | 9 tests passed |
 
 ---
 
@@ -113,12 +91,12 @@ cd tests
 python run_all_tests.py
 ```
 
-**Expected Output:**
+Expected Output:
 ```
-✅ Total tests: 9
-✅ Passed: 9
-❌ Failed: 0
-🎉 [PASS] ALL TESTS PASSED - Environment is ready for training!
+Total tests: 9
+Passed: 9
+Failed: 0
+[PASS] ALL TESTS PASSED - Environment is ready for training!
 ```
 
 ---
@@ -167,7 +145,6 @@ for step in range(50):
     action, _ = model.predict(obs)
     obs, reward, terminated, truncated, info = env.step(action)
     total_reward += reward
-
     if terminated or truncated:
         break
 
@@ -188,32 +165,21 @@ Each BESS unit receives a continuous power setpoint:
 - **Positive values** → Discharging (inject power to grid)
 - **Range:** ±50 MW per unit
 
-**Example Action:**
-```python
-action = np.array([
-    -30.0,  # BESS 1: Charge 30 MW
-     20.0,  # BESS 2: Discharge 20 MW
-      0.0,  # BESS 3: Idle
-    -50.0,  # BESS 4: Max charge
-     15.0   # BESS 5: Discharge 15 MW
-])
-```
-
 ### Observation Space
 
-**Type:** `Dict` with 9 components
+**Type:** Dict with 9 components
 
 | Component | Description | Shape | Range |
 |-----------|-------------|-------|-------|
-| `bess_soc` | 🔋 State of Charge (normalized) | `(5,)` | [0.0, 1.0] |
-| `bess_power` | ⚡ Current power output | `(5,)` | [-50, 50] MW |
-| `continuous_vm_bus` | 🔌 Bus voltages | `(buses,)` | [0.5, 1.5] p.u. |
-| `continuous_line_loadings` | 📊 Line loading % | `(lines,)` | [0, 800] % |
-| `continuous_load_data` | 🏭 Load consumption | `(loads,)` | [0, 100K] MW |
-| `continuous_sgen_data` | 🌞 Generator output | `(gens,)` | [0, 100K] MW |
-| `continuous_space_ext_grid_p_mw` | 🔗 External grid P | `(1,)` | ±50M MW |
-| `continuous_space_ext_grid_q_mvar` | 🔗 External grid Q | `(1,)` | ±50M MVAr |
-| `discrete_switches` | 🔀 Switch states | `(switches,)` | [0, 1] |
+| `bess_soc` | State of Charge (normalized) | `(5,)` | [0.0, 1.0] |
+| `bess_power` | Current power output | `(5,)` | [-50, 50] MW |
+| `continuous_vm_bus` | Bus voltages | `(buses,)` | [0.5, 1.5] p.u. |
+| `continuous_line_loadings` | Line loading % | `(lines,)` | [0, 800] % |
+| `continuous_load_data` | Load consumption | `(loads,)` | [0, 100K] MW |
+| `continuous_sgen_data` | Generator output | `(gens,)` | [0, 100K] MW |
+| `continuous_space_ext_grid_p_mw` | External grid P | `(1,)` | ±50M MW |
+| `continuous_space_ext_grid_q_mvar` | External grid Q | `(1,)` | ±50M MVAr |
+| `discrete_switches` | Switch states | `(switches,)` | [0, 1] |
 
 ### Reward Function
 
@@ -227,11 +193,11 @@ R_total = R_congestion + R_soc_penalty + R_efficiency
 
 | Component | Formula | Weight | Purpose |
 |-----------|---------|--------|---------|
-| 🎯 **Congestion** | `10.0 × (loading_before - loading_after)` | **10.0** | Primary goal: reduce overloading |
-| 🔋 **SoC Penalty** | `-1.0 × num_units_near_bounds` | **-1.0** | Avoid extreme SoC levels |
-| ⚙️ **Efficiency** | `-0.1 × Σ(│power│/max_power)²` | **-0.1** | Encourage efficient operation |
+| **Congestion** | `10.0 × (loading_before - loading_after)` | **10.0** | Primary goal: reduce overloading |
+| **SoC Penalty** | `-1.0 × num_units_near_bounds` | **-1.0** | Avoid extreme SoC levels |
+| **Efficiency** | `-0.1 × Σ(power/max_power)²` | **-0.1** | Encourage efficient operation |
 
-**Design Philosophy:** Congestion relief is 10× more important than SoC management, which is 10× more important than efficiency optimization.
+Design Philosophy: Congestion relief is 10× more important than SoC management, which is 10× more important than efficiency optimization.
 
 ### Episode Configuration
 
@@ -241,10 +207,10 @@ R_total = R_congestion + R_soc_penalty + R_efficiency
 - **Network:** SimBench 1-HV-mixed (110 kV)
 
 **Termination Conditions:**
-- ✅ Max steps reached (normal completion)
-- ❌ Power flow convergence failure
-- ❌ Excessive line disconnections
-- ❌ Voltage violations (NaN values)
+- Max steps reached (normal completion)
+- Power flow convergence failure
+- Excessive line disconnections
+- Voltage violations (NaN values)
 
 ---
 
@@ -291,13 +257,11 @@ model = PPO(
 
 ```
 Thesis_BESS_ENV/
-│
 ├── ENV_BESS_main.py              # Main environment class
 ├── env_helpers.py                # Helper functions (reset, step, reward)
 ├── config.py                     # Configuration management
 ├── training.py                   # Training utilities
 ├── utils.py                      # Miscellaneous utilities
-│
 ├── tests/                        # Comprehensive test suite
 │   ├── run_all_tests.py          # Master test runner
 │   ├── test_config.py            # Configuration tests
@@ -309,7 +273,6 @@ Thesis_BESS_ENV/
 │   ├── test_full_episode.py      # Full episode flow
 │   ├── test_multiple_episodes.py # Multi-episode stability
 │   └── test_gym_api.py           # Gymnasium API compliance
-│
 ├── init_meta.json.example        # Example configuration
 ├── README.md                     # This file
 └── LICENSE                       # MIT License
@@ -323,19 +286,19 @@ Thesis_BESS_ENV/
 
 This environment was developed as part of a Master's thesis:
 
-> **"Reinforcement Learning for Battery Energy Storage System Based Congestion Management in High-Voltage Distribution Grids"**
+**"Reinforcement Learning for Battery Energy Storage System Based Congestion Management in High-Voltage Distribution Grids"**
 
 ### Problem Statement
 
 Modern power grids face unprecedented challenges:
 
-| 🌞 Renewable Integration | 🚗 EV Adoption | 📈 Load Fluctuation |
-|---|---|---|
-| Growing solar/wind penetration creates volatile generation patterns | Rising electric vehicle charging increases peak demand | Unpredictable consumption patterns stress grid infrastructure |
+- **Renewable Integration**: Growing solar/wind penetration creates volatile generation patterns
+- **EV Adoption**: Rising electric vehicle charging increases peak demand
+- **Load Fluctuation**: Unpredictable consumption patterns stress grid infrastructure
 
-**Traditional Solution:** Grid expansion → 💰 Costly, 🕐 Time-consuming, 🌍 Environmentally impactful
+**Traditional Solution:** Grid expansion → Costly, Time-consuming, Environmentally impactful
 
-**Our Solution:** BESS-based RL → ⚡ Fast, 🎯 Targeted, 🔄 Flexible
+**Our Solution:** BESS-based RL → Fast, Targeted, Flexible
 
 ### Approach
 
@@ -358,19 +321,19 @@ Modern power grids face unprecedented challenges:
 
 ### Current Limitations
 
-- ❌ No battery degradation modeling
-- ❌ Active power only (no reactive power control)
-- ❌ Single voltage level (110 kV)
-- ❌ Assumes perfect power flow convergence
+- No battery degradation modeling
+- Active power only (no reactive power control)
+- Single voltage level (110 kV)
+- Assumes perfect power flow convergence
 
 ### Future Roadmap
 
-- [ ] Multi-voltage level support (HV/MV/LV)
-- [ ] Battery aging and degradation models
-- [ ] Reactive power (Q) optimization
-- [ ] Multi-agent distributed BESS scenarios
-- [ ] Real-time grid data integration
-- [ ] Transfer learning across different grids
+- Multi-voltage level support (HV/MV/LV)
+- Battery aging and degradation models
+- Reactive power (Q) optimization
+- Multi-agent distributed BESS scenarios
+- Real-time grid data integration
+- Transfer learning across different grids
 
 ---
 
@@ -393,11 +356,7 @@ If you use this environment in your research, please cite:
 
 ## License
 
-This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
-
-```
-MIT License - Copyright (c) 2025 Kamrul Hasan
-```
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
@@ -416,13 +375,9 @@ This project builds upon excellent open-source tools:
 
 ## Author
 
-<div align="center">
-
 **Kamrul Hasan**
 
 [![GitHub](https://img.shields.io/badge/GitHub-KamrulHasanTUM-181717?logo=github)](https://github.com/KamrulHasanTUM)
-
-</div>
 
 ---
 
@@ -430,21 +385,16 @@ This project builds upon excellent open-source tools:
 
 Having issues? Here's how to get help:
 
-1. **📋 Check Tests** → Run `tests/run_all_tests.py` for diagnostics
-2. **📚 Review Examples** → See usage patterns in code
-3. **🐛 Report Issues** → Open a GitHub issue with:
-   - Error messages
-   - Environment configuration
-   - Steps to reproduce
+1. Check Tests → Run `tests/run_all_tests.py` for diagnostics
+2. Review Examples → See usage patterns in code
+3. Report Issues → Open a GitHub issue with error messages, environment configuration, and steps to reproduce
 
 ---
 
 <div align="center">
 
-### ⭐ Star this repo if you find it useful!
-
 **Built with ❤️ for advancing power grid intelligence**
 
-[🔝 Back to Top](#-env_bess)
+[Back to Top](#env_bess)
 
 </div>
