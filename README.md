@@ -11,58 +11,64 @@
 
 **A state-of-the-art Gymnasium-compatible RL environment for intelligent congestion management in high-voltage distribution grids using Battery Energy Storage Systems**
 
-[Features](#-key-features) •
-[Installation](#-installation) •
-[Quick Start](#-quick-start) •
-[Documentation](#-environment-details) •
-[Research](#-research-context) •
-[Citation](#-citation)
+[Features](#key-features) • [Installation](#installation) • [Quick Start](#quick-start) • [Documentation](#environment-details) • [Research](#research-context) • [Citation](#citation)
 
 </div>
 
 ---
 
-## 🌟 Overview
+## Table of Contents
 
-**ENV_BESS** is a cutting-edge reinforcement learning environment designed to tackle one of the most critical challenges in modern power systems: **grid congestion management**. By integrating battery energy storage systems (BESS) with advanced RL algorithms, this environment enables intelligent, real-time decision-making for optimal power dispatch.
-
-### 🎯 What Makes ENV_BESS Special?
-
-<table>
-<tr>
-<td width="50%">
-
-#### 🔌 **Real-World Physics**
-- SimBench benchmark networks (110 kV)
-- Pandapower AC power flow simulation
-- Physics-based BESS energy balance
-- 35,136 hourly timesteps (~4 years data)
-
-</td>
-<td width="50%">
-
-#### 🤖 **RL-Ready Design**
-- Gymnasium API compatibility
-- Continuous action space (±50 MW)
-- Multi-modal observation space
-- Validated with 9 comprehensive tests
-
-</td>
-</tr>
-</table>
+- [Overview](#overview)
+- [Key Features](#key-features)
+- [Installation](#installation)
+  - [Prerequisites](#prerequisites)
+  - [Quick Setup](#quick-setup)
+  - [Verify Installation](#verify-installation)
+- [Quick Start](#quick-start)
+  - [Configure Your Experiment](#configure-your-experiment)
+  - [Train an Agent](#train-an-agent)
+  - [Evaluate Performance](#evaluate-performance)
+- [Environment Details](#environment-details)
+  - [Action Space](#action-space)
+  - [Observation Space](#observation-space)
+  - [Reward Function](#reward-function)
+  - [Episode Configuration](#episode-configuration)
+- [Configuration](#configuration)
+  - [BESS Parameters](#bess-parameters)
+  - [Training Hyperparameters](#training-hyperparameters)
+- [Project Structure](#project-structure)
+- [Research Context](#research-context)
+  - [Thesis Background](#thesis-background)
+  - [Problem Statement](#problem-statement)
+  - [Approach](#approach)
+  - [Performance Metrics](#performance-metrics)
+  - [Current Limitations](#current-limitations)
+  - [Future Roadmap](#future-roadmap)
+- [Citation](#citation)
+- [License](#license)
+- [Acknowledgments](#acknowledgments)
+- [Author](#author)
+- [Support](#support)
 
 ---
 
-## 🚀 Key Features
+## Overview
 
-```mermaid
-graph LR
-    A[Grid State] --> B[ENV_BESS]
-    C[BESS Status] --> B
-    B --> D[Optimal Actions]
-    D --> E[Reduced Congestion]
-    D --> F[Stable Grid]
-```
+**ENV_BESS** is a cutting-edge reinforcement learning environment designed to tackle one of the most critical challenges in modern power systems: **grid congestion management**. By integrating battery energy storage systems (BESS) with advanced RL algorithms, this environment enables intelligent, real-time decision-making for optimal power dispatch.
+
+### What Makes ENV_BESS Special?
+
+| 🔌 Real-World Physics | 🤖 RL-Ready Design |
+|---|---|
+| SimBench benchmark networks (110 kV) | Gymnasium API compatibility |
+| Pandapower AC power flow simulation | Continuous action space (±50 MW) |
+| Physics-based BESS energy balance | Multi-modal observation space |
+| 35,136 hourly timesteps (~4 years data) | Validated with 9 comprehensive tests |
+
+---
+
+## Key Features
 
 | Feature | Description | Value |
 |---------|-------------|-------|
@@ -77,29 +83,26 @@ graph LR
 
 ---
 
-## 📦 Installation
+## Installation
 
 ### Prerequisites
 
-```bash
-# System Requirements
-Python 3.8+
-Anaconda/Miniconda (recommended)
-16GB RAM (for training)
-```
+- Python 3.8 or higher
+- Anaconda/Miniconda (recommended)
+- 16GB RAM (for training)
 
 ### Quick Setup
 
 ```bash
-# 1️⃣ Clone the repository
+# Clone the repository
 git clone https://github.com/KamrulHasanTUM/Thesis_BESS_ENV.git
 cd Thesis_BESS_ENV
 
-# 2️⃣ Create conda environment
+# Create conda environment
 conda create -n bess_env python=3.8
 conda activate bess_env
 
-# 3️⃣ Install dependencies
+# Install dependencies
 pip install gymnasium stable-baselines3 pandapower simbench scikit-learn tqdm numpy pandas
 ```
 
@@ -120,9 +123,9 @@ python run_all_tests.py
 
 ---
 
-## ⚡ Quick Start
+## Quick Start
 
-### 1️⃣ Configure Your Experiment
+### Configure Your Experiment
 
 Create `init_meta.json`:
 
@@ -135,7 +138,7 @@ Create `init_meta.json`:
 }
 ```
 
-### 2️⃣ Train an Agent (3 Lines!)
+### Train an Agent
 
 ```python
 from ENV_BESS_main import ENV_BESS
@@ -150,7 +153,7 @@ model.learn(total_timesteps=100_000)
 model.save("bess_ppo_model")
 ```
 
-### 3️⃣ Evaluate Performance
+### Evaluate Performance
 
 ```python
 # Load trained model
@@ -173,27 +176,20 @@ print(f"Episode reward: {total_reward:.2f}")
 
 ---
 
-## 📚 Environment Details
+## Environment Details
 
-### 🎮 Action Space
-
-<table>
-<tr>
-<td width="60%">
+### Action Space
 
 **Type:** `Box(low=-50, high=50, shape=(5,), dtype=float32)`
 
 Each BESS unit receives a continuous power setpoint:
 
-- **Negative values** → Charging (absorb power)
-- **Positive values** → Discharging (inject power)
+- **Negative values** → Charging (absorb power from grid)
+- **Positive values** → Discharging (inject power to grid)
 - **Range:** ±50 MW per unit
 
-</td>
-<td width="40%">
-
+**Example Action:**
 ```python
-# Example action
 action = np.array([
     -30.0,  # BESS 1: Charge 30 MW
      20.0,  # BESS 2: Discharge 20 MW
@@ -203,11 +199,7 @@ action = np.array([
 ])
 ```
 
-</td>
-</tr>
-</table>
-
-### 👁️ Observation Space
+### Observation Space
 
 **Type:** `Dict` with 9 components
 
@@ -223,7 +215,7 @@ action = np.array([
 | `continuous_space_ext_grid_q_mvar` | 🔗 External grid Q | `(1,)` | ±50M MVAr |
 | `discrete_switches` | 🔀 Switch states | `(switches,)` | [0, 1] |
 
-### 🎯 Reward Function
+### Reward Function
 
 Multi-objective reward designed to balance congestion relief with BESS sustainability:
 
@@ -241,24 +233,22 @@ R_total = R_congestion + R_soc_penalty + R_efficiency
 
 **Design Philosophy:** Congestion relief is 10× more important than SoC management, which is 10× more important than efficiency optimization.
 
-### 📅 Episode Configuration
+### Episode Configuration
 
-```yaml
-Length: 50 timesteps (configurable)
-Timestep: 1 hour
-Real-world span: ~2 days per episode
-Network: SimBench 1-HV-mixed (110 kV)
+- **Length:** 50 timesteps (configurable)
+- **Timestep duration:** 1 hour
+- **Real-world span:** ~2 days per episode
+- **Network:** SimBench 1-HV-mixed (110 kV)
 
-Termination Conditions:
-  ✅ Max steps reached (normal)
-  ❌ Power flow convergence failure
-  ❌ Excessive line disconnections
-  ❌ Voltage violations (NaN values)
-```
+**Termination Conditions:**
+- ✅ Max steps reached (normal completion)
+- ❌ Power flow convergence failure
+- ❌ Excessive line disconnections
+- ❌ Voltage violations (NaN values)
 
 ---
 
-## ⚙️ Configuration
+## Configuration
 
 ### BESS Parameters
 
@@ -281,7 +271,7 @@ env = ENV_BESS(
 )
 ```
 
-### Training Hyperparameters (PPO)
+### Training Hyperparameters
 
 ```python
 model = PPO(
@@ -297,76 +287,57 @@ model = PPO(
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 Thesis_BESS_ENV/
 │
-├── 📄 ENV_BESS_main.py          # Main environment class
-├── 🛠️ env_helpers.py             # Helper functions (reset, step, reward)
-├── ⚙️ config.py                  # Configuration management
-├── 🚂 training.py                # Training utilities
-├── 🔧 utils.py                   # Miscellaneous utilities
+├── ENV_BESS_main.py              # Main environment class
+├── env_helpers.py                # Helper functions (reset, step, reward)
+├── config.py                     # Configuration management
+├── training.py                   # Training utilities
+├── utils.py                      # Miscellaneous utilities
 │
-├── 🧪 tests/                     # Comprehensive test suite
-│   ├── run_all_tests.py         # Master test runner
-│   ├── test_config.py           # Configuration tests
-│   ├── test_env_creation.py     # Environment creation
-│   ├── test_reset.py            # Reset functionality
-│   ├── test_episode.py          # Episode execution
-│   ├── test_soc_dynamics.py     # Battery physics
-│   ├── test_rewards.py          # Reward calculation
-│   ├── test_full_episode.py     # Full episode flow
+├── tests/                        # Comprehensive test suite
+│   ├── run_all_tests.py          # Master test runner
+│   ├── test_config.py            # Configuration tests
+│   ├── test_env_creation.py      # Environment creation
+│   ├── test_reset.py             # Reset functionality
+│   ├── test_episode.py           # Episode execution
+│   ├── test_soc_dynamics.py      # Battery physics
+│   ├── test_rewards.py           # Reward calculation
+│   ├── test_full_episode.py      # Full episode flow
 │   ├── test_multiple_episodes.py # Multi-episode stability
-│   └── test_gym_api.py          # Gymnasium API compliance
+│   └── test_gym_api.py           # Gymnasium API compliance
 │
-├── 📋 init_meta.json.example     # Example configuration
-├── 📖 README.md                  # This file
-└── 📜 LICENSE                    # MIT License
+├── init_meta.json.example        # Example configuration
+├── README.md                     # This file
+└── LICENSE                       # MIT License
 ```
 
 ---
 
-## 🔬 Research Context
+## Research Context
 
-### 🎓 Thesis Background
+### Thesis Background
 
 This environment was developed as part of a Master's thesis:
 
 > **"Reinforcement Learning for Battery Energy Storage System Based Congestion Management in High-Voltage Distribution Grids"**
 
-### 🌍 Problem Statement
+### Problem Statement
 
 Modern power grids face unprecedented challenges:
 
-<table>
-<tr>
-<td width="33%" align="center">
-
-#### 🌞 Renewable Integration
-Growing solar/wind penetration creates volatile generation patterns
-
-</td>
-<td width="33%" align="center">
-
-#### 🚗 EV Adoption
-Rising electric vehicle charging increases peak demand
-
-</td>
-<td width="33%" align="center">
-
-#### 📈 Load Fluctuation
-Unpredictable consumption patterns stress grid infrastructure
-
-</td>
-</tr>
-</table>
+| 🌞 Renewable Integration | 🚗 EV Adoption | 📈 Load Fluctuation |
+|---|---|---|
+| Growing solar/wind penetration creates volatile generation patterns | Rising electric vehicle charging increases peak demand | Unpredictable consumption patterns stress grid infrastructure |
 
 **Traditional Solution:** Grid expansion → 💰 Costly, 🕐 Time-consuming, 🌍 Environmentally impactful
 
 **Our Solution:** BESS-based RL → ⚡ Fast, 🎯 Targeted, 🔄 Flexible
 
-### 🧠 Approach
+### Approach
 
 | Aspect | Implementation |
 |--------|----------------|
@@ -377,7 +348,7 @@ Unpredictable consumption patterns stress grid infrastructure
 | **Dataset** | 35,136 hourly timesteps (~4 years) |
 | **Features** | Multi-modal observations (grid + BESS state) |
 
-### 📊 Performance Metrics
+### Performance Metrics
 
 **Training Configuration:**
 - Hardware: i7 CPU, 16GB RAM (consumer-grade workstation)
@@ -385,14 +356,14 @@ Unpredictable consumption patterns stress grid infrastructure
 - Episodes: ~24,400 episodes
 - Convergence: Effective policies within 500k timesteps
 
-### ⚠️ Current Limitations
+### Current Limitations
 
 - ❌ No battery degradation modeling
 - ❌ Active power only (no reactive power control)
 - ❌ Single voltage level (110 kV)
 - ❌ Assumes perfect power flow convergence
 
-### 🔮 Future Roadmap
+### Future Roadmap
 
 - [ ] Multi-voltage level support (HV/MV/LV)
 - [ ] Battery aging and degradation models
@@ -403,7 +374,7 @@ Unpredictable consumption patterns stress grid infrastructure
 
 ---
 
-## 📖 Citation
+## Citation
 
 If you use this environment in your research, please cite:
 
@@ -420,7 +391,7 @@ If you use this environment in your research, please cite:
 
 ---
 
-## 📄 License
+## License
 
 This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
 
@@ -430,7 +401,7 @@ MIT License - Copyright (c) 2025 Kamrul Hasan
 
 ---
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 This project builds upon excellent open-source tools:
 
@@ -443,20 +414,19 @@ This project builds upon excellent open-source tools:
 
 ---
 
-## 👤 Author
+## Author
 
 <div align="center">
 
 **Kamrul Hasan**
 
 [![GitHub](https://img.shields.io/badge/GitHub-KamrulHasanTUM-181717?logo=github)](https://github.com/KamrulHasanTUM)
-[![Email](https://img.shields.io/badge/Email-Contact-D14836?logo=gmail&logoColor=white)](mailto:your.email@example.com)
 
 </div>
 
 ---
 
-## 💬 Support
+## Support
 
 Having issues? Here's how to get help:
 
