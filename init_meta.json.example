@@ -1,0 +1,6 @@
+﻿{
+    "exp_code": "bess_experiment_001",
+    "exp_id": 1,
+    "exp_name": "BESS Congestion Management",
+    "grid_env": "bess"
+}

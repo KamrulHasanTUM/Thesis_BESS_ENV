@@ -1,11 +1,12 @@
-# Python cache files
+﻿# Python
 __pycache__/
 *.py[cod]
-*$py.class
+*.class
 *.so
-
-# Distribution / packaging
 .Python
+env/
+venv/
+ENV/
 build/
 develop-eggs/
 dist/
@@ -22,24 +23,10 @@ wheels/
 .installed.cfg
 *.egg
 
-# PyInstaller
-*.manifest
-*.spec
-
-# Unit test / coverage reports
-htmlcov/
-.tox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-
 # Jupyter Notebook
 .ipynb_checkpoints
 
-# Environment variables
+# Environment
 .env
 .venv
 env/
@@ -48,32 +35,20 @@ ENV/
 env.bak/
 venv.bak/
 
-# IDE files
+# IDE
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
-.DS_Store
 
-# RL Training outputs
+# Project specific
+*.json
+!init_meta.json.example
 logs/
-tensorboard_logs/
-*.zip
-*.pkl
+models/
+*.log
 
-# Generated metadata (will be recreated)
-env_meta.json
-training_config_meta.json
-
-# Keep init_meta.json - we want to track this
-!init_meta.json
-
-# SimBench/Pandapower cache
-*.json.bak
-simbench_cache/
-
-# Model checkpoints (large files)
-checkpoints/
-*.pth
-*.pt
+# OS
+.DS_Store
+Thumbs.db
