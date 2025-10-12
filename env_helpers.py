@@ -18,6 +18,27 @@ from gymnasium import spaces
 
 # ==================== Initialization Helpers ====================
 
+def run_power_flow(env, context=""):
+    """
+    Execute power flow calculation with standardized error handling.
+    
+    Args:
+        env: Environment instance
+        context: String describing where this is called (for debugging)
+    
+    Returns:
+        bool: True if converged, False otherwise
+    """
+    try:
+        pp.runpp(env.net)
+        if context:
+            print(f"Load flow passed in {context}")
+        return env.net.converged
+    except Exception as e:
+        if context:
+            print(f"Load flow error in {context}: {e}")
+        return False
+
 def initialize_config_parameters(env, simbench_code, case_study, is_train, is_normalize,
                                 max_step, action_type, exp_code, bonus_constant):
     """Initialize configuration parameters for the environment."""
@@ -532,9 +553,7 @@ def reset_network_to_initial_state(env):
     env.net = apply_absolute_values_to_network(env.net, env.profiles, env.relative_index)
 
     # Run load flow calculations
-    try:
-        pp.runpp(env.net)
-    except:
+    if not run_power_flow(env, "reset"):
         env.terminated = True
         env.truncated = True
         print("Load flow error in resetting")
@@ -1113,10 +1132,7 @@ def calculate_bess_reward(env, max_loading_before, max_loading_after):
 def validate_grid_state_after_action(env):
     """Validate grid state after action and return error result if invalid."""
     # Run load flow calculations
-    try:
-        pp.runpp(env.net)
-        print("Load flow passed in stepping")
-    except:
+    if not run_power_flow(env, "stepping"):
         env.terminated = True
         env.truncated = True
         print("Load flow error in stepping")
@@ -1170,11 +1186,8 @@ def update_to_next_timestep(env):
         apply_bess_action(env, env.bess_power)
 
     # Run load flow calculations
-    try:
-        pp.runpp(env.net)
-        print("Load flow passed in updating")
-    except:
-        print("Load flow error in updating")
+    if not run_power_flow(env, "updating"):
+        pass  # Error already logged in run_power_flow
         env.convergence_error_count += 1
         return env.observation, True
 
