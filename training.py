@@ -7,6 +7,8 @@ Handles environment setup, PPO model creation, and training execution with callb
 
 import os
 import datetime
+from wandb_integration import WandbCallback, init_wandb_run
+import wandb
 from stable_baselines3 import PPO
 from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.common.vec_env import DummyVecEnv
@@ -86,6 +88,27 @@ def train_model(model, training_config, tqdm_callback):
         print(f"Saving model to {training_config['exp_code']}")
         model.save(f"{training_config['exp_code']}")
         print("Model saved successfully!")
+
+def train_model_with_wandb(model, training_config, env_config):
+    """Train model with W&B tracking."""
+    full_config = {**env_config, **training_config}
+    run = init_wandb_run(full_config, project_name="thesis-bess-env")
+    
+    wandb_callback = WandbCallback(log_freq=10)
+    
+    try:
+        model.learn(
+            total_timesteps=training_config['total_timesteps'],
+            callback=wandb_callback,
+            progress_bar=True
+        )
+        
+        model.save("final_model")
+        artifact = wandb.Artifact('bess-ppo-model', type='model')
+        artifact.add_file('final_model.zip')
+        run.log_artifact(artifact)
+    finally:
+        run.finish()
 
 
 def get_logdir():

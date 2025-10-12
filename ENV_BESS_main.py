@@ -29,6 +29,8 @@ import warnings
 import numpy as np
 
 import env_helpers as helpers
+# Add this import to use the function from training.py
+from training import setup_environment, create_model, train_model, get_logdir, train_model_with_wandb
 
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
@@ -39,30 +41,35 @@ class ENV_BESS(gymnasium.Env):
     """
 
     def __init__(self,
-                 # ========== Grid parameters (from ENV_RHV) ==========
-                 simbench_code="1-HV-mixed--0-sw",
-                 case_study='bc',
-                 is_train=True,
-                 is_normalize=False,
-                 max_step=50,
-                 allowed_lines=200,
-                 convergence_penalty=-200,
-                 line_disconnect_penalty=-200,
-                 nan_vm_pu_penalty=-200,
-                 penalty_scalar=-10,
-                 bonus_constant=10,
-                 exp_code=None,
+             # ========== Grid parameters (from ENV_RHV) ==========
+             simbench_code="1-HV-mixed--0-sw",
+             case_study='bc',
+             is_train=True,
+             is_normalize=False,
+             max_step=50,
+             allowed_lines=200,
+             convergence_penalty=-200,
+             line_disconnect_penalty=-200,
+             nan_vm_pu_penalty=-200,
+             penalty_scalar=-10,
+             bonus_constant=10,
+             exp_code=None,
 
-                 # ========== BESS parameters (new) ==========
-                 num_bess=5,
-                 bess_capacity_mwh=50.0,
-                 bess_power_mw=50.0,
-                 soc_min=0.1,
-                 soc_max=0.9,
-                 initial_soc=0.5,
-                 efficiency=0.9,
-                 time_step_hours=1.0
-                 ):
+             # ========== BESS parameters ==========
+             num_bess=5,
+             bess_capacity_mwh=50.0,
+             bess_power_mw=50.0,
+             soc_min=0.1,
+             soc_max=0.9,
+             initial_soc=0.5,
+             efficiency=0.9,
+             time_step_hours=1.0,
+             
+             # ========== Engineering constants ==========
+             voltage_min_pu=0.5,
+             voltage_max_pu=1.5,
+             soc_boundary_margin=0.05
+             ):
         """
         Initialize the BESS environment with network and training parameters.
 
@@ -103,7 +110,6 @@ class ENV_BESS(gymnasium.Env):
         helpers.initialize_state_variables(self)
 
         # Initialize BESS parameters
-        # These will be used by BESS-specific helper functions (initialize_bess_state, apply_bess_action, etc.)
         self.num_bess = num_bess
         self.bess_capacity_mwh = bess_capacity_mwh
         self.bess_power_mw = bess_power_mw
@@ -112,6 +118,11 @@ class ENV_BESS(gymnasium.Env):
         self.initial_soc = initial_soc
         self.efficiency = efficiency
         self.time_step_hours = time_step_hours
+        
+        # Engineering constants
+        self.soc_boundary_margin = soc_boundary_margin
+        self.voltage_min_pu = voltage_min_pu
+        self.voltage_max_pu = voltage_max_pu
 
         # Load network and setup environment
         self.initial_net = self.setup_study_case(case_study, self.is_train, load_all=True)
@@ -279,21 +290,21 @@ from utils import TQDMProgressCallback
 
 def main():
     init_meta = load_config()
-    env_config = create_bess_env_config(init_meta) 
+    env_config = create_bess_env_config(init_meta)
     training_config = create_training_config(init_meta)
-
-    # Setup environment and logging
+    
     env = setup_environment(ENV_BESS, env_config)
     logdir = get_logdir()
-
-    # Save metadata and create model
+    
     save_training_metadata(training_config, logdir)
     model = create_model(env, training_config, logdir)
-
-    # Setup callbacks and train
-    tqdm_callback = TQDMProgressCallback(total_timesteps=training_config['total_timesteps'])
-    train_model(model, training_config, tqdm_callback)
-
+    
+    # OLD (delete these 2 lines):
+    # tqdm_callback = TQDMProgressCallback(total_timesteps=training_config['total_timesteps'])
+    # train_model(model, training_config, tqdm_callback)
+    
+    # NEW (add this 1 line):
+    train_model_with_wandb(model, training_config, env_config)
 
 if __name__ == "__main__":
     main()
