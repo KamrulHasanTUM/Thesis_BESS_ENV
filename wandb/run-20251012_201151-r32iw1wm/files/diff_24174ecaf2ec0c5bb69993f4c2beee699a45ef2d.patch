@@ -1,0 +1,290 @@
+warning: in the working copy of 'training.py', LF will be replaced by CRLF the next time Git touches it
+diff --git a/ENV_BESS_main.py b/ENV_BESS_main.py
+index d6b876f..0bdcfb0 100644
+--- a/ENV_BESS_main.py
++++ b/ENV_BESS_main.py
+@@ -29,6 +29,8 @@ import warnings
+ import numpy as np
+ 
+ import env_helpers as helpers
++# Add this import to use the function from training.py
++from training import setup_environment, create_model, train_model, get_logdir, train_model_with_wandb
+ 
+ warnings.simplefilter(action='ignore', category=FutureWarning)
+ 
+@@ -39,30 +41,35 @@ class ENV_BESS(gymnasium.Env):
+     """
+ 
+     def __init__(self,
+-                 # ========== Grid parameters (from ENV_RHV) ==========
+-                 simbench_code="1-HV-mixed--0-sw",
+-                 case_study='bc',
+-                 is_train=True,
+-                 is_normalize=False,
+-                 max_step=50,
+-                 allowed_lines=200,
+-                 convergence_penalty=-200,
+-                 line_disconnect_penalty=-200,
+-                 nan_vm_pu_penalty=-200,
+-                 penalty_scalar=-10,
+-                 bonus_constant=10,
+-                 exp_code=None,
+-
+-                 # ========== BESS parameters (new) ==========
+-                 num_bess=5,
+-                 bess_capacity_mwh=50.0,
+-                 bess_power_mw=50.0,
+-                 soc_min=0.1,
+-                 soc_max=0.9,
+-                 initial_soc=0.5,
+-                 efficiency=0.9,
+-                 time_step_hours=1.0
+-                 ):
++             # ========== Grid parameters (from ENV_RHV) ==========
++             simbench_code="1-HV-mixed--0-sw",
++             case_study='bc',
++             is_train=True,
++             is_normalize=False,
++             max_step=50,
++             allowed_lines=200,
++             convergence_penalty=-200,
++             line_disconnect_penalty=-200,
++             nan_vm_pu_penalty=-200,
++             penalty_scalar=-10,
++             bonus_constant=10,
++             exp_code=None,
++
++             # ========== BESS parameters ==========
++             num_bess=5,
++             bess_capacity_mwh=50.0,
++             bess_power_mw=50.0,
++             soc_min=0.1,
++             soc_max=0.9,
++             initial_soc=0.5,
++             efficiency=0.9,
++             time_step_hours=1.0,
++             
++             # ========== Engineering constants ==========
++             voltage_min_pu=0.5,
++             voltage_max_pu=1.5,
++             soc_boundary_margin=0.05
++             ):
+         """
+         Initialize the BESS environment with network and training parameters.
+ 
+@@ -103,7 +110,6 @@ class ENV_BESS(gymnasium.Env):
+         helpers.initialize_state_variables(self)
+ 
+         # Initialize BESS parameters
+-        # These will be used by BESS-specific helper functions (initialize_bess_state, apply_bess_action, etc.)
+         self.num_bess = num_bess
+         self.bess_capacity_mwh = bess_capacity_mwh
+         self.bess_power_mw = bess_power_mw
+@@ -112,6 +118,11 @@ class ENV_BESS(gymnasium.Env):
+         self.initial_soc = initial_soc
+         self.efficiency = efficiency
+         self.time_step_hours = time_step_hours
++        
++        # Engineering constants
++        self.soc_boundary_margin = soc_boundary_margin
++        self.voltage_min_pu = voltage_min_pu
++        self.voltage_max_pu = voltage_max_pu
+ 
+         # Load network and setup environment
+         self.initial_net = self.setup_study_case(case_study, self.is_train, load_all=True)
+@@ -279,21 +290,21 @@ from utils import TQDMProgressCallback
+ 
+ def main():
+     init_meta = load_config()
+-    env_config = create_bess_env_config(init_meta) 
++    env_config = create_bess_env_config(init_meta)
+     training_config = create_training_config(init_meta)
+-
+-    # Setup environment and logging
++    
+     env = setup_environment(ENV_BESS, env_config)
+     logdir = get_logdir()
+-
+-    # Save metadata and create model
++    
+     save_training_metadata(training_config, logdir)
+     model = create_model(env, training_config, logdir)
+-
+-    # Setup callbacks and train
+-    tqdm_callback = TQDMProgressCallback(total_timesteps=training_config['total_timesteps'])
+-    train_model(model, training_config, tqdm_callback)
+-
++    
++    # OLD (delete these 2 lines):
++    # tqdm_callback = TQDMProgressCallback(total_timesteps=training_config['total_timesteps'])
++    # train_model(model, training_config, tqdm_callback)
++    
++    # NEW (add this 1 line):
++    train_model_with_wandb(model, training_config, env_config)
+ 
+ if __name__ == "__main__":
+-    main()
++    main()
+\ No newline at end of file
+diff --git a/config.py b/config.py
+index 9f2bba2..43a074c 100644
+--- a/config.py
++++ b/config.py
+@@ -98,6 +98,11 @@ def create_bess_env_config(init_meta):
+         # Used for SoC calculations: delta_SoC = (P_mw * time_step_hours) / capacity_mwh
+         # 1.0 hour is common for grid-scale BESS planning
+         'time_step_hours': 1.0,
++        # Engineering constants
++        'voltage_min_pu': 0.5,
++        'voltage_max_pu': 1.5,
++        'soc_boundary_margin': 0.05
++    
+     }
+ 
+ 
+@@ -112,7 +117,7 @@ def create_training_config(init_meta):
+         'clip_range': 0.2,
+         'ent_coef': 0.01,
+         'max_grad_norm': 0.5,
+-        'total_timesteps': 1_000_000,
++        'total_timesteps': 10_000,
+         'initial_learning_rate': 0.0003,
+         'exp_id': init_meta["exp_id"],
+         'exp_code': init_meta["exp_code"],
+diff --git a/env_helpers.py b/env_helpers.py
+index 3ad09e0..7513bc8 100644
+--- a/env_helpers.py
++++ b/env_helpers.py
+@@ -18,6 +18,27 @@ from gymnasium import spaces
+ 
+ # ==================== Initialization Helpers ====================
+ 
++def run_power_flow(env, context=""):
++    """
++    Execute power flow calculation with standardized error handling.
++    
++    Args:
++        env: Environment instance
++        context: String describing where this is called (for debugging)
++    
++    Returns:
++        bool: True if converged, False otherwise
++    """
++    try:
++        pp.runpp(env.net)
++        if context:
++            print(f"Load flow passed in {context}")
++        return env.net.converged
++    except Exception as e:
++        if context:
++            print(f"Load flow error in {context}: {e}")
++        return False
++
+ def initialize_config_parameters(env, simbench_code, case_study, is_train, is_normalize,
+                                 max_step, action_type, exp_code, bonus_constant):
+     """Initialize configuration parameters for the environment."""
+@@ -362,7 +383,7 @@ def create_bess_action_space(env):
+     return action_space
+ 
+ 
+-def create_bess_observation_space(net, num_bess, bess_power_mw):
++def create_bess_observation_space(net, num_bess, bess_power_mw, voltage_min_pu=0.5, voltage_max_pu=1.5):
+     """
+     Create observation space combining grid state and BESS state information.
+ 
+@@ -469,7 +490,7 @@ def create_bess_observation_space(net, num_bess, bess_power_mw):
+     observation_spaces = {
+         # ========== Grid Observations (from ENV_RHV) ==========
+         "discrete_switches": discrete_space,
+-        "continuous_vm_bus": Box(low=0.5, high=1.5, shape=(num_bus,), dtype=np.float32),
++        "continuous_vm_bus": Box(low=voltage_min_pu, high=voltage_max_pu, shape=(num_bus,), dtype=np.float32),
+         "continuous_sgen_data": Box(low=0.0, high=100000, shape=(num_sgenerators,), dtype=np.float32),
+         "continuous_load_data": Box(low=0.0, high=100000, shape=(num_loads,), dtype=np.float32),
+         "continuous_line_loadings": Box(low=0.0, high=800.0, shape=(num_lines,), dtype=np.float32),
+@@ -532,9 +553,7 @@ def reset_network_to_initial_state(env):
+     env.net = apply_absolute_values_to_network(env.net, env.profiles, env.relative_index)
+ 
+     # Run load flow calculations
+-    try:
+-        pp.runpp(env.net)
+-    except:
++    if not run_power_flow(env, "reset"):
+         env.terminated = True
+         env.truncated = True
+         print("Load flow error in resetting")
+@@ -1074,7 +1093,7 @@ def calculate_bess_reward(env, max_loading_before, max_loading_after):
+     # - If SoC > (soc_max - 5%): Can't charge much → can't absorb excess generation
+     # - Agent learns to maintain "operational headroom" for future dispatch
+     soc_penalty_weight = getattr(env, 'soc_penalty_weight', -1.0)
+-    boundary_margin = 0.05  # 5% margin from bounds
++    boundary_margin = getattr(env, 'soc_boundary_margin', 0.05)  # 5% margin from bounds
+ 
+     num_near_lower = np.sum(env.bess_soc < (env.soc_min + boundary_margin))
+     num_near_upper = np.sum(env.bess_soc > (env.soc_max - boundary_margin))
+@@ -1113,10 +1132,7 @@ def calculate_bess_reward(env, max_loading_before, max_loading_after):
+ def validate_grid_state_after_action(env):
+     """Validate grid state after action and return error result if invalid."""
+     # Run load flow calculations
+-    try:
+-        pp.runpp(env.net)
+-        print("Load flow passed in stepping")
+-    except:
++    if not run_power_flow(env, "stepping"):
+         env.terminated = True
+         env.truncated = True
+         print("Load flow error in stepping")
+@@ -1170,11 +1186,8 @@ def update_to_next_timestep(env):
+         apply_bess_action(env, env.bess_power)
+ 
+     # Run load flow calculations
+-    try:
+-        pp.runpp(env.net)
+-        print("Load flow passed in updating")
+-    except:
+-        print("Load flow error in updating")
++    if not run_power_flow(env, "updating"):
++        pass  # Error already logged in run_power_flow
+         env.convergence_error_count += 1
+         return env.observation, True
+ 
+diff --git a/training.py b/training.py
+index 9ad47d0..e61eef8 100644
+--- a/training.py
++++ b/training.py
+@@ -7,6 +7,8 @@ Handles environment setup, PPO model creation, and training execution with callb
+ 
+ import os
+ import datetime
++from wandb_integration import WandbCallback, init_wandb_run
++import wandb
+ from stable_baselines3 import PPO
+ from stable_baselines3.common.monitor import Monitor
+ from stable_baselines3.common.vec_env import DummyVecEnv
+@@ -87,6 +89,27 @@ def train_model(model, training_config, tqdm_callback):
+         model.save(f"{training_config['exp_code']}")
+         print("Model saved successfully!")
+ 
++def train_model_with_wandb(model, training_config, env_config):
++    """Train model with W&B tracking."""
++    full_config = {**env_config, **training_config}
++    run = init_wandb_run(full_config, project_name="thesis-bess-env")
++    
++    wandb_callback = WandbCallback(log_freq=10)
++    
++    try:
++        model.learn(
++            total_timesteps=training_config['total_timesteps'],
++            callback=wandb_callback,
++            progress_bar=True
++        )
++        
++        model.save("final_model")
++        artifact = wandb.Artifact('bess-ppo-model', type='model')
++        artifact.add_file('final_model.zip')
++        run.log_artifact(artifact)
++    finally:
++        run.finish()
++
+ 
+ def get_logdir():
+     """

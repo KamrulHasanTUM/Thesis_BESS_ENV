@@ -1,0 +1,122 @@
+_wandb:
+    value:
+        cli_version: 0.22.1
+        code_path: code/ENV_BESS_main.py
+        e:
+            my6206ibvl0bc7kyyqgx6sfv4krx4yzw:
+                codePath: ENV_BESS_main.py
+                codePathLocal: ENV_BESS_main.py
+                cpu_count: 10
+                cpu_count_logical: 16
+                disk:
+                    /:
+                        total: "107373129728"
+                        used: "9545793536"
+                email: kamrulhasan.monju@tum.de
+                executable: C:\Users\kamru\anaconda3\envs\power\python.exe
+                git:
+                    commit: 24174ecaf2ec0c5bb69993f4c2beee699a45ef2d
+                    remote: https://github.com/KamrulHasanTUM/Thesis_BESS_ENV.git
+                host: Kamrul_HM
+                memory:
+                    total: "16857817088"
+                os: Windows-10-10.0.26100-SP0
+                program: D:\Thesis\ThesisEnv_refactor\ENV_BESS_main.py
+                python: CPython 3.10.18
+                root: D:\Thesis\ThesisEnv_refactor
+                startedAt: "2025-10-06T23:33:59.641283Z"
+                writerId: my6206ibvl0bc7kyyqgx6sfv4krx4yzw
+        m: []
+        python_version: 3.10.18
+        t:
+            "1":
+                - 1
+                - 5
+                - 53
+            "2":
+                - 1
+                - 5
+                - 53
+            "3":
+                - 2
+                - 13
+                - 16
+                - 61
+            "4": 3.10.18
+            "5": 0.22.1
+            "8":
+                - 3
+            "12": 0.22.1
+            "13": windows-amd64
+algorithm:
+    value: PPO
+allowed_lines:
+    value: 100
+batch_size:
+    value: 256
+bess_capacity_mwh:
+    value: 50
+bess_power_mw:
+    value: 50
+bonus_constant:
+    value: 10
+case_study:
+    value: bc
+clip_range:
+    value: 0.2
+convergence_penalty:
+    value: -200
+efficiency:
+    value: 0.9
+ent_coef:
+    value: 0.01
+environment:
+    value: ENV_BESS
+exp_code:
+    value: verification_test
+exp_id:
+    value: 1
+exp_name:
+    value: full_verification
+gae_lambda:
+    value: 0.95
+gamma:
+    value: 0.99
+grid_env:
+    value: bess
+initial_learning_rate:
+    value: 0.0003
+initial_soc:
+    value: 0.5
+is_normalize:
+    value: false
+is_train:
+    value: true
+line_disconnect_penalty:
+    value: -200
+max_grad_norm:
+    value: 0.5
+max_step:
+    value: 50
+n_epochs:
+    value: 10
+n_steps:
+    value: 2048
+nan_vm_pu_penalty:
+    value: dynamic
+network:
+    value: 1-HV-mixed--0-sw
+num_bess:
+    value: 5
+penalty_scalar:
+    value: -10
+simbench_code:
+    value: 1-HV-mixed--0-sw
+soc_max:
+    value: 0.9
+soc_min:
+    value: 0.1
+time_step_hours:
+    value: 1
+total_timesteps:
+    value: 10000

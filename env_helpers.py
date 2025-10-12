@@ -383,7 +383,7 @@ def create_bess_action_space(env):
     return action_space
 
 
-def create_bess_observation_space(net, num_bess, bess_power_mw):
+def create_bess_observation_space(net, num_bess, bess_power_mw, voltage_min_pu=0.5, voltage_max_pu=1.5):
     """
     Create observation space combining grid state and BESS state information.
 
@@ -490,7 +490,7 @@ def create_bess_observation_space(net, num_bess, bess_power_mw):
     observation_spaces = {
         # ========== Grid Observations (from ENV_RHV) ==========
         "discrete_switches": discrete_space,
-        "continuous_vm_bus": Box(low=0.5, high=1.5, shape=(num_bus,), dtype=np.float32),
+        "continuous_vm_bus": Box(low=voltage_min_pu, high=voltage_max_pu, shape=(num_bus,), dtype=np.float32),
         "continuous_sgen_data": Box(low=0.0, high=100000, shape=(num_sgenerators,), dtype=np.float32),
         "continuous_load_data": Box(low=0.0, high=100000, shape=(num_loads,), dtype=np.float32),
         "continuous_line_loadings": Box(low=0.0, high=800.0, shape=(num_lines,), dtype=np.float32),
@@ -1093,7 +1093,7 @@ def calculate_bess_reward(env, max_loading_before, max_loading_after):
     # - If SoC > (soc_max - 5%): Can't charge much → can't absorb excess generation
     # - Agent learns to maintain "operational headroom" for future dispatch
     soc_penalty_weight = getattr(env, 'soc_penalty_weight', -1.0)
-    boundary_margin = 0.05  # 5% margin from bounds
+    boundary_margin = getattr(env, 'soc_boundary_margin', 0.05)  # 5% margin from bounds
 
     num_near_lower = np.sum(env.bess_soc < (env.soc_min + boundary_margin))
     num_near_upper = np.sum(env.bess_soc > (env.soc_max - boundary_margin))

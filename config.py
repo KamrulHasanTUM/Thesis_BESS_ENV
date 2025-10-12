@@ -98,6 +98,11 @@ def create_bess_env_config(init_meta):
         # Used for SoC calculations: delta_SoC = (P_mw * time_step_hours) / capacity_mwh
         # 1.0 hour is common for grid-scale BESS planning
         'time_step_hours': 1.0,
+        # Engineering constants
+        'voltage_min_pu': 0.5,
+        'voltage_max_pu': 1.5,
+        'soc_boundary_margin': 0.05
+    
     }
 
 
@@ -112,7 +117,7 @@ def create_training_config(init_meta):
         'clip_range': 0.2,
         'ent_coef': 0.01,
         'max_grad_norm': 0.5,
-        'total_timesteps': 1_000_000,
+        'total_timesteps': 10_000,
         'initial_learning_rate': 0.0003,
         'exp_id': init_meta["exp_id"],
         'exp_code': init_meta["exp_code"],
