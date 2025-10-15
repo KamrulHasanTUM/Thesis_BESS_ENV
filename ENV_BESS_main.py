@@ -64,6 +64,7 @@ class ENV_BESS(gymnasium.Env):
              initial_soc=0.5,
              efficiency=0.9,
              time_step_hours=1.0,
+             bess_locations= None,
              
              # ========== Engineering constants ==========
              voltage_min_pu=0.5,
@@ -123,6 +124,8 @@ class ENV_BESS(gymnasium.Env):
         self.soc_boundary_margin = soc_boundary_margin
         self.voltage_min_pu = voltage_min_pu
         self.voltage_max_pu = voltage_max_pu
+        # Store BESS locations (from GA or will be auto-selected)
+        self.bess_locations = bess_locations  # ← ADD THIS LINE
 
         # Load network and setup environment
         self.initial_net = self.setup_study_case(case_study, self.is_train, load_all=True)
@@ -196,7 +199,7 @@ class ENV_BESS(gymnasium.Env):
         helpers.update_timestep_index(self, ts)
         helpers.reset_network_to_initial_state(self)
         
-        helpers.initialize_bess_state(self)
+        helpers.initialize_bess_state(self, bess_locations=self.bess_locations)
         self.bess_sgen_indices = None
         
         validation_error = helpers.validate_grid_state_after_reset(self)
