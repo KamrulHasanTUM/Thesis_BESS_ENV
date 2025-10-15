@@ -55,12 +55,16 @@ def create_bess_env_config(init_meta):
         'line_disconnect_penalty': -200,
         'nan_vm_pu_penalty': "dynamic",
         'penalty_scalar': -10,
-        'bonus_constant': 10,
+        'bonus_constant': 50,
         'exp_code': init_meta["exp_code"],
 
         # ========== BESS Unit Configuration ==========
         # Number of BESS units to deploy in the grid
         'num_bess': 5,
+
+        # GA-OPTIMIZED BESS LOCATIONS (from genetic algorithm)
+        # Fitness Score: 62.92 (optimal congestion reduction)
+        'bess_locations': [22, 72, 129, 85, 182],
 
         # Energy capacity per BESS unit (MWh)
         # Determines how much energy each battery can store
@@ -115,9 +119,9 @@ def create_training_config(init_meta):
         'gamma': 0.99,
         'gae_lambda': 0.95,
         'clip_range': 0.2,
-        'ent_coef': 0.01,
+        'ent_coef': 0.1,
         'max_grad_norm': 0.5,
-        'total_timesteps': 10_000,
+        'total_timesteps': 1_000_000,
         'initial_learning_rate': 0.0003,
         'exp_id': init_meta["exp_id"],
         'exp_code': init_meta["exp_code"],

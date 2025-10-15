@@ -1110,20 +1110,27 @@ def calculate_bess_reward(env, max_loading_before, max_loading_after):
     # Weight balance: This is 100× smaller than congestion reward
     # - Congestion management is primary, efficiency is secondary
     # - Only influences decisions when congestion impact is similar
-    efficiency_penalty_weight = getattr(env, 'efficiency_penalty_weight', -0.1)
-
-    # Calculate normalized power utilization for each BESS
-    normalized_power = np.abs(env.bess_power) / env.bess_power_mw  # 0.0 to 1.0
-    efficiency_penalty = efficiency_penalty_weight * np.sum(normalized_power ** 2)
+    
+    
+    # DISABLED: Efficiency penalty was preventing BESS usage
+    # efficiency_penalty_weight = getattr(env, 'efficiency_penalty_weight', -0.1)
+    # normalized_power = np.abs(env.bess_power) / env.bess_power_mw
+    # efficiency_penalty = efficiency_penalty_weight * np.sum(normalized_power ** 2)
+    
+    # NEW: Action magnitude bonus (encourages BESS usage)
+    action_magnitude = np.mean(np.abs(env.bess_power) / env.bess_power_mw)
+    action_bonus = 5.0 * action_magnitude
 
     # ========== Total Reward ==========
-    total_reward = congestion_reward + soc_penalty + efficiency_penalty
+    #total_reward = congestion_reward + soc_penalty + efficiency_penalty (replaced below)
+
+    total_reward = congestion_reward + soc_penalty + action_bonus
 
     # Breakdown for logging/debugging
     reward_breakdown = {
         'congestion': float(congestion_reward),
         'soc_penalty': float(soc_penalty),
-        'efficiency_penalty': float(efficiency_penalty)
+        'efficiency_penalty': float(action_bonus)  # Changed name to action_bonus
     }
 
     return total_reward, reward_breakdown
