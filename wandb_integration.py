@@ -20,14 +20,14 @@ class WandbCallback(BaseCallback):
     def _on_step(self) -> bool:
         """Called at every environment step."""
         if self.n_calls % self.log_freq == 0:
-            # Access the actual environment (handle vectorized envs)
             try:
+                # Access the actual environment
                 if hasattr(self.training_env, 'envs'):
                     env = self.training_env.envs[0].unwrapped
                 else:
                     env = self.training_env.unwrapped
                 
-                # Log grid metrics
+                # ========== Grid Metrics (existing) ==========
                 if hasattr(env, 'net') and hasattr(env.net, 'res_line'):
                     wandb.log({
                         'step': self.num_timesteps,
@@ -35,11 +35,40 @@ class WandbCallback(BaseCallback):
                         'grid/avg_loading': float(env.net.res_line['loading_percent'].mean()),
                     }, step=self.num_timesteps)
                 
-                # Log BESS state
+                # ========== BESS Aggregate Metrics (existing) ==========
                 if hasattr(env, 'bess_soc'):
                     wandb.log({
                         'bess/avg_soc': float(np.mean(env.bess_soc)),
                         'bess/avg_power': float(np.mean(np.abs(env.bess_power))),
+                    }, step=self.num_timesteps)
+                
+                # ========== NEW: Individual BESS Metrics ==========
+                if hasattr(env, 'bess_soc') and hasattr(env, 'bess_locations'):
+                    for i in range(env.num_bess):
+                        bus_id = env.bess_locations[i]
+                        
+                        # Log each BESS unit's state
+                        wandb.log({
+                            f'bess_units/bess_{i+1}_bus_{bus_id}/soc': float(env.bess_soc[i]),
+                            f'bess_units/bess_{i+1}_bus_{bus_id}/power': float(env.bess_power[i]),
+                            f'bess_units/bess_{i+1}_bus_{bus_id}/power_abs': float(abs(env.bess_power[i])),
+                        }, step=self.num_timesteps)
+                
+                # ========== NEW: BESS Utilization Summary ==========
+                if hasattr(env, 'bess_soc'):
+                    # Calculate utilization metrics
+                    soc_range = env.soc_max - env.soc_min  # e.g., 0.9 - 0.1 = 0.8
+                    soc_utilization = np.mean((env.bess_soc - env.soc_min) / soc_range)
+                    
+                    power_utilization = np.mean(np.abs(env.bess_power) / env.bess_power_mw)
+                    
+                    # How many BESS are active (power > 5% of max)
+                    active_count = np.sum(np.abs(env.bess_power) > 0.05 * env.bess_power_mw)
+                    
+                    wandb.log({
+                        'bess_summary/soc_utilization': float(soc_utilization),
+                        'bess_summary/power_utilization': float(power_utilization),
+                        'bess_summary/active_units': int(active_count),
                     }, step=self.num_timesteps)
                     
             except Exception as e:
