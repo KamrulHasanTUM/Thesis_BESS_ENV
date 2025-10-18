@@ -55,7 +55,7 @@ def create_bess_env_config(init_meta):
         'line_disconnect_penalty': -200,
         'nan_vm_pu_penalty': "dynamic",
         'penalty_scalar': -10,
-        'bonus_constant': 50,
+        'bonus_constant': 100,
         'exp_code': init_meta["exp_code"],
 
         # ========== BESS Unit Configuration ==========
@@ -119,7 +119,7 @@ def create_training_config(init_meta):
         'gamma': 0.99,
         'gae_lambda': 0.95,
         'clip_range': 0.2,
-        'ent_coef': 0.1,
+        'ent_coef': 0.01,
         'max_grad_norm': 0.5,
         'total_timesteps': 1_000_000,
         'initial_learning_rate': 0.0003,
