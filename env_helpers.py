@@ -676,29 +676,36 @@ def apply_bess_action(env, action):
     """
     # Validate action shape
     action = np.array(action, dtype=np.float32)
-    
-    # ========== ADD THESE 3 DEBUG LINES ==========
-    print(f"[DEBUG] Raw action from agent: {action}")
-    print(f"[DEBUG] Action magnitude (avg): {np.abs(action).mean():.4f} MW")
-    print(f"[DEBUG] Action magnitude (max): {np.abs(action).max():.4f} MW")
-    # ========== END DEBUG LINES ==========
-    
+
+    # ========== DEBUG: Raw normalized action from PPO ==========
+    print(f"[DEBUG] Raw action from agent (normalized): {action}")
+
     if action.shape != (env.num_bess,):
         raise ValueError(
             f"Action shape {action.shape} does not match expected shape ({env.num_bess},)"
         )
 
-    # Clip actions to physical power limits
-    clipped_action = np.clip(action, -env.bess_power_mw, env.bess_power_mw)
-    
-    # ========== ADD THIS DEBUG LINE ==========
+    # ========== SCALE actions from [-1, +1] to MW range ==========
+    # PPO outputs actions in [-1, +1] (normalized)
+    # Must multiply by bess_power_mw to convert to actual power (MW)
+    # Example: action = 0.6 → scaled = 0.6 × 50 = 30 MW
+    scaled_action = action * env.bess_power_mw
+
+    # ========== DEBUG: After scaling to MW ==========
+    print(f"[DEBUG] After scaling to MW: {scaled_action}")
+    print(f"[DEBUG] Action magnitude (avg): {np.abs(scaled_action).mean():.4f} MW")
+    print(f"[DEBUG] Action magnitude (max): {np.abs(scaled_action).max():.4f} MW")
+
+    # Clip actions to physical power limits (redundant but safe)
+    clipped_action = np.clip(scaled_action, -env.bess_power_mw, env.bess_power_mw)
+
+    # ========== DEBUG: After clipping ==========
     print(f"[DEBUG] After clipping: {clipped_action}")
-    # ========== END DEBUG LINE ==========
-    
-    if not np.allclose(action, clipped_action):
-        exceeded_indices = np.where(~np.isclose(action, clipped_action))[0]
+
+    if not np.allclose(scaled_action, clipped_action):
+        exceeded_indices = np.where(~np.isclose(scaled_action, clipped_action))[0]
         print(f"Warning: Actions clipped for BESS units {exceeded_indices}")
-        print(f"  Original: {action[exceeded_indices]}")
+        print(f"  Original: {scaled_action[exceeded_indices]}")
         print(f"  Clipped:  {clipped_action[exceeded_indices]}")
         print(f"  Limit: ±{env.bess_power_mw} MW")
 
@@ -1082,7 +1089,7 @@ def calculate_bess_reward(env, max_loading_before, max_loading_after):
     #
     # REMOVE THIS after action magnitudes consistently exceed 10 MW (around 30k-50k steps)
 
-    action_magnitude_weight = 20.0  # Tunable: increase to 50.0 if actions still < 5 MW
+    action_magnitude_weight = 100.0  # Tunable: increase to 50.0 if actions still < 5 MW
     avg_power_utilization = np.mean(np.abs(env.bess_power)) / env.bess_power_mw
     action_magnitude_bonus = action_magnitude_weight * avg_power_utilization
 
