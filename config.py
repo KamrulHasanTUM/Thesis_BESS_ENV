@@ -121,7 +121,7 @@ def create_training_config(init_meta):
         'gamma': 0.99,
         'gae_lambda': 0.95,
         'clip_range': 0.2,
-        'ent_coef': 0.05,
+        'ent_coef': 0.10,
         'max_grad_norm': 0.5,
         'total_timesteps': 100_000,
         'initial_learning_rate': 0.0003,

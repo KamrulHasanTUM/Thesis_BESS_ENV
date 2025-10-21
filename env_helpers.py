@@ -1064,15 +1064,37 @@ def calculate_bess_reward(env, max_loading_before, max_loading_after):
     soc_penalty = soc_penalty_weight * num_near_bounds
 
 
-    # ========== Total Reward (CLEAN VERSION) ==========
-      # Only reward congestion relief, nothing else
-    total_reward = congestion_reward + soc_penalty
+    # ========== 3. EXPLORATION: Action Magnitude Bonus ==========
+    # TEMPORARY FIX: Break chicken-and-egg cycle (tiny actions → no impact → no learning)
+    #
+    # Current problem: Agent outputs 0.8 MW → 0% loading change → 0 reward → stuck
+    # Solution: Reward using larger power until agent discovers optimal range
+    #
+    # Formula: bonus = weight × (avg_abs_power / max_power_per_unit)
+    #
+    # Example rewards:
+    # - 0.8 MW avg  → 20 × (0.8/50)  = +0.32  (current stuck behavior)
+    # - 10 MW avg   → 20 × (10/50)   = +4.00  (exploration target)
+    # - 30 MW avg   → 20 × (30/50)   = +12.00 (optimal utilization)
+    #
+    # Once agent discovers that 20-30 MW actions reduce congestion,
+    # congestion reward (+500 for 1% reduction) will dominate this bonus (+12)
+    #
+    # REMOVE THIS after action magnitudes consistently exceed 10 MW (around 30k-50k steps)
 
-      # Breakdown for logging/debugging
+    action_magnitude_weight = 20.0  # Tunable: increase to 50.0 if actions still < 5 MW
+    avg_power_utilization = np.mean(np.abs(env.bess_power)) / env.bess_power_mw
+    action_magnitude_bonus = action_magnitude_weight * avg_power_utilization
+
+    # ========== Total Reward ==========
+    total_reward = congestion_reward + soc_penalty + action_magnitude_bonus
+
+    # Breakdown for logging/debugging
     reward_breakdown = {
-          'congestion': float(congestion_reward),
-          'soc_penalty': float(soc_penalty),
-      }
+      'congestion': float(congestion_reward),
+      'soc_penalty': float(soc_penalty),
+      'action_magnitude_bonus': float(action_magnitude_bonus),
+    }
 
     return total_reward, reward_breakdown
 
