@@ -78,6 +78,9 @@ def initialize_state_variables(env):
     env.relative_index = None
     env.time_step = -1
     env.observation = None
+    # Add loading history tracking
+    #env.loading_history = []  # Track last 3 timesteps
+    #env.max_loading_history = []
 
     # Data containers
     env.profiles = None
@@ -521,6 +524,8 @@ def create_bess_observation_space(net, num_bess, bess_power_mw, voltage_min_pu=0
             shape=(num_bess,),    # One power value per BESS unit
             dtype=np.float32
         ),
+        # Loading trend history (last 3 timesteps)
+        #"loading_history": Box(low=0.0, high=800.0, shape=(3,), dtype=np.float32),
     }
 
     return spaces.Dict(observation_spaces)
@@ -605,11 +610,12 @@ def build_observation_from_grid_state(env):
 
     Args:
         env: Environment instance with grid state and optional BESS state
-
+        
     Returns:
         dict: Observation dictionary with grid state (and BESS state if applicable)
     """
-    # Extract grid state from power flow results
+
+       # Extract grid state from power flow results
     loading_percent = env.net.res_line['loading_percent'].fillna(0).values.astype(np.float32)
     vm_pu = env.net.res_bus['vm_pu'].fillna(0).values.astype(np.float32)
 
@@ -646,6 +652,18 @@ def build_observation_from_grid_state(env):
         # - Helps detect grid constraints: If commanded 50 MW but observe 30 MW
         observation["bess_power"] = env.bess_power.astype(np.float32)
 
+        # Update loading history
+    #current_max_loading = float(env.net.res_line['loading_percent'].max())
+    #env.loading_history.append(current_max_loading)
+    #if len(env.loading_history) > 3:
+        #env.loading_history.pop(0)
+    
+    # Add to observation
+    # Pad with current value if history incomplete
+    #history_padded = env.loading_history + [current_max_loading] * (3 - len(env.loading_history))
+    #observation["loading_history"] = np.array(history_padded, dtype=np.float32)
+    # ========== END NEW CODE ==========
+
     return observation
 
 
@@ -654,85 +672,29 @@ def build_observation_from_grid_state(env):
 def apply_bess_action(env, action):
     """
     Apply continuous power actions to BESS units in the Pandapower network.
-
-    This function modifies the Pandapower network by creating or updating controllable
-    generator (sgen) elements that represent BESS power injection/absorption. Each BESS
-    action corresponds to a power setpoint that will be used in the subsequent AC power
-    flow calculation.
-
-    Sign Convention (matches Pandapower sgen):
-    - Positive action (+MW): BESS discharging → power injection to grid (p_mw > 0)
-    - Negative action (-MW): BESS charging → power absorption from grid (p_mw < 0)
-    - Zero action (0 MW): BESS idle/standby (p_mw = 0)
-
-    Why Use Sgen (Static Generator) for BESS:
-    - Sgen elements in Pandapower represent controllable power sources/sinks
-    - Can have both positive (generation) and negative (consumption) p_mw
-    - Bidirectional power flow matches BESS charge/discharge behavior
-    - Simpler than using separate gen (discharge) and load (charge) elements
-    - Allows direct control of active power setpoint (perfect for RL actions)
-
-    Network Modification Process:
-    1. First call: Creates new sgen elements at BESS bus locations
-       - Stores sgen indices in env.bess_sgen_indices for future updates
-    2. Subsequent calls: Updates p_mw of existing sgen elements
-       - Faster than creating new elements each step
-    3. Sets q_mvar = 0 (assumes unity power factor, purely active power control)
-
-    Action Validation:
-    - Checks action shape matches (num_bess,)
-    - Clips actions to [-bess_power_mw, +bess_power_mw] if exceeded
-    - Warns if clipping occurs (indicates agent exceeded physical limits)
-
-    Example Usage:
-        # 5 BESS units with 50 MW rating
-        action = np.array([-50.0, 0.0, 50.0, 30.0, -40.0])
-        apply_bess_action(env, action)
-
-        # Resulting network modifications:
-        # - BESS_0 at bus 15: p_mw = -50.0 (charging at max, absorbing 50 MW)
-        # - BESS_1 at bus 23: p_mw = 0.0 (idle, no power exchange)
-        # - BESS_2 at bus 47: p_mw = 50.0 (discharging at max, injecting 50 MW)
-        # - BESS_3 at bus 62: p_mw = 30.0 (partial discharge, injecting 30 MW)
-        # - BESS_4 at bus 81: p_mw = -40.0 (charging at 80% rate, absorbing 40 MW)
-
-        # After pp.runpp(env.net), results available in:
-        # env.net.res_sgen.loc[env.bess_sgen_indices, 'p_mw']  # Actual power dispatch
-        # env.net.res_sgen.loc[env.bess_sgen_indices, 'q_mvar']  # Reactive power (≈0)
-
-    Parameters:
-        env: Environment instance with BESS configuration:
-            - env.num_bess: Number of BESS units
-            - env.bess_power_mw: Maximum charge/discharge power (MW)
-            - env.bess_locations: Bus indices where BESS are connected
-            - env.net: Pandapower network object
-            - env.bess_sgen_indices (optional): Existing sgen indices to update
-
-        action: NumPy array of power setpoints, shape (num_bess,)
-            - Units: MW (megawatts)
-            - Range: [-bess_power_mw, +bess_power_mw] per unit
-            - Positive: discharge, Negative: charge, Zero: idle
-
-    Raises:
-        ValueError: If action shape doesn't match (num_bess,)
-
-    Note:
-        - This function modifies env.net in-place
-        - Power flow (pp.runpp) must be called separately after this function
-        - SoC updates are handled separately in update_bess_soc()
+    ...
     """
     # Validate action shape
     action = np.array(action, dtype=np.float32)
+    
+    # ========== ADD THESE 3 DEBUG LINES ==========
+    print(f"[DEBUG] Raw action from agent: {action}")
+    print(f"[DEBUG] Action magnitude (avg): {np.abs(action).mean():.4f} MW")
+    print(f"[DEBUG] Action magnitude (max): {np.abs(action).max():.4f} MW")
+    # ========== END DEBUG LINES ==========
+    
     if action.shape != (env.num_bess,):
         raise ValueError(
             f"Action shape {action.shape} does not match expected shape ({env.num_bess},)"
         )
 
     # Clip actions to physical power limits
-    # - Actions beyond [-bess_power_mw, +bess_power_mw] are physically infeasible
-    # - Clipping prevents simulation errors and guides agent to learn valid actions
-    # - Warning alerts if agent is trying to exceed limits (useful for debugging)
     clipped_action = np.clip(action, -env.bess_power_mw, env.bess_power_mw)
+    
+    # ========== ADD THIS DEBUG LINE ==========
+    print(f"[DEBUG] After clipping: {clipped_action}")
+    # ========== END DEBUG LINE ==========
+    
     if not np.allclose(action, clipped_action):
         exceeded_indices = np.where(~np.isclose(action, clipped_action))[0]
         print(f"Warning: Actions clipped for BESS units {exceeded_indices}")
@@ -1101,37 +1063,16 @@ def calculate_bess_reward(env, max_loading_before, max_loading_after):
 
     soc_penalty = soc_penalty_weight * num_near_bounds
 
-    # ========== 3. TERTIARY: Energy Efficiency Penalty ==========
-    # Encourage partial power dispatch over full-power operation
-    # - Extreme charge/discharge rates degrade battery faster (real-world concern)
-    # - Quadratic penalty: 100% power penalized 4× more than 50% power
-    # - Agent learns smooth, sustainable operation when possible
-    #
-    # Weight balance: This is 100× smaller than congestion reward
-    # - Congestion management is primary, efficiency is secondary
-    # - Only influences decisions when congestion impact is similar
-    
-    
-    # DISABLED: Efficiency penalty was preventing BESS usage
-    # efficiency_penalty_weight = getattr(env, 'efficiency_penalty_weight', -0.1)
-    # normalized_power = np.abs(env.bess_power) / env.bess_power_mw
-    # efficiency_penalty = efficiency_penalty_weight * np.sum(normalized_power ** 2)
-    
-    # NEW: Action magnitude bonus (encourages BESS usage)
-    action_magnitude = np.mean(np.abs(env.bess_power) / env.bess_power_mw)
-    action_bonus = 5.0 * action_magnitude
 
-    # ========== Total Reward ==========
-    #total_reward = congestion_reward + soc_penalty + efficiency_penalty (replaced below)
+    # ========== Total Reward (CLEAN VERSION) ==========
+      # Only reward congestion relief, nothing else
+    total_reward = congestion_reward + soc_penalty
 
-    total_reward = congestion_reward + soc_penalty + action_bonus
-
-    # Breakdown for logging/debugging
+      # Breakdown for logging/debugging
     reward_breakdown = {
-        'congestion': float(congestion_reward),
-        'soc_penalty': float(soc_penalty),
-        'efficiency_penalty': float(action_bonus)  # Changed name to action_bonus
-    }
+          'congestion': float(congestion_reward),
+          'soc_penalty': float(soc_penalty),
+      }
 
     return total_reward, reward_breakdown
 

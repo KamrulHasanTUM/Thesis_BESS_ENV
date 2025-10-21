@@ -46,16 +46,16 @@ def create_bess_env_config(init_meta):
     return {
         # ========== Grid Environment Parameters (from ENV_RHV) ==========
         'simbench_code': "1-HV-mixed--0-sw",
-        'case_study': 'bc',
+        'case_study': 'hL',
         'is_train': True,
         'is_normalize': False,
         'max_step': 50,
         'allowed_lines': 100,
-        'convergence_penalty': -200,
-        'line_disconnect_penalty': -200,
-        'nan_vm_pu_penalty': "dynamic",
+        'convergence_penalty': -50,
+        'line_disconnect_penalty': -50,
+        'nan_vm_pu_penalty': -20,
         'penalty_scalar': -10,
-        'bonus_constant': 100,
+        'bonus_constant': 50000,
         'exp_code': init_meta["exp_code"],
 
         # ========== BESS Unit Configuration ==========
@@ -64,7 +64,7 @@ def create_bess_env_config(init_meta):
 
         # GA-OPTIMIZED BESS LOCATIONS (from genetic algorithm)
         # Fitness Score: 62.92 (optimal congestion reduction)
-        'bess_locations': [22, 72, 129, 85, 182],
+        'bess_locations': [39, 189, 230, 281, 282],
 
         # Energy capacity per BESS unit (MWh)
         # Determines how much energy each battery can store
@@ -105,7 +105,9 @@ def create_bess_env_config(init_meta):
         # Engineering constants
         'voltage_min_pu': 0.5,
         'voltage_max_pu': 1.5,
-        'soc_boundary_margin': 0.05
+        'soc_boundary_margin': 0.05,
+        # After line 105 ('soc_boundary_margin': 0.05), ADD:
+        'soc_penalty_weight': -0.2  # Reduced from -1.0 to allow more freedom
     
     }
 
@@ -119,9 +121,9 @@ def create_training_config(init_meta):
         'gamma': 0.99,
         'gae_lambda': 0.95,
         'clip_range': 0.2,
-        'ent_coef': 0.01,
+        'ent_coef': 0.05,
         'max_grad_norm': 0.5,
-        'total_timesteps': 1_000_000,
+        'total_timesteps': 100_000,
         'initial_learning_rate': 0.0003,
         'exp_id': init_meta["exp_id"],
         'exp_code': init_meta["exp_code"],
