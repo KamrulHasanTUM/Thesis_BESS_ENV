@@ -669,38 +669,49 @@ def build_observation_from_grid_state(env):
 
 # ==================== Step Helpers ====================
 
-def apply_bess_action(env, action):
+def apply_bess_action(env, action, already_scaled=False):
     """
     Apply continuous power actions to BESS units in the Pandapower network.
-    ...
+
+    Args:
+        env: Environment instance
+        action: Either normalized [-1,+1] actions from PPO, OR scaled MW values
+        already_scaled: If True, action is already in MW (skip scaling step)
     """
     # Validate action shape
     action = np.array(action, dtype=np.float32)
-
-    # ========== DEBUG: Raw normalized action from PPO ==========
-    print(f"[DEBUG] Raw action from agent (normalized): {action}")
 
     if action.shape != (env.num_bess,):
         raise ValueError(
             f"Action shape {action.shape} does not match expected shape ({env.num_bess},)"
         )
 
-    # ========== SCALE actions from [-1, +1] to MW range ==========
-    # PPO outputs actions in [-1, +1] (normalized)
-    # Must multiply by bess_power_mw to convert to actual power (MW)
-    # Example: action = 0.6 → scaled = 0.6 × 50 = 30 MW
-    scaled_action = action * env.bess_power_mw
+    if already_scaled:
+        # Actions are already in MW (from env.bess_power during timestep update)
+        # Just clip to limits
+        print(f"[DEBUG] Action already in MW (from env.bess_power): {action}")
+        scaled_action = action  # Already scaled, just rename for consistency
+        clipped_action = np.clip(action, -env.bess_power_mw, env.bess_power_mw)
+    else:
+        # Actions from PPO are normalized [-1, +1], need scaling
+        print(f"[DEBUG] Raw action from agent (normalized): {action}")
 
-    # ========== DEBUG: After scaling to MW ==========
-    print(f"[DEBUG] After scaling to MW: {scaled_action}")
-    print(f"[DEBUG] Action magnitude (avg): {np.abs(scaled_action).mean():.4f} MW")
-    print(f"[DEBUG] Action magnitude (max): {np.abs(scaled_action).max():.4f} MW")
+        # ========== SCALE actions from [-1, +1] to MW range ==========
+        # PPO outputs actions in [-1, +1] (normalized)
+        # Must multiply by bess_power_mw to convert to actual power (MW)
+        # Example: action = 0.6 → scaled = 0.6 × 50 = 30 MW
+        scaled_action = action * env.bess_power_mw
 
-    # Clip actions to physical power limits (redundant but safe)
-    clipped_action = np.clip(scaled_action, -env.bess_power_mw, env.bess_power_mw)
+        # ========== DEBUG: After scaling to MW ==========
+        print(f"[DEBUG] After scaling to MW: {scaled_action}")
+        print(f"[DEBUG] Action magnitude (avg): {np.abs(scaled_action).mean():.4f} MW")
+        print(f"[DEBUG] Action magnitude (max): {np.abs(scaled_action).max():.4f} MW")
 
-    # ========== DEBUG: After clipping ==========
-    print(f"[DEBUG] After clipping: {clipped_action}")
+        # Clip actions to physical power limits
+        clipped_action = np.clip(scaled_action, -env.bess_power_mw, env.bess_power_mw)
+
+        # ========== DEBUG: After clipping ==========
+        print(f"[DEBUG] After clipping: {clipped_action}")
 
     if not np.allclose(scaled_action, clipped_action):
         exceeded_indices = np.where(~np.isclose(scaled_action, clipped_action))[0]
@@ -1160,7 +1171,7 @@ def update_to_next_timestep(env):
     # Re-create BESS sgen elements AFTER profile update
     if hasattr(env, 'bess_sgen_indices') and env.bess_sgen_indices is not None:
         env.bess_sgen_indices = None
-        apply_bess_action(env, env.bess_power)
+        apply_bess_action(env, env.bess_power, already_scaled=True)  # bess_power is already in MW!
 
     # Run load flow calculations
     if not run_power_flow(env, "updating"):
