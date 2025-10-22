@@ -1,1 +1,1 @@
-{"exp_code": "verification_test", "exp_id": 1, "exp_name": "action_scaling_bugfix", "grid_env": "bess"}
+{"exp_code": "verification_test", "exp_id": 1, "exp_name": "reward_scaling_fix", "grid_env": "bess"}

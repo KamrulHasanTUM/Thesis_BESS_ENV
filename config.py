@@ -55,7 +55,7 @@ def create_bess_env_config(init_meta):
         'line_disconnect_penalty': -50,
         'nan_vm_pu_penalty': -20,
         'penalty_scalar': -10,
-        'bonus_constant': 50000,
+        'bonus_constant': 100,  # Reduced from 50000 to make rewards learnable
         'exp_code': init_meta["exp_code"],
 
         # ========== BESS Unit Configuration ==========
