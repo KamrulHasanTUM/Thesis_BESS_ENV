@@ -1,0 +1,49 @@
+
+================================================================================
+STARTING DIAGNOSTIC TEST - 5K TIMESTEPS
+================================================================================
+
+Objective: Verify SoC-aware improvements solve congestion increase problem
+Target: Success Rate > 80%, Harmful Actions < 20%
+
+This test will:
+  1. Train BESS agent for 5,000 timesteps (~10-15 minutes)
+  2. Monitor reward breakdown for new components
+  3. Calculate success rate from loading changes
+  4. Determine if improvements work correctly
+
+================================================================================
+
+Loading configuration...
+{'exp_code': 'verification_test', 'exp_id': 1, 'exp_name': 'reward_scaling_fix', 'grid_env': 'bess'}
+[OK] Configuration loaded: 5000 timesteps
+   Case study: hL
+   BESS units: 5
+   Bonus constant: 100
+   WandB project: diagnostic-test-bess-env
+
+Creating environment...
+Init
+Data saved to env_meta.json
+{'is_train': True, 'is_normalize': False, 'max_step': 50, 'case_study': 'hL', 'simbench_code': '1-HV-mixed--0-sw', 'allowed_lines': 100, 'convergence_penalty': -50, 'line_disconnect_penalty': -50, 'nan_vm_pu_penalty': -20, 'rho_min': 0.0, 'train_data_length': 28108, 'test_data_length': 7028, 'load_data_shape': (35136, 58), 'sgen_data_shape': (35136, 103), 'load_train_data_shape': (28108, 58), 'sgen_train_data_shape': (28108, 103), 'load_test_data_shape': (7028, 58), 'sgen_test_data_shape': (7028, 103), 'exp_code': 'verification_test', 'action_type': 'BESS', 'penalty_scalar': -10, 'total_CBs': 64, 'total_switches': 422, 'bonus_constant': 100}
+Load flow passed in reset
+BESS initialized: 5 units at buses [ 39 189 230 281 282]
+Initial SoC: [50. 50. 50. 50. 50.]% | Initial power: [0. 0. 0. 0. 0.] MW
+[OK] Environment created successfully
+   Grid: 1-HV-mixed--0-sw
+   Observation space: Dict('bess_charge_headroom': Box(0.0, 1.0, (5,), float32), 'bess_discharge_headroom': Box(0.0, 1.0, (5,), float32), 'bess_power': Box(-50.0, 50.0, (5,), float32), 'bess_sensitivity_to_top_k': Box(-inf, inf, (5, 10), float32), 'bess_soc': Box(0.0, 1.0, (5,), float32), 'bess_soc_normalized': Box(0.0, 1.0, (5,), float32), 'continuous_line_loadings': Box(0.0, 800.0, (95,), float32), 'continuous_load_data': Box(0.0, 100000.0, (58,), float32), 'continuous_sgen_data': Box(0.0, 100000.0, (103,), float32), 'continuous_space_ext_grid_p_mw': Box(-50000000.0, 50000000.0, (3,), float32), 'continuous_space_ext_grid_q_mvar': Box(-50000000.0, 50000000.0, (3,), float32), 'loading_trend': Box(-100.0, 100.0, (95,), float32), 'top_k_congested_lines': Box(0.0, 800.0, (10,), float32))
+   Action space: Box(-50.0, 50.0, (5,), float32)
+
+Starting training with WandB logging...
+================================================================================
+TRAINING OUTPUT (watch for reward breakdown):
+================================================================================
+
+
+[ERROR] TRAINING FAILED WITH ERROR:
+   TypeError: 'dict' object is not callable
+
+Please check:
+  1. All required files are in diagnostic_test_env/
+  2. Python environment has all dependencies installed
+  3. init_meta.json is present and valid

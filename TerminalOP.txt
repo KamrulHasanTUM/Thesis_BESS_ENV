@@ -1,0 +1,1038 @@
+ALL WORKING
+Warning: BESS 1 SoC hit upper bound (90%)
+  Attempted: 126.0%, Clipped to: 90%
+Warning: BESS 2 SoC hit lower bound (10%)
+  Attempted: -29.2%, Clipped to: 10%
+Warning: BESS 4 SoC hit lower bound (10%)
+  Attempted: -22.3%, Clipped to: 10%
+Max loading after: 18.842801495908567
+[DEBUG] Action already in MW (from env.bess_power): [  8.995413 -25.078499  17.64605   -2.569768  19.733238]
+Created 5 BESS sgen elements at indices [103 104 105 106 107]
+Load flow passed in updating
+count= 5
+Max loading before: 18.85203957907354
+[DEBUG] Raw action from agent (normalized): [-0.26140743  0.33933556 -0.5616266   0.15439099  0.2386883 ]
+[DEBUG] After scaling to MW: [-13.070372   16.966778  -28.081331    7.7195497  11.934415 ]
+[DEBUG] Action magnitude (avg): 15.5545 MW
+[DEBUG] Action magnitude (max): 28.0813 MW
+[DEBUG] After clipping: [-13.070372   16.966778  -28.081331    7.7195497  11.934415 ]
+Load flow passed in stepping
+ALL WORKING
+Warning: BESS 0 SoC hit upper bound (90%)
+  Attempted: 93.5%, Clipped to: 90%
+Warning: BESS 3 SoC hit lower bound (10%)
+  Attempted: -2.5%, Clipped to: 10%
+Warning: BESS 4 SoC hit lower bound (10%)
+  Attempted: -16.5%, Clipped to: 10%
+Max loading after: 13.860152081743108
+[DEBUG] Action already in MW (from env.bess_power): [-13.070372   16.966778  -28.081331    7.7195497  11.934415 ]
+Created 5 BESS sgen elements at indices [103 104 105 106 107]
+Load flow passed in updating
+count= 6
+Max loading before: 13.804058956539656
+[DEBUG] Raw action from agent (normalized): [-0.49186218  0.8909594   0.02014188  0.24421696 -0.15027177]
+[DEBUG] After scaling to MW: [-24.59311    44.54797     1.0070943  12.210848   -7.513589 ]
+[DEBUG] Action magnitude (avg): 17.9745 MW
+[DEBUG] Action magnitude (max): 44.5480 MW
+[DEBUG] After clipping: [-24.59311    44.54797     1.0070943  12.210848   -7.513589 ]
+Load flow passed in stepping
+ALL WORKING
+Warning: BESS 0 SoC hit upper bound (90%)
+  Attempted: 134.3%, Clipped to: 90%
+Warning: BESS 1 SoC hit lower bound (10%)
+  Attempted: -46.7%, Clipped to: 10%
+Warning: BESS 3 SoC hit lower bound (10%)
+  Attempted: -17.1%, Clipped to: 10%
+Max loading after: 33.02085337683946
+[DEBUG] Action already in MW (from env.bess_power): [-24.59311    44.54797     1.0070943  12.210848   -7.513589 ]
+Created 5 BESS sgen elements at indices [103 104 105 106 107]
+Load flow passed in updating
+count= 7
+Max loading before: 33.009786051955324
+[DEBUG] Raw action from agent (normalized): [-0.52429914  0.7678034   0.27829912  1.0586917  -0.58573097]
+[DEBUG] After scaling to MW: [-26.214958  38.390167  13.914956  52.934586 -29.286549]
+[DEBUG] Action magnitude (avg): 32.1482 MW
+[DEBUG] Action magnitude (max): 52.9346 MW
+[DEBUG] After clipping: [-26.214958  38.390167  13.914956  50.       -29.286549]
+Warning: Actions clipped for BESS units [3]
+  Original: [52.934586]
+  Clipped:  [50.]
+  Limit: ±50.0 MW
+Load flow passed in stepping
+ALL WORKING
+Warning: BESS 0 SoC hit upper bound (90%)
+  Attempted: 137.2%, Clipped to: 90%
+Warning: BESS 1 SoC hit lower bound (10%)
+  Attempted: -75.3%, Clipped to: 10%
+Warning: BESS 3 SoC hit lower bound (10%)
+  Attempted: -101.1%, Clipped to: 10%
+Max loading after: 28.44251254699725
+[DEBUG] Action already in MW (from env.bess_power): [-26.214958  38.390167  13.914956  50.       -29.286549]
+Created 5 BESS sgen elements at indices [103 104 105 106 107]
+Load flow passed in updating
+count= 8
+Max loading before: 28.460448069810653
+[DEBUG] Raw action from agent (normalized): [-0.2504363  -0.01184017  1.1917994   0.46967578 -0.04413871]
+[DEBUG] After scaling to MW: [-12.521815    -0.59200877  59.58997     23.48379     -2.2069356 ]
+[DEBUG] Action magnitude (avg): 19.6789 MW
+[DEBUG] Action magnitude (max): 59.5900 MW
+[DEBUG] After clipping: [-12.521815    -0.59200877  50.          23.48379     -2.2069356 ]
+Warning: Actions clipped for BESS units [2]
+  Original: [59.58997]
+  Clipped:  [50.]
+  Limit: ±50.0 MW
+Load flow passed in stepping
+ALL WORKING
+Warning: BESS 0 SoC hit upper bound (90%)
+  Attempted: 112.5%, Clipped to: 90%
+Warning: BESS 2 SoC hit lower bound (10%)
+  Attempted: -83.7%, Clipped to: 10%
+Warning: BESS 3 SoC hit lower bound (10%)
+  Attempted: -42.2%, Clipped to: 10%
+Max loading after: 14.302261098002065
+[DEBUG] Action already in MW (from env.bess_power): [-12.521815    -0.59200877  50.          23.48379     -2.2069356 ]
+Created 5 BESS sgen elements at indices [103 104 105 106 107]
+Load flow passed in updating
+count= 9
+Max loading before: 15.322730933461964
+[DEBUG] Raw action from agent (normalized): [ 0.7196171   0.6453648  -0.21054277  0.62902427  0.42284322]
+[DEBUG] After scaling to MW: [ 35.980858  32.26824  -10.527139  31.451214  21.14216 ]
+[DEBUG] Action magnitude (avg): 26.2739 MW
+[DEBUG] Action magnitude (max): 35.9809 MW
+[DEBUG] After clipping: [ 35.980858  32.26824  -10.527139  31.451214  21.14216 ]
+Load flow passed in stepping
+ALL WORKING
+Warning: BESS 1 SoC hit lower bound (10%)
+  Attempted: -60.6%, Clipped to: 10%
+Warning: BESS 3 SoC hit lower bound (10%)
+  Attempted: -59.9%, Clipped to: 10%
+Max loading after: 49.85961064779939
+[DEBUG] Action already in MW (from env.bess_power): [ 35.980858  32.26824  -10.527139  31.451214  21.14216 ]
+Created 5 BESS sgen elements at indices [103 104 105 106 107]
+Load flow passed in updating
+count= 10
+Max loading before: 49.89224331737201
+[DEBUG] Raw action from agent (normalized): [-0.15689401 -0.08652084  0.46753693  0.8154642   0.50069916]
+[DEBUG] After scaling to MW: [-7.844701  -4.3260417 23.376846  40.77321   25.034958 ]
+[DEBUG] Action magnitude (avg): 20.2712 MW
+[DEBUG] Action magnitude (max): 40.7732 MW
+[DEBUG] After clipping: [-7.844701  -4.3260417 23.376846  40.77321   25.034958 ]
+Load flow passed in stepping
+ALL WORKING
+Warning: BESS 2 SoC hit lower bound (10%)
+  Attempted: -23.0%, Clipped to: 10%
+Warning: BESS 3 SoC hit lower bound (10%)
+  Attempted: -80.6%, Clipped to: 10%
+Warning: BESS 4 SoC hit lower bound (10%)
+  Attempted: -22.4%, Clipped to: 10%
+Max loading after: 17.09740789197175
+[DEBUG] Action already in MW (from env.bess_power): [-7.844701  -4.3260417 23.376846  40.77321   25.034958 ]
+Created 5 BESS sgen elements at indices [103 104 105 106 107]
+Load flow passed in updating
+count= 11
+Max loading before: 15.43403253212702
+[DEBUG] Raw action from agent (normalized): [-0.35456717 -0.5170708   0.19243976  0.65825725 -1.0162597 ]
+[DEBUG] After scaling to MW: [-17.72836  -25.853539   9.621988  32.91286  -50.812984]
+[DEBUG] Action magnitude (avg): 27.3859 MW
+[DEBUG] Action magnitude (max): 50.8130 MW
+[DEBUG] After clipping: [-17.72836  -25.853539   9.621988  32.91286  -50.      ]
+Warning: Actions clipped for BESS units [4]
+  Original: [-50.812984]
+  Clipped:  [-50.]
+  Limit: ±50.0 MW
+Load flow passed in stepping
+ALL WORKING
+Warning: BESS 2 SoC hit lower bound (10%)
+  Attempted: -11.4%, Clipped to: 10%
+Warning: BESS 3 SoC hit lower bound (10%)
+  Attempted: -63.1%, Clipped to: 10%
+Warning: BESS 4 SoC hit upper bound (90%)
+  Attempted: 100.0%, Clipped to: 90%
+Max loading after: 33.98419059785149
+[DEBUG] Action already in MW (from env.bess_power): [-17.72836  -25.853539   9.621988  32.91286  -50.      ]
+Created 5 BESS sgen elements at indices [103 104 105 106 107]
+Load flow passed in updating
+count= 12
+Max loading before: 33.56593466252399
+[DEBUG] Raw action from agent (normalized): [1.103494   0.13152225 0.51416487 1.1966774  0.32514042]
+[DEBUG] After scaling to MW: [55.1747     6.5761127 25.708242  59.833874  16.25702  ]
+[DEBUG] Action magnitude (avg): 32.7100 MW
+[DEBUG] Action magnitude (max): 59.8339 MW
+[DEBUG] After clipping: [50.         6.5761127 25.708242  50.        16.25702  ]
+Warning: Actions clipped for BESS units [0 3]
+  Original: [55.1747   59.833874]
+  Clipped:  [50. 50.]
+  Limit: ±50.0 MW
+Load flow passed in stepping
+ALL WORKING
+Warning: BESS 0 SoC hit lower bound (10%)
+  Attempted: -55.0%, Clipped to: 10%
+Warning: BESS 2 SoC hit lower bound (10%)
+  Attempted: -47.1%, Clipped to: 10%
+Warning: BESS 3 SoC hit lower bound (10%)
+  Attempted: -101.1%, Clipped to: 10%
+Max loading after: 43.322216448944985
+[DEBUG] Action already in MW (from env.bess_power): [50.         6.5761127 25.708242  50.        16.25702  ]
+Created 5 BESS sgen elements at indices [103 104 105 106 107]
+Load flow passed in updating
+count= 13
+Max loading before: 42.0063806106618
+[DEBUG] Raw action from agent (normalized): [-0.4958756  -0.3655278   0.07021787  1.0664706   0.3385465 ]
+[DEBUG] After scaling to MW: [-24.79378   -18.27639     3.5108936  53.323532   16.927326 ]
+[DEBUG] Action magnitude (avg): 23.3664 MW
+[DEBUG] Action magnitude (max): 53.3235 MW
+[DEBUG] After clipping: [-24.79378   -18.27639     3.5108936  50.         16.927326 ]
+Warning: Actions clipped for BESS units [3]
+  Original: [53.323532]
+  Clipped:  [50.]
+  Limit: ±50.0 MW
+Load flow passed in stepping
+ALL WORKING
+Warning: BESS 2 SoC hit lower bound (10%)
+  Attempted: 2.2%, Clipped to: 10%
+Warning: BESS 3 SoC hit lower bound (10%)
+  Attempted: -101.1%, Clipped to: 10%
+Max loading after: 32.90405311772469
+[DEBUG] Action already in MW (from env.bess_power): [-24.79378   -18.27639     3.5108936  50.         16.927326 ]
+Created 5 BESS sgen elements at indices [103 104 105 106 107]
+Load flow passed in updating
+count= 14
+Max loading before: 32.750300462387536
+[DEBUG] Raw action from agent (normalized): [-0.28376442 -0.46484953  0.4997574   0.58742577 -0.96524745]
+[DEBUG] After scaling to MW: [-14.188221 -23.242477  24.987871  29.371288 -48.26237 ]
+[DEBUG] Action magnitude (avg): 28.0104 MW
+[DEBUG] Action magnitude (max): 48.2624 MW
+[DEBUG] After clipping: [-14.188221 -23.242477  24.987871  29.371288 -48.26237 ]
+Load flow passed in stepping
+ALL WORKING
+Warning: BESS 1 SoC hit upper bound (90%)
+  Attempted: 124.4%, Clipped to: 90%
+Warning: BESS 2 SoC hit lower bound (10%)
+  Attempted: -45.5%, Clipped to: 10%
+Warning: BESS 3 SoC hit lower bound (10%)
+  Attempted: -55.3%, Clipped to: 10%
+Warning: BESS 4 SoC hit upper bound (90%)
+  Attempted: 103.1%, Clipped to: 90%
+Max loading after: 28.950654984226688
+[DEBUG] Action already in MW (from env.bess_power): [-14.188221 -23.242477  24.987871  29.371288 -48.26237 ]
+Created 5 BESS sgen elements at indices [103 104 105 106 107]
+Load flow passed in updating
+count= 15
+Max loading before: 29.250599897511947
+[DEBUG] Raw action from agent (normalized): [ 0.03479372  0.19300704  0.0343622   1.3534638  -0.55018747]
+[DEBUG] After scaling to MW: [  1.7396858   9.650352    1.7181098  67.67319   -27.509373 ]
+[DEBUG] Action magnitude (avg): 21.6581 MW
+[DEBUG] Action magnitude (max): 67.6732 MW
+[DEBUG] After clipping: [  1.7396858   9.650352    1.7181098  50.        -27.509373 ]
+Warning: Actions clipped for BESS units [3]
+  Original: [67.67319]
+  Clipped:  [50.]
+  Limit: ±50.0 MW
+Load flow passed in stepping
+ALL WORKING
+Warning: BESS 2 SoC hit lower bound (10%)
+  Attempted: 6.2%, Clipped to: 10%
+Warning: BESS 3 SoC hit lower bound (10%)
+  Attempted: -101.1%, Clipped to: 10%
+Warning: BESS 4 SoC hit upper bound (90%)
+  Attempted: 139.5%, Clipped to: 90%
+Max loading after: 9.551193707357434
+[DEBUG] Action already in MW (from env.bess_power): [  1.7396858   9.650352    1.7181098  50.        -27.509373 ]
+Created 5 BESS sgen elements at indices [103 104 105 106 107]
+Load flow passed in updating
+count= 16
+Max loading before: 9.282429788735987
+[DEBUG] Raw action from agent (normalized): [0.59476215 0.43645197 0.83349764 1.0570624  0.06930923]
+[DEBUG] After scaling to MW: [29.738108  21.8226    41.67488   52.85312    3.4654613]
+[DEBUG] Action magnitude (avg): 29.9108 MW
+[DEBUG] Action magnitude (max): 52.8531 MW
+[DEBUG] After clipping: [29.738108  21.8226    41.67488   50.         3.4654613]
+Warning: Actions clipped for BESS units [3]
+  Original: [52.85312]
+  Clipped:  [50.]
+  Limit: ±50.0 MW
+Load flow passed in stepping
+ALL WORKING
+Warning: BESS 2 SoC hit lower bound (10%)
+  Attempted: -82.6%, Clipped to: 10%
+Warning: BESS 3 SoC hit lower bound (10%)
+  Attempted: -101.1%, Clipped to: 10%
+Max loading after: 37.905170924905214
+[DEBUG] Action already in MW (from env.bess_power): [29.738108  21.8226    41.67488   50.         3.4654613]
+Created 5 BESS sgen elements at indices [103 104 105 106 107]
+Load flow passed in updating
+count= 17
+Max loading before: 37.85288846129299
+[DEBUG] Raw action from agent (normalized): [ 0.16737595 -0.37589705 -0.40168524  0.9004972   0.34708875]
+[DEBUG] After scaling to MW: [  8.368797 -18.794853 -20.084263  45.02486   17.354437]
+[DEBUG] Action magnitude (avg): 21.9254 MW
+[DEBUG] Action magnitude (max): 45.0249 MW
+[DEBUG] After clipping: [  8.368797 -18.794853 -20.084263  45.02486   17.354437]
+Load flow passed in stepping
+ALL WORKING
+Warning: BESS 0 SoC hit lower bound (10%)
+  Attempted: -8.4%, Clipped to: 10%
+Warning: BESS 3 SoC hit lower bound (10%)
+  Attempted: -90.1%, Clipped to: 10%
+Max loading after: 14.278032737190655
+[DEBUG] Action already in MW (from env.bess_power): [  8.368797 -18.794853 -20.084263  45.02486   17.354437]
+Created 5 BESS sgen elements at indices [103 104 105 106 107]
+Load flow passed in updating
+count= 18
+Max loading before: 15.667598520541873
+[DEBUG] Raw action from agent (normalized): [-0.04181939  0.1610223   0.88671243  1.2127013   0.4376116 ]
+[DEBUG] After scaling to MW: [-2.0909696  8.051115  44.33562   60.635067  21.88058  ]
+[DEBUG] Action magnitude (avg): 27.3987 MW
+[DEBUG] Action magnitude (max): 60.6351 MW
+[DEBUG] After clipping: [-2.0909696  8.051115  44.33562   50.        21.88058  ]
+Warning: Actions clipped for BESS units [3]
+  Original: [60.635067]
+  Clipped:  [50.]
+  Limit: ±50.0 MW
+Load flow passed in stepping
+ALL WORKING
+Warning: BESS 2 SoC hit lower bound (10%)
+  Attempted: -52.4%, Clipped to: 10%
+Warning: BESS 3 SoC hit lower bound (10%)
+  Attempted: -101.1%, Clipped to: 10%
+Warning: BESS 4 SoC hit lower bound (10%)
+  Attempted: -4.9%, Clipped to: 10%
+Max loading after: 23.103983404750707
+[DEBUG] Action already in MW (from env.bess_power): [-2.0909696  8.051115  44.33562   50.        21.88058  ]
+Created 5 BESS sgen elements at indices [103 104 105 106 107]
+Load flow passed in updating
+count= 19
+Max loading before: 24.636832072002317
+[DEBUG] Raw action from agent (normalized): [ 0.16534415 -0.29640868  0.7980188   0.64120543  0.21808049]
+[DEBUG] After scaling to MW: [  8.267207 -14.820435  39.90094   32.060272  10.904024]
+[DEBUG] Action magnitude (avg): 21.1906 MW
+[DEBUG] Action magnitude (max): 39.9009 MW
+[DEBUG] After clipping: [  8.267207 -14.820435  39.90094   32.060272  10.904024]
+Load flow passed in stepping
+ALL WORKING
+Warning: BESS 0 SoC hit lower bound (10%)
+  Attempted: -4.6%, Clipped to: 10%
+Warning: BESS 2 SoC hit lower bound (10%)
+  Attempted: -78.7%, Clipped to: 10%
+Warning: BESS 3 SoC hit lower bound (10%)
+  Attempted: -61.2%, Clipped to: 10%
+Warning: BESS 4 SoC hit lower bound (10%)
+  Attempted: -14.2%, Clipped to: 10%
+Max loading after: 11.079708912483412
+[DEBUG] Action already in MW (from env.bess_power): [  8.267207 -14.820435  39.90094   32.060272  10.904024]
+Created 5 BESS sgen elements at indices [103 104 105 106 107]
+Load flow passed in updating
+count= 20
+Max loading before: 11.098191776612017
+[DEBUG] Raw action from agent (normalized): [ 0.42384607  0.38626647  0.5610322   1.30356    -0.08450802]
+[DEBUG] After scaling to MW: [21.192303 19.313324 28.051609 65.178    -4.225401]
+[DEBUG] Action magnitude (avg): 27.5921 MW
+[DEBUG] Action magnitude (max): 65.1780 MW
+[DEBUG] After clipping: [21.192303 19.313324 28.051609 50.       -4.225401]
+Warning: Actions clipped for BESS units [3]
+  Original: [65.178]
+  Clipped:  [50.]
+  Limit: ±50.0 MW
+Load flow passed in stepping
+ALL WORKING
+Warning: BESS 0 SoC hit lower bound (10%)
+  Attempted: -37.1%, Clipped to: 10%
+Warning: BESS 2 SoC hit lower bound (10%)
+  Attempted: -52.3%, Clipped to: 10%
+Warning: BESS 3 SoC hit lower bound (10%)
+  Attempted: -101.1%, Clipped to: 10%
+Max loading after: 29.907147405137657
+[DEBUG] Action already in MW (from env.bess_power): [21.192303 19.313324 28.051609 50.       -4.225401]
+Created 5 BESS sgen elements at indices [103 104 105 106 107]
+Load flow passed in updating
+count= 21
+Max loading before: 30.034798576711147
+[DEBUG] Raw action from agent (normalized): [ 0.21026593 -0.5318105   0.20214504  0.21810418  0.6296247 ]
+[DEBUG] After scaling to MW: [ 10.513297 -26.590527  10.107252  10.90521   31.481236]
+[DEBUG] Action magnitude (avg): 17.9195 MW
+[DEBUG] Action magnitude (max): 31.4812 MW
+[DEBUG] After clipping: [ 10.513297 -26.590527  10.107252  10.90521   31.481236]
+Load flow passed in stepping
+ALL WORKING
+Warning: BESS 0 SoC hit lower bound (10%)
+  Attempted: -13.4%, Clipped to: 10%
+Warning: BESS 2 SoC hit lower bound (10%)
+  Attempted: -12.5%, Clipped to: 10%
+Warning: BESS 3 SoC hit lower bound (10%)
+  Attempted: -14.2%, Clipped to: 10%
+Warning: BESS 4 SoC hit lower bound (10%)
+  Attempted: -52.4%, Clipped to: 10%
+Max loading after: 20.0762145095807
+[DEBUG] Action already in MW (from env.bess_power): [ 10.513297 -26.590527  10.107252  10.90521   31.481236]
+Created 5 BESS sgen elements at indices [103 104 105 106 107]
+Load flow passed in updating
+count= 22
+Max loading before: 19.95297747969829
+[DEBUG] Raw action from agent (normalized): [-0.35491434  0.5277085   0.9927191   0.19154233  0.7531554 ]
+[DEBUG] After scaling to MW: [-17.745716  26.385424  49.635956   9.577116  37.657772]
+[DEBUG] Action magnitude (avg): 28.2004 MW
+[DEBUG] Action magnitude (max): 49.6360 MW
+[DEBUG] After clipping: [-17.745716  26.385424  49.635956   9.577116  37.657772]
+Load flow passed in stepping
+ALL WORKING
+Warning: BESS 1 SoC hit lower bound (10%)
+  Attempted: 9.0%, Clipped to: 10%
+Warning: BESS 2 SoC hit lower bound (10%)
+  Attempted: -100.3%, Clipped to: 10%
+Warning: BESS 3 SoC hit lower bound (10%)
+  Attempted: -11.3%, Clipped to: 10%
+Warning: BESS 4 SoC hit lower bound (10%)
+  Attempted: -73.7%, Clipped to: 10%
+Max loading after: 19.541709290025278
+[DEBUG] Action already in MW (from env.bess_power): [-17.745716  26.385424  49.635956   9.577116  37.657772]
+Created 5 BESS sgen elements at indices [103 104 105 106 107]
+Load flow passed in updating
+count= 23
+Max loading before: 19.569042781676146
+[DEBUG] Raw action from agent (normalized): [ 0.28885126  0.44075224  0.02273408  1.232141   -0.39759833]
+[DEBUG] After scaling to MW: [ 14.442563   22.037611    1.1367037  61.60705   -19.879917 ]
+[DEBUG] Action magnitude (avg): 23.8208 MW
+[DEBUG] Action magnitude (max): 61.6071 MW
+[DEBUG] After clipping: [ 14.442563   22.037611    1.1367037  50.        -19.879917 ]
+Warning: Actions clipped for BESS units [3]
+  Original: [61.60705]
+  Clipped:  [50.]
+  Limit: ±50.0 MW
+Load flow passed in stepping
+ALL WORKING
+Warning: BESS 0 SoC hit lower bound (10%)
+  Attempted: 9.8%, Clipped to: 10%
+Warning: BESS 1 SoC hit lower bound (10%)
+  Attempted: -39.0%, Clipped to: 10%
+Warning: BESS 2 SoC hit lower bound (10%)
+  Attempted: 7.5%, Clipped to: 10%
+Warning: BESS 3 SoC hit lower bound (10%)
+  Attempted: -101.1%, Clipped to: 10%
+Max loading after: 27.009097244805456
+[DEBUG] Action already in MW (from env.bess_power): [ 14.442563   22.037611    1.1367037  50.        -19.879917 ]
+Created 5 BESS sgen elements at indices [103 104 105 106 107]
+Load flow passed in updating
+count= 24
+Max loading before: 26.976151270038784
+[DEBUG] Raw action from agent (normalized): [-0.41878024  0.22988348  0.19445094  0.73472494  0.08632463]
+[DEBUG] After scaling to MW: [-20.939013   11.494174    9.722548   36.736248    4.3162317]
+[DEBUG] Action magnitude (avg): 16.6416 MW
+[DEBUG] Action magnitude (max): 36.7362 MW
+[DEBUG] After clipping: [-20.939013   11.494174    9.722548   36.736248    4.3162317]
+Load flow passed in stepping
+ALL WORKING
+Warning: BESS 1 SoC hit lower bound (10%)
+  Attempted: -15.5%, Clipped to: 10%
+Warning: BESS 2 SoC hit lower bound (10%)
+  Attempted: -11.6%, Clipped to: 10%
+Warning: BESS 3 SoC hit lower bound (10%)
+  Attempted: -71.6%, Clipped to: 10%
+Max loading after: 9.431808846833988
+[DEBUG] Action already in MW (from env.bess_power): [-20.939013   11.494174    9.722548   36.736248    4.3162317]
+Created 5 BESS sgen elements at indices [103 104 105 106 107]
+Load flow passed in updating
+count= 25
+Max loading before: 8.587394502854623
+[DEBUG] Raw action from agent (normalized): [ 0.552236   -0.29549953  0.83248264  0.49000904  0.8759079 ]
+[DEBUG] After scaling to MW: [ 27.611801 -14.774977  41.62413   24.500452  43.795395]
+[DEBUG] Action magnitude (avg): 30.4614 MW
+[DEBUG] Action magnitude (max): 43.7954 MW
+[DEBUG] After clipping: [ 27.611801 -14.774977  41.62413   24.500452  43.795395]
+Load flow passed in stepping
+ALL WORKING
+Warning: BESS 0 SoC hit lower bound (10%)
+  Attempted: -13.7%, Clipped to: 10%
+Warning: BESS 2 SoC hit lower bound (10%)
+  Attempted: -82.5%, Clipped to: 10%
+Warning: BESS 3 SoC hit lower bound (10%)
+  Attempted: -44.4%, Clipped to: 10%
+Warning: BESS 4 SoC hit lower bound (10%)
+  Attempted: -61.1%, Clipped to: 10%
+Max loading after: 26.124026117211514
+[DEBUG] Action already in MW (from env.bess_power): [ 27.611801 -14.774977  41.62413   24.500452  43.795395]
+Created 5 BESS sgen elements at indices [103 104 105 106 107]
+Load flow passed in updating
+count= 26
+Max loading before: 27.3630709687768
+[DEBUG] Raw action from agent (normalized): [ 0.591778   -0.5533238  -0.3650177   0.9165092   0.66277623]
+[DEBUG] After scaling to MW: [ 29.5889   -27.666191 -18.250885  45.825462  33.138813]
+[DEBUG] Action magnitude (avg): 30.8940 MW
+[DEBUG] Action magnitude (max): 45.8255 MW
+[DEBUG] After clipping: [ 29.5889   -27.666191 -18.250885  45.825462  33.138813]
+Load flow passed in stepping
+ALL WORKING
+Warning: BESS 0 SoC hit lower bound (10%)
+  Attempted: -55.8%, Clipped to: 10%
+Warning: BESS 3 SoC hit lower bound (10%)
+  Attempted: -91.8%, Clipped to: 10%
+Warning: BESS 4 SoC hit lower bound (10%)
+  Attempted: -63.6%, Clipped to: 10%
+Max loading after: 23.730638728107646
+[DEBUG] Action already in MW (from env.bess_power): [ 29.5889   -27.666191 -18.250885  45.825462  33.138813]
+Created 5 BESS sgen elements at indices [103 104 105 106 107]
+Load flow passed in updating
+count= 27
+Max loading before: 23.985660807011072
+[DEBUG] Raw action from agent (normalized): [-0.00435306 -0.17597277  0.63116944  0.6555544  -0.42789146]
+[DEBUG] After scaling to MW: [ -0.21765307  -8.798638    31.558472    32.77772    -21.394573  ]
+[DEBUG] Action magnitude (avg): 18.9494 MW
+[DEBUG] Action magnitude (max): 32.7777 MW
+[DEBUG] After clipping: [ -0.21765307  -8.798638    31.558472    32.77772    -21.394573  ]
+Load flow passed in stepping
+ALL WORKING
+Warning: BESS 1 SoC hit upper bound (90%)
+  Attempted: 102.2%, Clipped to: 90%
+Warning: BESS 2 SoC hit lower bound (10%)
+  Attempted: -27.3%, Clipped to: 10%
+Warning: BESS 3 SoC hit lower bound (10%)
+  Attempted: -62.8%, Clipped to: 10%
+Max loading after: 10.275765562899347
+[DEBUG] Action already in MW (from env.bess_power): [ -0.21765307  -8.798638    31.558472    32.77772    -21.394573  ]
+Created 5 BESS sgen elements at indices [103 104 105 106 107]
+Load flow passed in updating
+count= 28
+Max loading before: 9.762918445708229
+[DEBUG] Raw action from agent (normalized): [-0.20683421 -0.18339604  0.4244819   0.58358836  0.27481356]
+[DEBUG] After scaling to MW: [-10.341711  -9.169802  21.224094  29.179419  13.740678]
+[DEBUG] Action magnitude (avg): 16.7311 MW
+[DEBUG] Action magnitude (max): 29.1794 MW
+[DEBUG] After clipping: [-10.341711  -9.169802  21.224094  29.179419  13.740678]
+Load flow passed in stepping
+ALL WORKING
+Warning: BESS 1 SoC hit upper bound (90%)
+  Attempted: 106.5%, Clipped to: 90%
+Warning: BESS 2 SoC hit lower bound (10%)
+  Attempted: -37.2%, Clipped to: 10%
+Warning: BESS 3 SoC hit lower bound (10%)
+  Attempted: -54.8%, Clipped to: 10%
+Max loading after: 15.285751719714721
+[DEBUG] Action already in MW (from env.bess_power): [-10.341711  -9.169802  21.224094  29.179419  13.740678]
+Created 5 BESS sgen elements at indices [103 104 105 106 107]
+Load flow passed in updating
+count= 29
+Max loading before: 15.361406800500408
+[DEBUG] Raw action from agent (normalized): [ 0.58395594 -0.5687626   1.5406787   1.1544242   0.14040598]
+[DEBUG] After scaling to MW: [ 29.197798 -28.43813   77.033936  57.72121    7.020299]
+[DEBUG] Action magnitude (avg): 39.8823 MW
+[DEBUG] Action magnitude (max): 77.0339 MW
+[DEBUG] After clipping: [ 29.197798 -28.43813   50.        50.         7.020299]
+Warning: Actions clipped for BESS units [2 3]
+  Original: [77.033936 57.72121 ]
+  Clipped:  [50. 50.]
+  Limit: ±50.0 MW
+Load flow passed in stepping
+ALL WORKING
+Warning: BESS 0 SoC hit lower bound (10%)
+  Attempted: -35.9%, Clipped to: 10%
+Warning: BESS 1 SoC hit upper bound (90%)
+  Attempted: 141.2%, Clipped to: 90%
+Warning: BESS 2 SoC hit lower bound (10%)
+  Attempted: -101.1%, Clipped to: 10%
+Warning: BESS 3 SoC hit lower bound (10%)
+  Attempted: -101.1%, Clipped to: 10%
+Warning: BESS 4 SoC hit lower bound (10%)
+  Attempted: 2.4%, Clipped to: 10%
+Max loading after: 21.21299317902891
+[DEBUG] Action already in MW (from env.bess_power): [ 29.197798 -28.43813   50.        50.         7.020299]
+Created 5 BESS sgen elements at indices [103 104 105 106 107]
+Load flow passed in updating
+count= 30
+Max loading before: 21.194087057932972
+[DEBUG] Raw action from agent (normalized): [-0.0206746  -0.06705816  0.1898405   1.0719006  -0.12910077]
+[DEBUG] After scaling to MW: [-1.03373   -3.3529081  9.492024  53.59503   -6.4550385]
+[DEBUG] Action magnitude (avg): 14.7857 MW
+[DEBUG] Action magnitude (max): 53.5950 MW
+[DEBUG] After clipping: [-1.03373   -3.3529081  9.492024  50.        -6.4550385]
+Warning: Actions clipped for BESS units [3]
+  Original: [53.59503]
+  Clipped:  [50.]
+  Limit: ±50.0 MW
+Load flow passed in stepping
+ALL WORKING
+Warning: BESS 1 SoC hit upper bound (90%)
+  Attempted: 96.0%, Clipped to: 90%
+Warning: BESS 2 SoC hit lower bound (10%)
+  Attempted: -11.1%, Clipped to: 10%
+Warning: BESS 3 SoC hit lower bound (10%)
+  Attempted: -101.1%, Clipped to: 10%
+Max loading after: 10.011703484528809
+[DEBUG] Action already in MW (from env.bess_power): [-1.03373   -3.3529081  9.492024  50.        -6.4550385]
+Created 5 BESS sgen elements at indices [103 104 105 106 107]
+Load flow passed in updating
+count= 31
+Max loading before: 9.559732097836795
+[DEBUG] Raw action from agent (normalized): [0.1933485  0.58364624 0.49548608 1.1998208  0.11049195]
+[DEBUG] After scaling to MW: [ 9.667425 29.182312 24.774303 59.99104   5.524597]
+[DEBUG] Action magnitude (avg): 25.8279 MW
+[DEBUG] Action magnitude (max): 59.9910 MW
+[DEBUG] After clipping: [ 9.667425 29.182312 24.774303 50.        5.524597]
+Warning: Actions clipped for BESS units [3]
+  Original: [59.99104]
+  Clipped:  [50.]
+  Limit: ±50.0 MW
+Load flow passed in stepping
+ALL WORKING
+Warning: BESS 0 SoC hit lower bound (10%)
+  Attempted: -9.6%, Clipped to: 10%
+Warning: BESS 2 SoC hit lower bound (10%)
+  Attempted: -45.1%, Clipped to: 10%
+Warning: BESS 3 SoC hit lower bound (10%)
+  Attempted: -101.1%, Clipped to: 10%
+Warning: BESS 4 SoC hit lower bound (10%)
+  Attempted: 9.3%, Clipped to: 10%
+Max loading after: 30.839611117921507
+[DEBUG] Action already in MW (from env.bess_power): [ 9.667425 29.182312 24.774303 50.        5.524597]
+Created 5 BESS sgen elements at indices [103 104 105 106 107]
+Load flow passed in updating
+count= 32
+Max loading before: 30.876406201737915
+[DEBUG] Raw action from agent (normalized): [-0.9004767  -0.18020748  0.62651765  0.12840632  0.53547865]
+[DEBUG] After scaling to MW: [-45.023834   -9.010374   31.325882    6.4203157  26.773933 ]
+[DEBUG] Action magnitude (avg): 23.7109 MW
+[DEBUG] Action magnitude (max): 45.0238 MW
+[DEBUG] After clipping: [-45.023834   -9.010374   31.325882    6.4203157  26.773933 ]
+Load flow passed in stepping
+ALL WORKING
+Warning: BESS 0 SoC hit upper bound (90%)
+  Attempted: 91.0%, Clipped to: 90%
+Warning: BESS 2 SoC hit lower bound (10%)
+  Attempted: -59.6%, Clipped to: 10%
+Warning: BESS 3 SoC hit lower bound (10%)
+  Attempted: -4.3%, Clipped to: 10%
+Warning: BESS 4 SoC hit lower bound (10%)
+  Attempted: -49.5%, Clipped to: 10%
+Max loading after: 41.50961187773824
+[DEBUG] Action already in MW (from env.bess_power): [-45.023834   -9.010374   31.325882    6.4203157  26.773933 ]
+Created 5 BESS sgen elements at indices [103 104 105 106 107]
+Load flow passed in updating
+count= 33
+Max loading before: 42.06162365224874
+[DEBUG] Raw action from agent (normalized): [ 0.1317898  -0.79085916 -0.07770219  0.27894214  0.07541438]
+[DEBUG] After scaling to MW: [  6.58949   -39.542957   -3.8851097  13.947107    3.770719 ]
+[DEBUG] Action magnitude (avg): 13.5471 MW
+[DEBUG] Action magnitude (max): 39.5430 MW
+[DEBUG] After clipping: [  6.58949   -39.542957   -3.8851097  13.947107    3.770719 ]
+Load flow passed in stepping
+ALL WORKING
+Warning: BESS 1 SoC hit upper bound (90%)
+  Attempted: 112.5%, Clipped to: 90%
+Warning: BESS 3 SoC hit lower bound (10%)
+  Attempted: -21.0%, Clipped to: 10%
+Warning: BESS 4 SoC hit lower bound (10%)
+  Attempted: 1.6%, Clipped to: 10%
+Max loading after: 30.078715645499017
+[DEBUG] Action already in MW (from env.bess_power): [  6.58949   -39.542957   -3.8851097  13.947107    3.770719 ]
+Created 5 BESS sgen elements at indices [103 104 105 106 107]
+Load flow passed in updating
+count= 34
+Max loading before: 30.03219147389613
+[DEBUG] Raw action from agent (normalized): [-0.72801113 -0.37989938  0.31369993  1.011364    0.39231774]
+[DEBUG] After scaling to MW: [-36.40056  -18.994968  15.684997  50.5682    19.615887]
+[DEBUG] Action magnitude (avg): 28.2529 MW
+[DEBUG] Action magnitude (max): 50.5682 MW
+[DEBUG] After clipping: [-36.40056  -18.994968  15.684997  50.        19.615887]
+Warning: Actions clipped for BESS units [3]
+  Original: [50.5682]
+  Clipped:  [50.]
+  Limit: ±50.0 MW
+Load flow passed in stepping
+ALL WORKING
+Warning: BESS 0 SoC hit upper bound (90%)
+  Attempted: 140.9%, Clipped to: 90%
+Warning: BESS 1 SoC hit upper bound (90%)
+  Attempted: 124.2%, Clipped to: 90%
+Warning: BESS 2 SoC hit lower bound (10%)
+  Attempted: -17.9%, Clipped to: 10%
+Warning: BESS 3 SoC hit lower bound (10%)
+  Attempted: -101.1%, Clipped to: 10%
+Warning: BESS 4 SoC hit lower bound (10%)
+  Attempted: -33.6%, Clipped to: 10%
+Max loading after: 42.38311305079645
+[DEBUG] Action already in MW (from env.bess_power): [-36.40056  -18.994968  15.684997  50.        19.615887]
+Created 5 BESS sgen elements at indices [103 104 105 106 107]
+Load flow passed in updating
+count= 35
+Max loading before: 42.36915428852601
+[DEBUG] Raw action from agent (normalized): [ 0.0141894  -0.6497312  -0.1105862  -0.56638354 -0.40801042]
+[DEBUG] After scaling to MW: [  0.70947   -32.48656    -5.5293097 -28.319178  -20.40052  ]
+[DEBUG] Action magnitude (avg): 17.4890 MW
+[DEBUG] Action magnitude (max): 32.4866 MW
+[DEBUG] After clipping: [  0.70947   -32.48656    -5.5293097 -28.319178  -20.40052  ]
+Load flow passed in stepping
+ALL WORKING
+Warning: BESS 1 SoC hit upper bound (90%)
+  Attempted: 148.5%, Clipped to: 90%
+Max loading after: 37.60110355602401
+[DEBUG] Action already in MW (from env.bess_power): [  0.70947   -32.48656    -5.5293097 -28.319178  -20.40052  ]
+Created 5 BESS sgen elements at indices [103 104 105 106 107]
+Load flow passed in updating
+count= 36
+Max loading before: 38.3605262901629
+[DEBUG] Raw action from agent (normalized): [-0.39811176 -0.06265277  0.32523608  0.7437928   0.31520608]
+[DEBUG] After scaling to MW: [-19.905588   -3.1326385  16.261805   37.18964    15.760304 ]
+[DEBUG] Action magnitude (avg): 18.4500 MW
+[DEBUG] Action magnitude (max): 37.1896 MW
+[DEBUG] After clipping: [-19.905588   -3.1326385  16.261805   37.18964    15.760304 ]
+Load flow passed in stepping
+ALL WORKING
+Warning: BESS 0 SoC hit upper bound (90%)
+  Attempted: 124.3%, Clipped to: 90%
+Warning: BESS 1 SoC hit upper bound (90%)
+  Attempted: 95.6%, Clipped to: 90%
+Warning: BESS 2 SoC hit lower bound (10%)
+  Attempted: -16.2%, Clipped to: 10%
+Warning: BESS 3 SoC hit lower bound (10%)
+  Attempted: -21.7%, Clipped to: 10%
+Max loading after: 17.924366661753606
+[DEBUG] Action already in MW (from env.bess_power): [-19.905588   -3.1326385  16.261805   37.18964    15.760304 ]
+Created 5 BESS sgen elements at indices [103 104 105 106 107]
+Load flow passed in updating
+count= 37
+Max loading before: 17.85412989908914
+[DEBUG] Raw action from agent (normalized): [-0.53404576 -0.07263435  0.4043393   0.44503057  0.34084064]
+[DEBUG] After scaling to MW: [-26.702288   -3.6317174  20.216965   22.251528   17.042032 ]
+[DEBUG] Action magnitude (avg): 17.9689 MW
+[DEBUG] Action magnitude (max): 26.7023 MW
+[DEBUG] After clipping: [-26.702288   -3.6317174  20.216965   22.251528   17.042032 ]
+Load flow passed in stepping
+ALL WORKING
+Warning: BESS 0 SoC hit upper bound (90%)
+  Attempted: 138.1%, Clipped to: 90%
+Warning: BESS 1 SoC hit upper bound (90%)
+  Attempted: 96.5%, Clipped to: 90%
+Warning: BESS 2 SoC hit lower bound (10%)
+  Attempted: -34.9%, Clipped to: 10%
+Warning: BESS 3 SoC hit lower bound (10%)
+  Attempted: -39.4%, Clipped to: 10%
+Warning: BESS 4 SoC hit lower bound (10%)
+  Attempted: -26.2%, Clipped to: 10%
+Max loading after: 23.403652688767927
+[DEBUG] Action already in MW (from env.bess_power): [-26.702288   -3.6317174  20.216965   22.251528   17.042032 ]
+Created 5 BESS sgen elements at indices [103 104 105 106 107]
+Load flow passed in updating
+count= 38
+Max loading before: 23.31466919677089
+[DEBUG] Raw action from agent (normalized): [-0.11054381 -0.09189016  0.66368854  0.16357064 -0.20223927]
+[DEBUG] After scaling to MW: [ -5.5271907  -4.5945077  33.184425    8.178532  -10.111963 ]
+[DEBUG] Action magnitude (avg): 12.3193 MW
+[DEBUG] Action magnitude (max): 33.1844 MW
+[DEBUG] After clipping: [ -5.5271907  -4.5945077  33.184425    8.178532  -10.111963 ]
+Load flow passed in stepping
+ALL WORKING
+Warning: BESS 0 SoC hit upper bound (90%)
+  Attempted: 99.9%, Clipped to: 90%
+Warning: BESS 1 SoC hit upper bound (90%)
+  Attempted: 98.3%, Clipped to: 90%
+Warning: BESS 2 SoC hit lower bound (10%)
+  Attempted: -63.7%, Clipped to: 10%
+Warning: BESS 3 SoC hit lower bound (10%)
+  Attempted: -8.2%, Clipped to: 10%
+Max loading after: 8.97679450067619
+[DEBUG] Action already in MW (from env.bess_power): [ -5.5271907  -4.5945077  33.184425    8.178532  -10.111963 ]
+Created 5 BESS sgen elements at indices [103 104 105 106 107]
+Load flow passed in updating
+count= 39
+Max loading before: 8.467229260289768
+[DEBUG] Raw action from agent (normalized): [-0.5210518   0.41866562  1.3696492   0.95932764 -0.2581686 ]
+[DEBUG] After scaling to MW: [-26.052591  20.93328   68.48246   47.96638  -12.90843 ]
+[DEBUG] Action magnitude (avg): 35.2686 MW
+[DEBUG] Action magnitude (max): 68.4825 MW
+[DEBUG] After clipping: [-26.052591  20.93328   50.        47.96638  -12.90843 ]
+Warning: Actions clipped for BESS units [2]
+  Original: [68.48246]
+  Clipped:  [50.]
+  Limit: ±50.0 MW
+Load flow passed in stepping
+ALL WORKING
+Warning: BESS 0 SoC hit upper bound (90%)
+  Attempted: 136.9%, Clipped to: 90%
+Warning: BESS 2 SoC hit lower bound (10%)
+  Attempted: -101.1%, Clipped to: 10%
+Warning: BESS 3 SoC hit lower bound (10%)
+  Attempted: -96.6%, Clipped to: 10%
+Max loading after: 15.58810698374723
+[DEBUG] Action already in MW (from env.bess_power): [-26.052591  20.93328   50.        47.96638  -12.90843 ]
+Created 5 BESS sgen elements at indices [103 104 105 106 107]
+Load flow passed in updating
+count= 40
+Max loading before: 15.581585287602003
+[DEBUG] Raw action from agent (normalized): [ 0.08117899 -0.8268095   1.1137865   0.7075221  -0.97699434]
+[DEBUG] After scaling to MW: [  4.0589495 -41.340477   55.689323   35.376106  -48.849716 ]
+[DEBUG] Action magnitude (avg): 37.0629 MW
+[DEBUG] Action magnitude (max): 55.6893 MW
+[DEBUG] After clipping: [  4.0589495 -41.340477   50.         35.376106  -48.849716 ]
+Warning: Actions clipped for BESS units [2]
+  Original: [55.689323]
+  Clipped:  [50.]
+  Limit: ±50.0 MW
+Load flow passed in stepping
+ALL WORKING
+Warning: BESS 1 SoC hit upper bound (90%)
+  Attempted: 117.9%, Clipped to: 90%
+Warning: BESS 2 SoC hit lower bound (10%)
+  Attempted: -101.1%, Clipped to: 10%
+Warning: BESS 3 SoC hit lower bound (10%)
+  Attempted: -68.6%, Clipped to: 10%
+Warning: BESS 4 SoC hit upper bound (90%)
+  Attempted: 139.4%, Clipped to: 90%
+Max loading after: 31.552049434304685
+[DEBUG] Action already in MW (from env.bess_power): [  4.0589495 -41.340477   50.         35.376106  -48.849716 ]
+Created 5 BESS sgen elements at indices [103 104 105 106 107]
+Load flow passed in updating
+count= 41
+Max loading before: 31.557168914079103
+[DEBUG] Raw action from agent (normalized): [-0.4432368   1.0096933   0.5738803   0.01300555 -0.29656363]
+[DEBUG] After scaling to MW: [-22.16184     50.484665    28.694016     0.65027773 -14.828181  ]
+[DEBUG] Action magnitude (avg): 23.3638 MW
+[DEBUG] Action magnitude (max): 50.4847 MW
+[DEBUG] After clipping: [-22.16184     50.          28.694016     0.65027773 -14.828181  ]
+Warning: Actions clipped for BESS units [1]
+  Original: [50.484665]
+  Clipped:  [50.]
+  Limit: ±50.0 MW
+Load flow passed in stepping
+ALL WORKING
+Warning: BESS 0 SoC hit upper bound (90%)
+  Attempted: 120.9%, Clipped to: 90%
+Warning: BESS 1 SoC hit lower bound (10%)
+  Attempted: -21.1%, Clipped to: 10%
+Warning: BESS 2 SoC hit lower bound (10%)
+  Attempted: -53.8%, Clipped to: 10%
+Warning: BESS 3 SoC hit lower bound (10%)
+  Attempted: 8.6%, Clipped to: 10%
+Warning: BESS 4 SoC hit upper bound (90%)
+  Attempted: 116.7%, Clipped to: 90%
+Max loading after: 37.122641256086276
+[DEBUG] Action already in MW (from env.bess_power): [-22.16184     50.          28.694016     0.65027773 -14.828181  ]
+Created 5 BESS sgen elements at indices [103 104 105 106 107]
+Load flow passed in updating
+count= 42
+Max loading before: 37.11607595926451
+[DEBUG] Raw action from agent (normalized): [-0.69652456 -0.1883417   0.18205605  0.04093564 -0.04784071]
+[DEBUG] After scaling to MW: [-34.82623    -9.417086    9.102802    2.0467818  -2.3920357]
+[DEBUG] Action magnitude (avg): 11.5570 MW
+[DEBUG] Action magnitude (max): 34.8262 MW
+[DEBUG] After clipping: [-34.82623    -9.417086    9.102802    2.0467818  -2.3920357]
+Load flow passed in stepping
+ALL WORKING
+Warning: BESS 0 SoC hit upper bound (90%)
+  Attempted: 152.7%, Clipped to: 90%
+Warning: BESS 2 SoC hit lower bound (10%)
+  Attempted: -10.2%, Clipped to: 10%
+Warning: BESS 3 SoC hit lower bound (10%)
+  Attempted: 5.5%, Clipped to: 10%
+Warning: BESS 4 SoC hit upper bound (90%)
+  Attempted: 94.3%, Clipped to: 90%
+Max loading after: 34.159623400595116
+[DEBUG] Action already in MW (from env.bess_power): [-34.82623    -9.417086    9.102802    2.0467818  -2.3920357]
+Created 5 BESS sgen elements at indices [103 104 105 106 107]
+Load flow passed in updating
+count= 43
+Max loading before: 33.991720759607546
+[DEBUG] Raw action from agent (normalized): [-0.8246937  -0.21501407 -0.00527458 -0.37668285 -0.08120385]
+[DEBUG] After scaling to MW: [-41.234684   -10.750704    -0.26372895 -18.834143    -4.0601926 ]
+[DEBUG] Action magnitude (avg): 15.0287 MW
+[DEBUG] Action magnitude (max): 41.2347 MW
+[DEBUG] After clipping: [-41.234684   -10.750704    -0.26372895 -18.834143    -4.0601926 ]
+Load flow passed in stepping
+ALL WORKING
+Warning: BESS 0 SoC hit upper bound (90%)
+  Attempted: 164.2%, Clipped to: 90%
+Warning: BESS 4 SoC hit upper bound (90%)
+  Attempted: 97.3%, Clipped to: 90%
+Max loading after: 40.14290277467932
+[DEBUG] Action already in MW (from env.bess_power): [-41.234684   -10.750704    -0.26372895 -18.834143    -4.0601926 ]
+Created 5 BESS sgen elements at indices [103 104 105 106 107]
+Load flow passed in updating
+count= 44
+Max loading before: 40.242916747703994
+[DEBUG] Raw action from agent (normalized): [-0.10722357 -0.7375318  -0.49883294  0.7814056   1.075324  ]
+[DEBUG] After scaling to MW: [ -5.3611784 -36.87659   -24.941647   39.070282   53.766205 ]
+[DEBUG] Action magnitude (avg): 32.0032 MW
+[DEBUG] Action magnitude (max): 53.7662 MW
+[DEBUG] After clipping: [ -5.3611784 -36.87659   -24.941647   39.070282   50.       ]
+Warning: Actions clipped for BESS units [4]
+  Original: [53.766205]
+  Clipped:  [50.]
+  Limit: ±50.0 MW
+Load flow passed in stepping
+ALL WORKING
+Warning: BESS 0 SoC hit upper bound (90%)
+  Attempted: 99.7%, Clipped to: 90%
+Warning: BESS 1 SoC hit upper bound (90%)
+  Attempted: 112.7%, Clipped to: 90%
+Warning: BESS 3 SoC hit lower bound (10%)
+  Attempted: -42.9%, Clipped to: 10%
+Warning: BESS 4 SoC hit lower bound (10%)
+  Attempted: -21.1%, Clipped to: 10%
+Max loading after: 32.16484310947371
+[DEBUG] Action already in MW (from env.bess_power): [ -5.3611784 -36.87659   -24.941647   39.070282   50.       ]
+Created 5 BESS sgen elements at indices [103 104 105 106 107]
+Load flow passed in updating
+count= 45
+Max loading before: 32.33075686537292
+[DEBUG] Raw action from agent (normalized): [ 0.2371028  -0.0023859  -0.015324    0.48647696  0.27503812]
+[DEBUG] After scaling to MW: [11.855141   -0.11929497 -0.7661998  24.323849   13.751906  ]
+[DEBUG] Action magnitude (avg): 10.1633 MW
+[DEBUG] Action magnitude (max): 24.3238 MW
+[DEBUG] After clipping: [11.855141   -0.11929497 -0.7661998  24.323849   13.751906  ]
+Load flow passed in stepping
+ALL WORKING
+Warning: BESS 1 SoC hit upper bound (90%)
+  Attempted: 90.2%, Clipped to: 90%
+Warning: BESS 3 SoC hit lower bound (10%)
+  Attempted: -44.1%, Clipped to: 10%
+Warning: BESS 4 SoC hit lower bound (10%)
+  Attempted: -20.6%, Clipped to: 10%
+Max loading after: 13.020465872527168
+[DEBUG] Action already in MW (from env.bess_power): [11.855141   -0.11929497 -0.7661998  24.323849   13.751906  ]
+Created 5 BESS sgen elements at indices [103 104 105 106 107]
+Load flow passed in updating
+count= 46
+Max loading before: 13.946530831534911
+[DEBUG] Raw action from agent (normalized): [-0.4394356   0.10677706 -0.207133    0.8554313   0.2300843 ]
+[DEBUG] After scaling to MW: [-21.97178    5.338853 -10.356649  42.771564  11.504215]
+[DEBUG] Action magnitude (avg): 18.3886 MW
+[DEBUG] Action magnitude (max): 42.7716 MW
+[DEBUG] After clipping: [-21.97178    5.338853 -10.356649  42.771564  11.504215]
+Load flow passed in stepping
+ALL WORKING
+Warning: BESS 0 SoC hit upper bound (90%)
+  Attempted: 103.2%, Clipped to: 90%
+Warning: BESS 3 SoC hit lower bound (10%)
+  Attempted: -85.0%, Clipped to: 10%
+Warning: BESS 4 SoC hit lower bound (10%)
+  Attempted: -15.6%, Clipped to: 10%
+Max loading after: 12.995616647559896
+[DEBUG] Action already in MW (from env.bess_power): [-21.97178    5.338853 -10.356649  42.771564  11.504215]
+Created 5 BESS sgen elements at indices [103 104 105 106 107]
+Load flow passed in updating
+count= 47
+Max loading before: 12.929180207503885
+[DEBUG] Raw action from agent (normalized): [ 0.03015409  0.35872704 -0.11668807  0.38604653  1.3650323 ]
+[DEBUG] After scaling to MW: [ 1.5077044 17.936352  -5.8344035 19.302326  68.25162  ]
+[DEBUG] Action magnitude (avg): 22.5665 MW
+[DEBUG] Action magnitude (max): 68.2516 MW
+[DEBUG] After clipping: [ 1.5077044 17.936352  -5.8344035 19.302326  50.       ]
+Warning: Actions clipped for BESS units [4]
+  Original: [68.25162]
+  Clipped:  [50.]
+  Limit: ±50.0 MW
+Load flow passed in stepping
+ALL WORKING
+Warning: BESS 3 SoC hit lower bound (10%)
+  Attempted: -32.9%, Clipped to: 10%
+Warning: BESS 4 SoC hit lower bound (10%)
+  Attempted: -101.1%, Clipped to: 10%
+Max loading after: 28.096532929191902
+[DEBUG] Action already in MW (from env.bess_power): [ 1.5077044 17.936352  -5.8344035 19.302326  50.       ]
+Created 5 BESS sgen elements at indices [103 104 105 106 107]
+Load flow passed in updating
+count= 48
+Max loading before: 28.57399571559033
+[DEBUG] Raw action from agent (normalized): [ 0.33109775 -0.3948477   0.13686648  0.7960544  -0.89154804]
+[DEBUG] After scaling to MW: [ 16.554888 -19.742384   6.843324  39.802723 -44.5774  ]
+[DEBUG] Action magnitude (avg): 25.5041 MW
+[DEBUG] Action magnitude (max): 44.5774 MW
+[DEBUG] After clipping: [ 16.554888 -19.742384   6.843324  39.802723 -44.5774  ]
+Load flow passed in stepping
+ALL WORKING
+Warning: BESS 3 SoC hit lower bound (10%)
+  Attempted: -78.5%, Clipped to: 10%
+Warning: BESS 4 SoC hit upper bound (90%)
+  Attempted: 90.2%, Clipped to: 90%
+Max loading after: 14.859789472021474
+[DEBUG] Action already in MW (from env.bess_power): [ 16.554888 -19.742384   6.843324  39.802723 -44.5774  ]
+Created 5 BESS sgen elements at indices [103 104 105 106 107]
+Load flow passed in updating
+count= 49
+Max loading before: 14.854350683966569
+[DEBUG] Raw action from agent (normalized): [ 0.3569377   0.3216648   0.24661145  0.6052727  -0.29167777]
+[DEBUG] After scaling to MW: [ 17.846886  16.08324   12.330572  30.263636 -14.583889]
+[DEBUG] Action magnitude (avg): 18.2216 MW
+[DEBUG] Action magnitude (max): 30.2636 MW
+[DEBUG] After clipping: [ 17.846886  16.08324   12.330572  30.263636 -14.583889]
+Load flow passed in stepping
+ALL WORKING
+Warning: BESS 3 SoC hit lower bound (10%)
+  Attempted: -57.3%, Clipped to: 10%
+Warning: BESS 4 SoC hit upper bound (90%)
+  Attempted: 116.3%, Clipped to: 90%
+Max loading after: 25.129880893522806
+Load flow passed in reset
+BESS initialized: 5 units at buses [ 39 189 230 281 282]
+Initial SoC: [50. 50. 50. 50. 50.]% | Initial power: [0. 0. 0. 0. 0.] MW
+Max loading before: 7.303485084817017
+[DEBUG] Raw action from agent (normalized): [ 0.10743119 -0.43678838  1.0828544   0.22398202 -0.3339576 ]
+[DEBUG] After scaling to MW: [  5.3715596 -21.839418   54.14272    11.199101  -16.69788  ]
+[DEBUG] Action magnitude (avg): 21.8501 MW
+[DEBUG] Action magnitude (max): 54.1427 MW
+[DEBUG] After clipping: [  5.3715596 -21.839418   50.         11.199101  -16.69788  ]
+Warning: Actions clipped for BESS units [2]
+  Original: [54.14272]
+  Clipped:  [50.]
+  Limit: ±50.0 MW
+Created 5 BESS sgen elements at indices [103 104 105 106 107]
+Load flow passed in stepping
+ALL WORKING
+Warning: BESS 2 SoC hit lower bound (10%)
+  Attempted: -61.1%, Clipped to: 10%
+Max loading after: 16.498767493530035
+[DEBUG] Action already in MW (from env.bess_power): [  5.3715596 -21.839418   50.         11.199101  -16.69788  ]
+Created 5 BESS sgen elements at indices [103 104 105 106 107]
+Load flow passed in updating
+count= 1
+Max loading before: 16.508468833886276
+[DEBUG] Raw action from agent (normalized): [ 0.4268523  -0.26165482  0.9259169   0.49868667  0.58558893]
+[DEBUG] After scaling to MW: [ 21.342615 -13.082741  46.295845  24.934334  29.279446]
+[DEBUG] Action magnitude (avg): 26.9870 MW
+[DEBUG] Action magnitude (max): 46.2958 MW
+[DEBUG] After clipping: [ 21.342615 -13.082741  46.295845  24.934334  29.279446]
+Load flow passed in stepping
+ALL WORKING
+Warning: BESS 0 SoC hit lower bound (10%)
+  Attempted: -9.4%, Clipped to: 10%
+Warning: BESS 1 SoC hit upper bound (90%)
+  Attempted: 112.9%, Clipped to: 90%
+Warning: BESS 2 SoC hit lower bound (10%)
+  Attempted: -92.9%, Clipped to: 10%
+Warning: BESS 3 SoC hit lower bound (10%)
+  Attempted: -30.3%, Clipped to: 10%
+Max loading after: 20.65523341447852
+[DEBUG] Action already in MW (from env.bess_power): [ 21.342615 -13.082741  46.295845  24.934334  29.279446]
+Created 5 BESS sgen elements at indices [103 104 105 106 107]
+Load flow passed in updating
+count= 2
+ 100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 151,552/150,000  [ 10:42:11 < 0:00:00 , 4 it/s ]
+wandb:
+wandb: Run history:
+wandb:                      bess/avg_power ▄▁▃▄▁▁▃▄▄▁▄▅▁▆▆▅▆▂▆▅▄▄▄▆▃▅█▁▃▇▂▁▆▇▁▅▄▇▅▆
+wandb:                        bess/avg_soc ▄▆▆▆▆▆▇▁▄▆▆▄▂▆▅▆▅▆▃▂▇▆▃▆█▇▇▂▄▂▄▃▁▄▄█▆▃▅▅
+wandb:           bess_summary/active_units █▁▁████████████▇███▇█████████▁█████████▁
+wandb:      bess_summary/power_utilization ▅▄▆▄▄▅▆▇▃▃▄▅▃▁▅█▅▁▆▆▅▆▅▁▅▆▄▆▁█▆▇▁█▁▁▆▅▁▁
+wandb:        bess_summary/soc_utilization ▄▅▅▃▅▅▄▂▄▄▄▃▄▆▆▄▅▄▂▃▃▅▃▄█▅▂▃▂▁▄▁▅▃▄▄▃▃▄▅
+wandb:      bess_units/bess_1_bus_39/power ▅▂▄▃▇▆▄█▅▂▄▅▄▁▃▄▅▄▄▄▅▂▅▆▄▄▅▅▄▄▆▃▂▂▆▄▄▃▇▄
+wandb:  bess_units/bess_1_bus_39/power_abs ▅▁▃▁▃▁▁▂▁▇▃▄▃▃▁▁▃▄▁▄▁▂▂▄▁▂▁▁▁▇▃▁▂▃▁▁█▁▂▃
+wandb:        bess_units/bess_1_bus_39/soc ▂▅▅▁▆█▅▃█▅▁▄▅▁█▁▆▄▂▆▅▇▅▃▃▅▁▇▆██▅▁▅█▇███▇
+wandb:     bess_units/bess_2_bus_189/power ▄▅▄▄▄▄▂▃▂▄▄▄▆▃▅▁▂▄▄▄▄▆█▃▄▇▅▂▄▄▄▅▄▄▄▄▃▄▆▆
+wandb: bess_units/bess_2_bus_189/power_abs ▂▁▂▂▄▃▄█▁▃▁▃▁█▁▁▂▄▁▁▁▁▂▂▂▄▂▂▄▃▁▄▁▆▄▃▁▅▂▃
+wandb:                                 +24 ...
+wandb:
+wandb: Run summary:
+wandb:                      bess/avg_power 0
+wandb:                        bess/avg_soc 0.5
+wandb:           bess_summary/active_units 0
+wandb:      bess_summary/power_utilization 0
+wandb:        bess_summary/soc_utilization 0.5
+wandb:      bess_units/bess_1_bus_39/power 0
+wandb:  bess_units/bess_1_bus_39/power_abs 0
+wandb:        bess_units/bess_1_bus_39/soc 0.5
+wandb:     bess_units/bess_2_bus_189/power 0
+wandb: bess_units/bess_2_bus_189/power_abs 0
+wandb:                                 +24 ...
+wandb:
+wandb:  View run reward_scaling_fix_1 at: https://wandb.ai/Thesis_BESS_ENV/thesis-bess-env/runs/5oldg7x8
+wandb:  View project at: https://wandb.ai/Thesis_BESS_ENV/thesis-bess-env
+wandb: Synced 8 W&B file(s), 0 media file(s), 2 artifact file(s) and 0 other file(s)
+wandb: Find logs at: .\wandb\run-20251101_014757-5oldg7x8\logs
+(power) PS D:\Thesis\Project backup\Modif\ThesisEnv_refactor_withAllModif> 

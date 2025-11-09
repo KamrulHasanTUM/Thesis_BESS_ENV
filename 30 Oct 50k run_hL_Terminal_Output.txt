@@ -1,0 +1,1021 @@
+'num_clipped': 0, 'utilization_bonus': np.float32(1.3574259),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': np.float32(-0.67704415)}
+Load flow passed in updating
+count= 30
+Max loading before: 7.185040732538739
+[DEBUG] Action already in MW (from env.bess_power): [ 8.155108    6.22461  
+8.3118305  -8.964817    0.23236336]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 7.184643453025121
+SoC: [0.653 0.436 0.67  0.671 0.613], Bounds: 0, Reward Parts:
+{'congestion': 0.023836770817080577, 'soc_penalty': -0.0,
+'num_near_bounds': 0, 'flexibility_bonus': 16.470666885375977,
+'clipping_penalty': -0.0, 'num_clipped': 0, 'utilization_bonus':
+np.float32(1.9133239), 'diversity_bonus': np.float64(20.0),
+'num_active_units': 4, 'soc_drift_penalty': np.float32(-0.07425999)}       
+Load flow passed in updating
+count= 31
+Max loading before: 7.104283008072855
+[DEBUG] Action already in MW (from env.bess_power): [  7.7986503   9.215394
+-30.928766    3.742151   -4.2551684]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 8.841786629031288
+SoC: [0.61  0.385 0.809 0.65  0.632], Bounds: 0, Reward Parts:
+{'congestion': -104.250217257506, 'soc_penalty': -0.0, 'num_near_bounds':  
+0, 'flexibility_bonus': 14.640605926513672, 'clipping_penalty': -0.0,      
+'num_clipped': 0, 'utilization_bonus': np.float32(3.3564079),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': np.float32(-0.29654628)}
+Load flow passed in updating
+count= 32
+Max loading before: 8.895273968192788
+[DEBUG] Action already in MW (from env.bess_power): [ 5.2461953 -9.429124  
+11.796919  -1.1439092  4.386172 ]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 8.74456584296754
+SoC: [0.58  0.427 0.743 0.656 0.608], Bounds: 0, Reward Parts:
+{'congestion': 9.042487513514814, 'soc_penalty': -0.0, 'num_near_bounds':  
+0, 'flexibility_bonus': 19.180435180664062, 'clipping_penalty': -0.0,      
+'num_clipped': 0, 'utilization_bonus': np.float32(1.9201391),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': np.float32(-0.008561212)}
+Load flow passed in updating
+count= 33
+Max loading before: 8.330741207183348
+[DEBUG] Action already in MW (from env.bess_power): [ -2.7943366 -10.707428
+2.6515794   6.7164993  -4.271088 ]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 9.836680833685186
+SoC: [0.593 0.476 0.729 0.618 0.627], Bounds: 0, Reward Parts:
+{'congestion': -90.35637759011031, 'soc_penalty': -0.0, 'num_near_bounds': 
+0, 'flexibility_bonus': 21.865585327148438, 'clipping_penalty': -0.0,      
+'num_clipped': 0, 'utilization_bonus': np.float32(1.6284559),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': np.float32(-0.07246298)}
+Load flow passed in updating
+count= 34
+Max loading before: 10.424377112651124
+[DEBUG] Action already in MW (from env.bess_power): [  7.9409385
+-10.5602045   0.9536579 -13.5250435   2.5569384]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 10.51027591972103
+SoC: [0.549 0.523 0.723 0.679 0.613], Bounds: 0, Reward Parts:
+{'congestion': -5.153928424194376, 'soc_penalty': -0.0, 'num_near_bounds': 
+0, 'flexibility_bonus': 21.795665740966797, 'clipping_penalty': -0.0,      
+'num_clipped': 0, 'utilization_bonus': np.float32(2.132207),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': np.float32(-0.30503935)}
+Load flow passed in updating
+count= 35
+Max loading before: 10.441564791480436
+[DEBUG] Action already in MW (from env.bess_power): [-16.52111    11.059653
+-6.178159   -2.110429   -1.7185311]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 6.905362468913482
+SoC: [0.623 0.462 0.751 0.689 0.621], Bounds: 0, Reward Parts:
+{'congestion': 212.17213935401728, 'soc_penalty': -0.0, 'num_near_bounds': 
+0, 'flexibility_bonus': 16.463680267333984, 'clipping_penalty': -0.0,      
+'num_clipped': 0, 'utilization_bonus': np.float32(2.255273),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': np.float32(-0.8440315)}
+Load flow passed in updating
+count= 36
+Max loading before: 6.914677234527228
+[DEBUG] Action already in MW (from env.bess_power): [ 14.612939
+2.5858212 -10.19707     4.103524  -14.657604 ]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 10.974217067631402
+SoC: [0.542 0.447 0.797 0.666 0.687], Bounds: 0, Reward Parts:
+{'congestion': -243.57238998625044, 'soc_penalty': -0.0, 'num_near_bounds':
+0, 'flexibility_bonus': 17.646453857421875, 'clipping_penalty': -0.0,      
+'num_clipped': 0, 'utilization_bonus': np.float32(2.7694175),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': np.float32(-0.770187)}
+Load flow passed in updating
+count= 37
+Max loading before: 10.601457377523294
+[DEBUG] Action already in MW (from env.bess_power): [ -5.727772  -2.814865 
+13.198609 -12.201716  22.959963]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 9.427173511331016
+SoC: [0.568 0.46  0.724 0.721 0.559], Bounds: 0, Reward Parts:
+{'congestion': 70.45703197153668, 'soc_penalty': -0.0, 'num_near_bounds':  
+0, 'flexibility_bonus': 21.656274795532227, 'clipping_penalty': -0.0,      
+'num_clipped': 0, 'utilization_bonus': np.float32(3.4141753),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': np.float32(-0.039011683)}
+Load flow passed in updating
+count= 38
+Max loading before: 9.47868166696752
+[DEBUG] Action already in MW (from env.bess_power): [ 0.8179408  8.273327  
+-5.2425203 10.230409  15.221731 ]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 7.379121674340612
+SoC: [0.563 0.414 0.747 0.664 0.475], Bounds: 0, Reward Parts:
+{'congestion': 125.97359955761442, 'soc_penalty': -0.0, 'num_near_bounds': 
+0, 'flexibility_bonus': 23.081130981445312, 'clipping_penalty': -0.0,      
+'num_clipped': 0, 'utilization_bonus': np.float32(2.3871558),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': 0.0}
+Load flow passed in updating
+count= 39
+Max loading before: 7.40530822233029
+[DEBUG] Action already in MW (from env.bess_power): [ -7.3031716
+7.2611227   2.3846111 -10.032376   -9.824732 ]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 8.884066320327232
+SoC: [0.596 0.374 0.734 0.709 0.519], Bounds: 0, Reward Parts:
+{'congestion': -88.72548587981653, 'soc_penalty': -0.0, 'num_near_bounds': 
+0, 'flexibility_bonus': 17.942838668823242, 'clipping_penalty': -0.0,      
+'num_clipped': 0, 'utilization_bonus': np.float32(2.208361),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': 0.0}
+Load flow passed in updating
+count= 40
+Max loading before: 8.896056448486418
+[DEBUG] Action already in MW (from env.bess_power): [  5.4117436   6.820737
+-10.374213   -3.6267183   5.1468754]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 6.541676936076471
+SoC: [0.566 0.336 0.781 0.725 0.49 ], Bounds: 0, Reward Parts:
+{'congestion': 141.26277074459676, 'soc_penalty': -0.0, 'num_near_bounds': 
+0, 'flexibility_bonus': 18.00149154663086, 'clipping_penalty': -0.0,       
+'num_clipped': 0, 'utilization_bonus': np.float32(1.8828173),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': 0.0}
+Load flow passed in updating
+count= 41
+Max loading before: 6.5599384896305555
+[DEBUG] Action already in MW (from env.bess_power): [-10.540727
+-7.8261456   0.4697794  -8.173225    4.7552085]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 8.650251995584204
+SoC: [0.613 0.371 0.778 0.762 0.464], Bounds: 0, Reward Parts:
+{'congestion': -125.41881035721893, 'soc_penalty': -0.0, 'num_near_bounds':
+0, 'flexibility_bonus': 16.069820404052734, 'clipping_penalty': -0.0,      
+'num_clipped': 0, 'utilization_bonus': np.float32(1.9059052),
+'diversity_bonus': np.float64(20.0), 'num_active_units': 4,
+'soc_drift_penalty': 0.0}
+Load flow passed in updating
+count= 42
+Max loading before: 8.266836790841886
+[DEBUG] Action already in MW (from env.bess_power): [ 2.4150138  5.8501015 
+-0.3608402 -2.884315  -7.406497 ]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 7.597473241566304
+SoC: [0.6   0.339 0.78  0.775 0.497], Bounds: 0, Reward Parts:
+{'congestion': 40.161812956534924, 'soc_penalty': -0.0, 'num_near_bounds': 
+0, 'flexibility_bonus': 16.78209114074707, 'clipping_penalty': -0.0,       
+'num_clipped': 0, 'utilization_bonus': np.float32(1.1350061),
+'diversity_bonus': np.float64(20.0), 'num_active_units': 4,
+'soc_drift_penalty': 0.0}
+Load flow passed in updating
+count= 43
+Max loading before: 7.661826407472663
+[DEBUG] Action already in MW (from env.bess_power): [-12.535986  -13.857805
+1.6389042  -5.1731744  -7.288141 ]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 11.012646749204071
+SoC: [0.656 0.401 0.771 0.798 0.53 ], Bounds: 0, Reward Parts:
+{'congestion': -201.0492205038845, 'soc_penalty': -0.0, 'num_near_bounds': 
+0, 'flexibility_bonus': 15.728174209594727, 'clipping_penalty': -0.0,      
+'num_clipped': 0, 'utilization_bonus': np.float32(2.4296405),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': np.float32(-0.97543555)}
+Load flow passed in updating
+count= 44
+Max loading before: 11.26467580376846
+[DEBUG] Action already in MW (from env.bess_power): [-3.6656811 -1.7163506 
+5.947383  -7.9076962 11.509124 ]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 6.407844526236561
+SoC: [0.673 0.409 0.737 0.834 0.466], Bounds: 0, Reward Parts:
+{'congestion': 291.409876651914, 'soc_penalty': -0.0, 'num_near_bounds': 0,
+'flexibility_bonus': 15.083752632141113, 'clipping_penalty': -0.0,
+'num_clipped': 0, 'utilization_bonus': np.float32(1.844774),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': np.float32(-0.56628007)}
+Load flow passed in updating
+count= 45
+Max loading before: 6.179933999647229
+[DEBUG] Action already in MW (from env.bess_power): [  1.1237036   6.883212
+-14.027986   17.326923    7.979212 ]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 12.739291761426182
+SoC: [0.667 0.37  0.801 0.738 0.422], Bounds: 0, Reward Parts:
+{'congestion': -393.5614657067372, 'soc_penalty': -0.0, 'num_near_bounds': 
+0, 'flexibility_bonus': 11.267441749572754, 'clipping_penalty': -0.0,      
+'num_clipped': 0, 'utilization_bonus': np.float32(2.8404622),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': 0.0}
+Load flow passed in updating
+count= 46
+Max loading before: 12.7408641972408
+[DEBUG] Action already in MW (from env.bess_power): [ -0.6374092 -13.694899
+-7.476844   -9.637446   -1.5078019]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 10.726862316061753
+SoC: [0.67  0.432 0.834 0.781 0.428], Bounds: 0, Reward Parts:
+{'congestion': 120.84011287074279, 'soc_penalty': -0.0, 'num_near_bounds': 
+0, 'flexibility_bonus': 14.54463005065918, 'clipping_penalty': -0.0,       
+'num_clipped': 0, 'utilization_bonus': np.float32(1.9772642),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': np.float32(-0.8448491)}
+Load flow passed in updating
+count= 47
+Max loading before: 10.809797873406387
+[DEBUG] Action already in MW (from env.bess_power): [-7.0255337  4.4492807 
+8.58759   -1.522012   2.3952465]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 5.92899333516371
+SoC: [0.701 0.407 0.787 0.788 0.415], Bounds: 0, Reward Parts:
+{'congestion': 292.8482722945606, 'soc_penalty': -0.0, 'num_near_bounds':  
+0, 'flexibility_bonus': 11.122148513793945, 'clipping_penalty': -0.0,      
+'num_clipped': 0, 'utilization_bonus': np.float32(1.4387798),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': np.float32(-0.38464367)}
+Load flow passed in updating
+count= 48
+Max loading before: 5.4629612889976595
+[DEBUG] Action already in MW (from env.bess_power): [10.966993   14.341906 
+-5.0396333   0.28710574 -0.6263973 ]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 5.4645887360369265
+SoC: [0.64  0.328 0.809 0.786 0.418], Bounds: 0, Reward Parts:
+{'congestion': -0.09764682235601896, 'soc_penalty': -0.0,
+'num_near_bounds': 0, 'flexibility_bonus': 10.266093254089355,
+'clipping_penalty': -0.0, 'num_clipped': 0, 'utilization_bonus':
+np.float32(1.8757219), 'diversity_bonus': np.float64(20.0),
+'num_active_units': 4, 'soc_drift_penalty': 0.0}
+Load flow passed in updating
+count= 49
+Max loading before: 5.189753531419117
+[DEBUG] Action already in MW (from env.bess_power): [-4.215443  -7.6514697 
+-0.7529188 -3.655452  -3.9599202]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 7.923669522554134
+SoC: [0.659 0.362 0.813 0.803 0.436], Bounds: 0, Reward Parts:
+{'congestion': -164.034959468101, 'soc_penalty': -0.0, 'num_near_bounds':  
+0, 'flexibility_bonus': 11.930181503295898, 'clipping_penalty': -0.0,      
+'num_clipped': 0, 'utilization_bonus': np.float32(1.2141123),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': np.float32(-0.20976758)}
+Load flow passed in reset
+BESS initialized: 5 units at buses [209 147 245 131  60]
+Initial SoC: [50. 50. 50. 50. 50.]% | Initial power: [0. 0. 0. 0. 0.] MW   
+Max loading before: 5.26879337494469
+[DEBUG] Action already in MW (from env.bess_power): [-13.389967
+0.71138006  -7.515412    -3.3719313   -2.9581878 ]
+Created 5 BESS sgen elements at indices [103 104 105 106 107]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 5.824796495808579
+SoC: [0.56  0.496 0.534 0.515 0.513], Bounds: 0, Reward Parts:
+{'congestion': -33.36018725183335, 'soc_penalty': -0.0, 'num_near_bounds': 
+0, 'flexibility_bonus': 43.674400329589844, 'clipping_penalty': -0.0,      
+'num_clipped': 0, 'utilization_bonus': np.float32(1.6768128),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': 0.0}
+Load flow passed in updating
+count= 1
+Max loading before: 5.7563164761943675
+[DEBUG] Action already in MW (from env.bess_power): [ 5.8950787 -7.1598434 
+11.951167  -6.6202044 -1.060854 ]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 6.761077752808123
+SoC: [0.528 0.528 0.467 0.545 0.518], Bounds: 0, Reward Parts:
+{'congestion': -60.28567659682531, 'soc_penalty': -0.0, 'num_near_bounds': 
+0, 'flexibility_bonus': 42.43010711669922, 'clipping_penalty': -0.0,       
+'num_clipped': 0, 'utilization_bonus': np.float32(1.9612287),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': 0.0}
+Load flow passed in updating
+count= 2
+Max loading before: 6.812660404837509
+[DEBUG] Action already in MW (from env.bess_power): [-4.1278257 -2.165033  
+7.781867   6.111779  -1.6023221]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 5.589140114256408
+SoC: [0.546 0.538 0.424 0.511 0.525], Bounds: 0, Reward Parts:
+{'congestion': 73.41121743486602, 'soc_penalty': -0.0, 'num_near_bounds':  
+0, 'flexibility_bonus': 40.18977737426758, 'clipping_penalty': -0.0,       
+'num_clipped': 0, 'utilization_bonus': np.float32(1.3073295),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': 0.0}
+Load flow passed in updating
+count= 3
+Max loading before: 5.417494934199218
+[DEBUG] Action already in MW (from env.bess_power): [16.441017   2.7059336 
+-1.5610278 -8.551925   2.8117123]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 6.647575642456416
+SoC: [0.455 0.523 0.431 0.549 0.51 ], Bounds: 0, Reward Parts:
+{'congestion': -73.80484249543187, 'soc_penalty': -0.0, 'num_near_bounds': 
+0, 'flexibility_bonus': 40.19050979614258, 'clipping_penalty': -0.0,       
+'num_clipped': 0, 'utilization_bonus': np.float32(1.9242967),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': 0.0}
+Load flow passed in updating
+count= 4
+Max loading before: 6.637858077284017
+[DEBUG] Action already in MW (from env.bess_power): [-6.489375   2.715295  
+6.0708547 16.8798    -9.174405 ]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 12.426676118921872
+SoC: [0.484 0.508 0.397 0.456 0.551], Bounds: 0, Reward Parts:
+{'congestion': -347.3290824982713, 'soc_penalty': -0.0, 'num_near_bounds': 
+0, 'flexibility_bonus': 38.91484832763672, 'clipping_penalty': -0.0,       
+'num_clipped': 0, 'utilization_bonus': np.float32(2.4797838),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': 0.0}
+Load flow passed in updating
+count= 5
+Max loading before: 12.437433287742586
+[DEBUG] Action already in MW (from env.bess_power): [ 3.317148   9.631213  
+18.20575    3.8291152 -9.122673 ]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 7.352952519797615
+SoC: [0.466 0.454 0.296 0.434 0.592], Bounds: 0, Reward Parts:
+{'congestion': 305.06884607669826, 'soc_penalty': -0.0, 'num_near_bounds': 
+0, 'flexibility_bonus': 28.1165771484375, 'clipping_penalty': -0.0,        
+'num_clipped': 0, 'utilization_bonus': np.float32(2.646354),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': 0.0}
+Load flow passed in updating
+count= 6
+Max loading before: 7.439673003274391
+[DEBUG] Action already in MW (from env.bess_power): [ 3.7221472 10.958823  
+3.7194152 -4.7260504  5.8475504]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 4.719449898678625
+SoC: [0.445 0.394 0.276 0.456 0.56 ], Bounds: 0, Reward Parts:
+{'congestion': 163.213386275746, 'soc_penalty': -0.0, 'num_near_bounds': 0,
+'flexibility_bonus': 26.72620964050293, 'clipping_penalty': -0.0,
+'num_clipped': 0, 'utilization_bonus': np.float32(1.7384391),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': 0.0}
+Load flow passed in updating
+count= 7
+Max loading before: 4.738472630935372
+[DEBUG] Action already in MW (from env.bess_power): [-8.075916  -8.130403  
+-4.8035927  3.7891724  3.2683392]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 7.50815471593313
+SoC: [0.481 0.43  0.297 0.435 0.541], Bounds: 0, Reward Parts:
+{'congestion': -166.18092509986548, 'soc_penalty': -0.0, 'num_near_bounds':
+0, 'flexibility_bonus': 30.227954864501953, 'clipping_penalty': -0.0,      
+'num_clipped': 0, 'utilization_bonus': np.float32(1.6840453),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': 0.0}
+Load flow passed in updating
+count= 8
+Max loading before: 7.540483327928857
+[DEBUG] Action already in MW (from env.bess_power): [ 5.265263   1.4219967 
+-6.3311963  0.6440524 -4.4996767]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 5.441697088316157
+SoC: [0.452 0.422 0.326 0.431 0.562], Bounds: 0, Reward Parts:
+{'congestion': 125.927174376762, 'soc_penalty': -0.0, 'num_near_bounds': 0,
+'flexibility_bonus': 28.4685115814209, 'clipping_penalty': -0.0,
+'num_clipped': 0, 'utilization_bonus': np.float32(1.0897311),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': 0.0}
+Load flow passed in updating
+count= 9
+Max loading before: 5.432848151483602
+[DEBUG] Action already in MW (from env.bess_power): [ 2.3854792  -5.640307 
+10.309702   -0.10481672  9.7761755 ]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 5.562775553387018
+SoC: [0.439 0.448 0.269 0.432 0.507], Bounds: 0, Reward Parts:
+{'congestion': -7.795644114205, 'soc_penalty': -0.0, 'num_near_bounds': 0, 
+'flexibility_bonus': 30.524681091308594, 'clipping_penalty': -0.0,
+'num_clipped': 0, 'utilization_bonus': np.float32(1.6929889),
+'diversity_bonus': np.float64(20.0), 'num_active_units': 4,
+'soc_drift_penalty': 0.0}
+Load flow passed in updating
+count= 10
+Max loading before: 5.423464035546663
+[DEBUG] Action already in MW (from env.bess_power): [  2.2376368  -8.432877
+-12.734142    3.9821737  -4.754974 ]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 8.19239211652649
+SoC: [0.426 0.486 0.326 0.409 0.529], Bounds: 0, Reward Parts:
+{'congestion': -166.13568485878963, 'soc_penalty': -0.0, 'num_near_bounds':
+0, 'flexibility_bonus': 30.915313720703125, 'clipping_penalty': -0.0,      
+'num_clipped': 0, 'utilization_bonus': np.float32(1.9285083),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': 0.0}
+Load flow passed in updating
+count= 11
+Max loading before: 8.181906640940436
+[DEBUG] Action already in MW (from env.bess_power): [ 7.1692295  8.022842  
+15.217352  -4.110205  -1.692948 ]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 6.151449220008335
+SoC: [0.386 0.441 0.241 0.428 0.536], Bounds: 0, Reward Parts:
+{'congestion': 121.82744525592611, 'soc_penalty': -0.0, 'num_near_bounds': 
+0, 'flexibility_bonus': 25.948345184326172, 'clipping_penalty': -0.0,      
+'num_clipped': 0, 'utilization_bonus': np.float32(2.1727548),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': 0.0}
+Load flow passed in updating
+count= 12
+Max loading before: 6.146806398895476
+[DEBUG] Action already in MW (from env.bess_power): [  8.704325    4.686319
+-19.272694    8.655619   -0.5028931]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 6.321823329865143
+SoC: [0.338 0.415 0.328 0.38  0.539], Bounds: 0, Reward Parts:
+{'congestion': -10.501015858180018, 'soc_penalty': -0.0, 'num_near_bounds':
+0, 'flexibility_bonus': 21.111377716064453, 'clipping_penalty': -0.0,      
+'num_clipped': 0, 'utilization_bonus': np.float32(2.5093112),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': np.float32(-1.4645788e-05)}
+Load flow passed in updating
+count= 13
+Max loading before: 6.366018364590896
+[DEBUG] Action already in MW (from env.bess_power): [-3.4673214 -1.0736455 
+-6.033425  -4.104615  -1.9540286]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 5.537810000844984
+SoC: [0.354 0.42  0.355 0.398 0.547], Bounds: 0, Reward Parts:
+{'congestion': 49.6925018247547, 'soc_penalty': -0.0, 'num_near_bounds': 0,
+'flexibility_bonus': 23.974498748779297, 'clipping_penalty': -0.0,
+'num_clipped': 0, 'utilization_bonus': np.float32(0.997982),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': 0.0}
+Load flow passed in updating
+count= 14
+Max loading before: 5.4452530936336
+[DEBUG] Action already in MW (from env.bess_power): [  2.0424821
+-0.17884383   1.2733138  -18.806952     1.1574391 ]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 14.317703564673081
+SoC: [0.342 0.421 0.348 0.483 0.541], Bounds: 0, Reward Parts:
+{'congestion': -532.3470282623689, 'soc_penalty': -0.0, 'num_near_bounds': 
+0, 'flexibility_bonus': 27.64676284790039, 'clipping_penalty': -0.0,       
+'num_clipped': 0, 'utilization_bonus': np.float32(1.4075419),
+'diversity_bonus': np.float64(20.0), 'num_active_units': 4,
+'soc_drift_penalty': 0.0}
+Load flow passed in updating
+count= 15
+Max loading before: 14.33898578513604
+[DEBUG] Action already in MW (from env.bess_power): [ 0.6500521 -3.7016988 
+3.7385604 16.208313  -2.6023705]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 11.935734722571526
+SoC: [0.339 0.437 0.327 0.393 0.553], Bounds: 0, Reward Parts:
+{'congestion': 144.19506375387087, 'soc_penalty': -0.0, 'num_near_bounds': 
+0, 'flexibility_bonus': 22.172746658325195, 'clipping_penalty': -0.0,      
+'num_clipped': 0, 'utilization_bonus': np.float32(1.6140597),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': 0.0}
+Load flow passed in updating
+count= 16
+Max loading before: 11.936392434115227
+[DEBUG] Action already in MW (from env.bess_power): [-6.419462   3.6705668 
+11.324475   2.216265   3.781581 ]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 4.68585528344636
+SoC: [0.368 0.417 0.264 0.381 0.532], Bounds: 0, Reward Parts:
+{'congestion': 435.03222904013205, 'soc_penalty': -0.0, 'num_near_bounds': 
+0, 'flexibility_bonus': 21.666852951049805, 'clipping_penalty': -0.0,      
+'num_clipped': 0, 'utilization_bonus': np.float32(1.6447409),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': np.float32(-0.06074714)}
+Load flow passed in updating
+count= 17
+Max loading before: 4.586017232709814
+[DEBUG] Action already in MW (from env.bess_power): [ 8.61711   16.787186  
+-2.7421439 -5.0713205  4.6522455]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 4.586647139152372
+SoC: [0.32  0.324 0.277 0.403 0.506], Bounds: 0, Reward Parts:
+{'congestion': -0.0377943865535002, 'soc_penalty': -0.0, 'num_near_bounds':
+0, 'flexibility_bonus': 17.043441772460938, 'clipping_penalty': -0.0,      
+'num_clipped': 0, 'utilization_bonus': np.float32(2.2722006),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': np.float32(-1.166774)}
+Load flow passed in updating
+count= 18
+Max loading before: 4.356446543064179
+[DEBUG] Action already in MW (from env.bess_power): [  5.6888356
+-11.039729     0.18392113 -10.12189     -6.7403064 ]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 8.300125500756982
+SoC: [0.288 0.373 0.276 0.449 0.536], Bounds: 0, Reward Parts:
+{'congestion': -236.6207374615682, 'soc_penalty': -0.0, 'num_near_bounds': 
+0, 'flexibility_bonus': 19.302509307861328, 'clipping_penalty': -0.0,      
+'num_clipped': 0, 'utilization_bonus': np.float32(2.026481),
+'diversity_bonus': np.float64(20.0), 'num_active_units': 4,
+'soc_drift_penalty': np.float32(-0.24247617)}
+Load flow passed in updating
+count= 19
+Max loading before: 8.423805083772221
+[DEBUG] Action already in MW (from env.bess_power): [ 0.86336106  1.0942922
+-7.5897975   1.7614673  -4.780063  ]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 5.3180476114123
+SoC: [0.283 0.367 0.31  0.439 0.558], Bounds: 0, Reward Parts:
+{'congestion': 186.34544834159524, 'soc_penalty': -0.0, 'num_near_bounds': 
+0, 'flexibility_bonus': 17.9271183013916, 'clipping_penalty': -0.0,        
+'num_clipped': 0, 'utilization_bonus': np.float32(0.9653389),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': np.float32(-0.07346395)}
+Load flow passed in updating
+count= 20
+Max loading before: 5.468641689815031
+[DEBUG] Action already in MW (from env.bess_power): [-25.154001   -3.575686
+-1.5232718  -3.1623468  -4.7843943]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 6.565290873752621
+SoC: [0.397 0.383 0.317 0.453 0.579], Bounds: 0, Reward Parts:
+{'congestion': -65.79895103625545, 'soc_penalty': -0.0, 'num_near_bounds': 
+0, 'flexibility_bonus': 23.534746170043945, 'clipping_penalty': -0.0,      
+'num_clipped': 0, 'utilization_bonus': np.float32(2.291982),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': 0.0}
+Load flow passed in updating
+count= 21
+Max loading before: 6.75442997217282
+[DEBUG] Action already in MW (from env.bess_power): [  0.4034143   7.092652
+-2.604131  -10.268489    1.4280003]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 7.892106132188538
+SoC: [0.394 0.344 0.328 0.5   0.571], Bounds: 0, Reward Parts:
+{'congestion': -68.26056960094313, 'soc_penalty': -0.0, 'num_near_bounds': 
+0, 'flexibility_bonus': 24.745512008666992, 'clipping_penalty': -0.0,      
+'num_clipped': 0, 'utilization_bonus': np.float32(1.3078012),
+'diversity_bonus': np.float64(20.0), 'num_active_units': 4,
+'soc_drift_penalty': 0.0}
+Load flow passed in updating
+count= 22
+Max loading before: 7.856044575040682
+[DEBUG] Action already in MW (from env.bess_power): [9.754821  1.3664595   
+4.390013  2.8156793 2.6686187]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 5.116846580257485
+SoC: [0.34  0.336 0.304 0.484 0.556], Bounds: 0, Reward Parts:
+{'congestion': 164.35187968699182, 'soc_penalty': -0.0, 'num_near_bounds': 
+0, 'flexibility_bonus': 20.395965576171875, 'clipping_penalty': -0.0,      
+'num_clipped': 0, 'utilization_bonus': np.float32(1.2597355),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': 0.0}
+Load flow passed in updating
+count= 23
+Max loading before: 4.962203903997338
+[DEBUG] Action already in MW (from env.bess_power): [10.183347  -8.76309   
+-1.0342487  9.580985  -8.992028 ]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 7.959230025483205
+SoC: [0.283 0.376 0.309 0.431 0.597], Bounds: 0, Reward Parts:
+{'congestion': -179.821567289152, 'soc_penalty': -0.0, 'num_near_bounds':  
+0, 'flexibility_bonus': 15.912181854248047, 'clipping_penalty': -0.0,      
+'num_clipped': 0, 'utilization_bonus': np.float32(2.313222),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': np.float32(-0.00081004086)}
+Load flow passed in updating
+count= 24
+Max loading before: 7.974080007487644
+[DEBUG] Action already in MW (from env.bess_power): [-1.1154093 -4.5525517 
+-4.896608  -1.1822815 -6.9767237]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 7.022635753642343
+SoC: [0.289 0.396 0.331 0.436 0.628], Bounds: 0, Reward Parts:
+{'congestion': 57.086655230718044, 'soc_penalty': -0.0, 'num_near_bounds': 
+0, 'flexibility_bonus': 16.734495162963867, 'clipping_penalty': -0.0,      
+'num_clipped': 0, 'utilization_bonus': np.float32(1.1234144),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': 0.0}
+Load flow passed in updating
+count= 25
+Max loading before: 6.81752598573208
+[DEBUG] Action already in MW (from env.bess_power): [ -4.566646   -3.577649
+-1.4243467  15.417959  -12.416613 ]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 11.385850150854075
+SoC: [0.309 0.412 0.337 0.35  0.684], Bounds: 0, Reward Parts:
+{'congestion': -274.09944990731975, 'soc_penalty': -0.0, 'num_near_bounds':
+0, 'flexibility_bonus': 11.236786842346191, 'clipping_penalty': -0.0,      
+'num_clipped': 0, 'utilization_bonus': np.float32(2.2441928),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': 0.0}
+Load flow passed in updating
+count= 26
+Max loading before: 11.400427534714453
+[DEBUG] Action already in MW (from env.bess_power): [  7.809904    5.644197
+-9.849093  -17.103281   -1.9622104]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 13.005621440367014
+SoC: [0.266 0.381 0.381 0.427 0.693], Bounds: 0, Reward Parts:
+{'congestion': -96.31163433915364, 'soc_penalty': -0.0, 'num_near_bounds': 
+0, 'flexibility_bonus': 14.83839225769043, 'clipping_penalty': -0.0,       
+'num_clipped': 0, 'utilization_bonus': np.float32(2.5421212),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': 0.0}
+Load flow passed in updating
+count= 27
+Max loading before: 13.029039173988535
+[DEBUG] Action already in MW (from env.bess_power): [-36.446835
+2.2004929   0.7350031  -7.8551984   4.5956807]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 6.191106334177865
+SoC: [0.43  0.369 0.377 0.463 0.667], Bounds: 0, Reward Parts:
+{'congestion': 410.2759703886402, 'soc_penalty': -0.0, 'num_near_bounds':  
+0, 'flexibility_bonus': 23.551441192626953, 'clipping_penalty': -0.0,      
+'num_clipped': 0, 'utilization_bonus': np.float32(3.1099923),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': 0.0}
+Load flow passed in updating
+count= 28
+Max loading before: 6.214552649374995
+[DEBUG] Action already in MW (from env.bess_power): [ 8.115974   4.0907893 
+-5.3477597  2.044753  12.767485 ]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 5.271483133242636
+SoC: [0.385 0.346 0.401 0.451 0.597], Bounds: 0, Reward Parts:
+{'congestion': 56.58417096794152, 'soc_penalty': -0.0, 'num_near_bounds':  
+0, 'flexibility_bonus': 24.342458724975586, 'clipping_penalty': -0.0,      
+'num_clipped': 0, 'utilization_bonus': np.float32(1.9420056),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': 0.0}
+Load flow passed in updating
+count= 29
+Max loading before: 5.0762127209200285
+[DEBUG] Action already in MW (from env.bess_power): [  5.064366  -17.154894
+8.123008    1.5986651 -15.395054 ]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 10.881137345026385
+SoC: [0.356 0.423 0.356 0.442 0.666], Bounds: 0, Reward Parts:
+{'congestion': -348.29547744638137, 'soc_penalty': -0.0, 'num_near_bounds':
+0, 'flexibility_bonus': 20.631189346313477, 'clipping_penalty': -0.0,      
+'num_clipped': 0, 'utilization_bonus': np.float32(2.8401594),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': 0.0}
+Load flow passed in updating
+count= 30
+Max loading before: 11.257818139899994
+[DEBUG] Action already in MW (from env.bess_power): [ -8.391343   -9.001055
+-17.438559    9.388361    5.5151505]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 8.912417813805778
+SoC: [0.394 0.464 0.435 0.39  0.635], Bounds: 0, Reward Parts:
+{'congestion': 140.72401956565298, 'soc_penalty': -0.0, 'num_near_bounds': 
+0, 'flexibility_bonus': 27.392261505126953, 'clipping_penalty': -0.0,      
+'num_clipped': 0, 'utilization_bonus': np.float32(2.984068),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': 0.0}
+Load flow passed in updating
+count= 31
+Max loading before: 9.354676316788446
+[DEBUG] Action already in MW (from env.bess_power): [ -9.046748
+-1.5125004   -2.3626766  -10.693189     0.75480306]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 8.273861572766272
+SoC: [0.435 0.47  0.445 0.438 0.631], Bounds: 0, Reward Parts:
+{'congestion': 64.84888464133043, 'soc_penalty': -0.0, 'num_near_bounds':  
+0, 'flexibility_bonus': 32.91532516479492, 'clipping_penalty': -0.0,       
+'num_clipped': 0, 'utilization_bonus': np.float32(1.4621952),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': 0.0}
+Load flow passed in updating
+count= 32
+Max loading before: 8.267745435040522
+[DEBUG] Action already in MW (from env.bess_power): [-8.98604   -1.1459713 
+-6.8073473  8.61039   -6.9706755]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 7.497595469571079
+SoC: [0.475 0.476 0.476 0.391 0.662], Bounds: 0, Reward Parts:
+{'congestion': 46.20899792816658, 'soc_penalty': -0.0, 'num_near_bounds':  
+0, 'flexibility_bonus': 32.766510009765625, 'clipping_penalty': -0.0,      
+'num_clipped': 0, 'utilization_bonus': np.float32(1.9512255),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': 0.0}
+Load flow passed in updating
+count= 33
+Max loading before: 6.947170730380711
+[DEBUG] Action already in MW (from env.bess_power): [  6.580199  -15.351955
+2.8111384  14.938639   15.330436 ]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 10.938395650763116
+SoC: [0.439 0.545 0.46  0.308 0.577], Bounds: 0, Reward Parts:
+{'congestion': -239.47349522294428, 'soc_penalty': -0.0, 'num_near_bounds':
+0, 'flexibility_bonus': 29.250083923339844, 'clipping_penalty': -0.0,      
+'num_clipped': 0, 'utilization_bonus': np.float32(3.3007421),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': 0.0}
+Load flow passed in updating
+count= 34
+Max loading before: 10.963576573797958
+[DEBUG] Action already in MW (from env.bess_power): [  2.4953055
+-0.8759259   5.5174456  11.240413  -12.075298 ]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 9.11769121123262
+SoC: [0.425 0.549 0.43  0.245 0.631], Bounds: 0, Reward Parts:
+{'congestion': 110.75312175392031, 'soc_penalty': -0.0, 'num_near_bounds': 
+0, 'flexibility_bonus': 23.729984283447266, 'clipping_penalty': -0.0,      
+'num_clipped': 0, 'utilization_bonus': np.float32(1.9322631),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': 0.0}
+Load flow passed in updating
+count= 35
+Max loading before: 9.35975254905098
+[DEBUG] Action already in MW (from env.bess_power): [-18.567171
+7.4998183   1.2875576   0.4033899  -5.0567203]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 6.7516588287872885
+SoC: [0.509 0.507 0.423 0.243 0.654], Bounds: 0, Reward Parts:
+{'congestion': 156.48562321582145, 'soc_penalty': -0.0, 'num_near_bounds': 
+0, 'flexibility_bonus': 27.64480209350586, 'clipping_penalty': -0.0,       
+'num_clipped': 0, 'utilization_bonus': np.float32(1.9688796),
+'diversity_bonus': np.float64(20.0), 'num_active_units': 4,
+'soc_drift_penalty': 0.0}
+Load flow passed in updating
+count= 36
+Max loading before: 6.8902556403189195
+[DEBUG] Action already in MW (from env.bess_power): [-7.6046033 -7.8774304 
+-9.03396    3.819385   2.2883635]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 8.915043525882673
+SoC: [0.543 0.542 0.463 0.222 0.642], Bounds: 0, Reward Parts:
+{'congestion': -121.48727313382523, 'soc_penalty': -0.0, 'num_near_bounds':
+0, 'flexibility_bonus': 26.829641342163086, 'clipping_penalty': -0.0,      
+'num_clipped': 0, 'utilization_bonus': np.float32(1.8374246),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': 0.0}
+Load flow passed in updating
+count= 37
+Max loading before: 8.83653384415794
+[DEBUG] Action already in MW (from env.bess_power): [ 8.0504875  16.510975 
+-4.886668   -4.064913   -0.69851756]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 6.18293926867047
+SoC: [0.498 0.451 0.485 0.24  0.645], Bounds: 0, Reward Parts:
+{'congestion': 159.21567452924816, 'soc_penalty': -0.0, 'num_near_bounds': 
+0, 'flexibility_bonus': 29.46526527404785, 'clipping_penalty': -0.0,       
+'num_clipped': 0, 'utilization_bonus': np.float32(2.0526936),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': 0.0}
+Load flow passed in updating
+count= 38
+Max loading before: 6.979583641391835
+[DEBUG] Action already in MW (from env.bess_power): [-5.4595985 -6.3927608 
+-6.0558662  5.2543716 -1.6681545]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 9.045893252824836
+SoC: [0.523 0.479 0.513 0.211 0.652], Bounds: 0, Reward Parts:
+{'congestion': -123.97857668598009, 'soc_penalty': -0.0, 'num_near_bounds':
+0, 'flexibility_bonus': 29.608715057373047, 'clipping_penalty': -0.0,      
+'num_clipped': 0, 'utilization_bonus': np.float32(1.4898449),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': 0.0}
+Load flow passed in updating
+count= 39
+Max loading before: 9.537999494755535
+[DEBUG] Action already in MW (from env.bess_power): [ -0.314641
+0.5889605   -7.2352767  -19.07823      0.49140164]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 14.64225341487357
+SoC: [0.524 0.476 0.545 0.297 0.649], Bounds: 0, Reward Parts:
+{'congestion': -306.2552352070821, 'soc_penalty': -0.0, 'num_near_bounds': 
+0, 'flexibility_bonus': 27.88288116455078, 'clipping_penalty': -0.0,       
+'num_clipped': 0, 'utilization_bonus': np.float32(1.6625106),
+'diversity_bonus': np.float64(15.0), 'num_active_units': 3,
+'soc_drift_penalty': 0.0}
+Load flow passed in updating
+count= 40
+Max loading before: 14.704565185255248
+[DEBUG] Action already in MW (from env.bess_power): [-11.768066
+1.3426317   4.465241   -2.5714085   8.048732 ]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 7.754588066860083
+SoC: [0.577 0.469 0.52  0.308 0.605], Bounds: 0, Reward Parts:
+{'congestion': 416.9986271037099, 'soc_penalty': -0.0, 'num_near_bounds':  
+0, 'flexibility_bonus': 28.749427795410156, 'clipping_penalty': -0.0,      
+'num_clipped': 0, 'utilization_bonus': np.float32(1.6917648),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': 0.0}
+Load flow passed in updating
+count= 41
+Max loading before: 8.132136018254219
+[DEBUG] Action already in MW (from env.bess_power): [ 2.8394141  6.2612534 
+-5.246263  -3.6522052  7.9200454]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 8.133641008878344
+SoC: [0.561 0.434 0.544 0.325 0.561], Bounds: 0, Reward Parts:
+{'congestion': -0.0902994374475341, 'soc_penalty': -0.0, 'num_near_bounds':
+0, 'flexibility_bonus': 29.6402645111084, 'clipping_penalty': -0.0,        
+'num_clipped': 0, 'utilization_bonus': np.float32(1.5551509),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': 0.0}
+Load flow passed in updating
+count= 42
+Max loading before: 8.083059294198245
+[DEBUG] Action already in MW (from env.bess_power): [ -0.22597405
+-2.3534048  -11.9686165  -13.595263    -5.7358003 ]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 10.54086582499335
+SoC: [0.562 0.445 0.598 0.386 0.587], Bounds: 0, Reward Parts:
+{'congestion': -147.46839184770633, 'soc_penalty': -0.0, 'num_near_bounds':
+0, 'flexibility_bonus': 29.194377899169922, 'clipping_penalty': -0.0,      
+'num_clipped': 0, 'utilization_bonus': np.float32(2.0327435),
+'diversity_bonus': np.float64(20.0), 'num_active_units': 4,
+'soc_drift_penalty': 0.0}
+Load flow passed in updating
+count= 43
+Max loading before: 10.583333028804551
+[DEBUG] Action already in MW (from env.bess_power): [  6.0096273 -11.738649
+-1.7365458  -6.7956405  -0.9961996]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 11.063109771710316
+SoC: [0.529 0.497 0.606 0.416 0.591], Bounds: 0, Reward Parts:
+{'congestion': -28.78660457434588, 'soc_penalty': -0.0, 'num_near_bounds': 
+0, 'flexibility_bonus': 34.4190673828125, 'clipping_penalty': -0.0,        
+'num_clipped': 0, 'utilization_bonus': np.float32(1.6365997),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': 0.0}
+Load flow passed in updating
+count= 44
+Max loading before: 11.147329768128168
+[DEBUG] Action already in MW (from env.bess_power): [  4.9155564  -8.894171
+11.635649  -11.136312    3.4240625]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 9.198979341354347
+SoC: [0.501 0.537 0.541 0.467 0.572], Bounds: 0, Reward Parts:
+{'congestion': 116.90102560642927, 'soc_penalty': -0.0, 'num_near_bounds': 
+0, 'flexibility_bonus': 40.7352294921875, 'clipping_penalty': -0.0,        
+'num_clipped': 0, 'utilization_bonus': np.float32(2.400345),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': 0.0}
+Load flow passed in updating
+count= 45
+Max loading before: 9.325079178441806
+[DEBUG] Action already in MW (from env.bess_power): [-6.77692  -8.623017   
+-5.850718 -9.784492 11.167293]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 9.948812598935088
+SoC: [0.532 0.576 0.567 0.511 0.51 ], Bounds: 0, Reward Parts:
+{'congestion': -37.42400522959695, 'soc_penalty': -0.0, 'num_near_bounds': 
+0, 'flexibility_bonus': 40.201194763183594, 'clipping_penalty': -0.0,      
+'num_clipped': 0, 'utilization_bonus': np.float32(2.5321465),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': 0.0}
+Load flow passed in updating
+count= 46
+Max loading before: 10.335804030851165
+[DEBUG] Action already in MW (from env.bess_power): [ 0.8244238  -7.7560296
+0.56768584  1.819847    2.2766469 ]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 9.97161414529223
+SoC: [0.527 0.611 0.564 0.5   0.497], Bounds: 0, Reward Parts:
+{'congestion': 21.851393133536057, 'soc_penalty': -0.0, 'num_near_bounds': 
+0, 'flexibility_bonus': 39.71360778808594, 'clipping_penalty': -0.0,       
+'num_clipped': 0, 'utilization_bonus': np.float32(0.79467803),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': 0.0}
+Load flow passed in updating
+count= 47
+Max loading before: 9.934525273235701
+[DEBUG] Action already in MW (from env.bess_power): [-7.846742
+-0.86228037  5.3623238  -9.174692   -4.030646  ]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 8.27920513385417
+SoC: [0.563 0.615 0.534 0.542 0.515], Bounds: 0, Reward Parts:
+{'congestion': 99.31920836289191, 'soc_penalty': -0.0, 'num_near_bounds':  
+0, 'flexibility_bonus': 36.53950500488281, 'clipping_penalty': -0.0,       
+'num_clipped': 0, 'utilization_bonus': np.float32(1.636601),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': 0.0}
+Load flow passed in updating
+count= 48
+Max loading before: 8.769908087714578
+[DEBUG] Action already in MW (from env.bess_power): [  3.348193   13.897155
+-20.415834    5.0007544  -7.1091866]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 9.448203380104488
+SoC: [0.544 0.538 0.626 0.514 0.547], Bounds: 0, Reward Parts:
+{'congestion': -40.697717543394596, 'soc_penalty': -0.0, 'num_near_bounds':
+0, 'flexibility_bonus': 36.525848388671875, 'clipping_penalty': -0.0,      
+'num_clipped': 0, 'utilization_bonus': np.float32(2.9862673),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': 0.0}
+Load flow passed in updating
+count= 49
+Max loading before: 8.973345769630512
+[DEBUG] Action already in MW (from env.bess_power): [ -3.389387   -9.673546
+9.3334255  20.138151  -21.590046 ]
+Load flow passed in stepping
+ALL WORKING
+Max loading after: 14.762491897261487
+SoC: [0.559 0.581 0.574 0.402 0.645], Bounds: 0, Reward Parts:
+{'congestion': -347.3487676578585, 'soc_penalty': -0.0, 'num_near_bounds': 
+0, 'flexibility_bonus': 27.1231746673584, 'clipping_penalty': -0.0,        
+'num_clipped': 0, 'utilization_bonus': np.float32(3.8474731),
+'diversity_bonus': np.float64(25.0), 'num_active_units': 5,
+'soc_drift_penalty': 0.0}
+Load flow passed in reset
+BESS initialized: 5 units at buses [209 147 245 131  60]
+Initial SoC: [50. 50. 50. 50. 50.]% | Initial power: [0. 0. 0. 0. 0.] MW   
+ 100% ━━━━━━━━━━━━━━━━━━━━━━ 51,200/50,000  [ 1:26:23 < 0:00:00 , 10 it/s ]
+wandb: 
+wandb: Run history:
+wandb:                      bess/avg_power ▃▄▄▄▅▃▅▁▄▃▆▁▄▇▅▅█▁▄▄▁▃▁▄▅▄▂▄▁▄▆▅▆▁▆▁▅▆▃▅
+wandb:                        bess/avg_soc ▃▂▄▃▄▄▃▁▂▄▄▄▄▃▃▃▃▅▃▁▃▃▃▃▃▆█▅▄▄▂▃▃▃▆▃▃▃▃▃
+wandb:           bess_summary/active_units █▁██▇██████▇█▁████████▇███▁▁███████▁████
+wandb:      bess_summary/power_utilization ▅▄▁▅▇▄▇▁▃▆▇▅▅▃▄▃▅▅▅▁▅▄▁▅▅█▆▅▆▆▆▁█▆▆▁▄▁▅▁
+wandb:        bess_summary/soc_utilization ▅▃▅▆▆▅▄▄▆▅▃▄▄█▆▅▃▃▅▄▅▅▁▃▇▄▃▄▃█▆▄▅▅▄▃▆▃▄▅
+wandb:     bess_units/bess_1_bus_209/power ▅▆▄▅▁▅▃▅█▄▅▃▅▇▇▇▅▅▅▁▆▇▆▅▃▃▅▅▂▄▅▅▅▅▄█▃▅▃▄
+wandb: bess_units/bess_1_bus_209/power_abs ▁▅▃▃▃▁▆▁▄▄▃▃▁▆▁▄█▁▄▃▁▂▄▁▃▅▁▁▂▁▅▁▆▄▇▂▁▂▄▁
+wandb:       bess_units/bess_1_bus_209/soc ▅▃▄▄▆▅▆▅▆▃▁▄▅▃▃▄▄▄▄▅▅▅▃█▄▇▄▅▅▅▅▄▃█▇▁▄▅▅▁
+wandb:     bess_units/bess_2_bus_147/power ▄▅▆▆▅▅▄▅▅▇▅▆▅▆▅▅▅▆▄▆▇▅▆▅▆▁▅▅▁▃█▅▄▅█▆▅▆▆▅
+wandb: bess_units/bess_2_bus_147/power_abs ▃▁█▂▄▃▁▂▁▄▁▁▄▁▁▁▁▄▂▆▁▁▁▄▁▁▁▁▄▄▂▁▂▅▁▃▁▁▄▂
+wandb:                                 +24 ...
+wandb:
+wandb: Run summary:
+wandb:                      bess/avg_power 0
+wandb:                        bess/avg_soc 0.5
+wandb:           bess_summary/active_units 0
+wandb:      bess_summary/power_utilization 0
+wandb:        bess_summary/soc_utilization 0.5
+wandb:     bess_units/bess_1_bus_209/power 0
+wandb: bess_units/bess_1_bus_209/power_abs 0
+wandb:       bess_units/bess_1_bus_209/soc 0.5
+wandb:     bess_units/bess_2_bus_147/power 0
+wandb: bess_units/bess_2_bus_147/power_abs 0
+wandb:                                 +24 ...
+wandb:
+wandb:  View run PlanA_Multi-agent_7 at: https://wandb.ai/Thesis_BESS_ENV/thesis-bess-env/runs/fevj5rmk
+wandb:  View project at: https://wandb.ai/Thesis_BESS_ENV/thesis-bess-env  
+wandb: Synced 7 W&B file(s), 0 media file(s), 2 artifact file(s) and 0 other file(s)
+wandb: Find logs at: .\wandb\run-20251030_013930-fevj5rmk\logs
+(power) PS D:\Thesis\ThesisEnv_refactor> 

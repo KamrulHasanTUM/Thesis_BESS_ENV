@@ -46,7 +46,7 @@ def create_bess_env_config(init_meta):
     return {
         # ========== Grid Environment Parameters (from ENV_RHV) ==========
         'simbench_code': "1-HV-mixed--0-sw",
-        'case_study': 'bc',
+        'case_study': 'hL',
         'is_train': True,
         'is_normalize': False,
         'max_step': 50,
@@ -132,23 +132,13 @@ def create_training_config(init_meta):
         'ent_coef': 0.10,
         'max_grad_norm': 0.5,
 
-        # ========== TRAINING DURATION - 200K FULL TRAINING (Nov 3, 2025) ==========
-        # 50K TRAINING RESULTS (run-20251102_212152-535jye1k): SUCCESS ✅
-        #   ✅ BESS power increased over time (0-10 MW → 10-30 MW baseline)
-        #   ✅ Reward improved dramatically (-4000 → +8500, gain of +12,500)
-        #   ✅ All 5 BESS units consistently active (not idle)
-        #   ✅ Power utilization increased to 80%
-        #   ✅ SoC actively cycling (0.1-0.9 range, full operational window)
-        #   ✅ Success rate trending upward (47% → 50-62% spike)
-        #   ✅ Individual units using full ±40-50 MW action range
-        #
-        # DECISION: Proceed to 200K to stabilize policy and push success rate >60%
-        # Expected with 200K training:
-        #   - Success rate stabilizes consistently above 60%
-        #   - Reward converges to plateau
-        #   - Policy variance reduces (more consistent performance)
-        #   - Better action timing and magnitude refinement
-        'total_timesteps': 500_000,
+        # ========== DIAGNOSTIC TEST CONFIGURATION ==========
+        # DIAGNOSTIC: total_timesteps = 5,000
+        # Why: Quick diagnostic test to verify improvements work
+        #      5K timesteps = ~10-15 minutes of training
+        #      Target: <20% harmful actions, >80% success rate
+        #      If successful, scale up to 50K for full training
+        'total_timesteps': 5_000,
 
         # ========== LEARNING RATE TUNING (Section 12.6) ==========
         # CURRENT: initial_learning_rate = 0.0003
