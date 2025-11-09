@@ -1,0 +1,584 @@
+================================================================================
+STEP-BY-STEP IMPLEMENTATION GUIDE - FIXING 6K BREAKDOWN
+================================================================================
+Date: 2025-10-28
+Based on: COMPREHENSIVE_10K_TRAINING_ANALYSIS.txt
+Target: Fix reward breakdown after 6k timesteps
+Expected Result: >65% success rate, stable training to 50k steps
+================================================================================
+
+TOTAL CHANGES REQUIRED: 3 FILES, 5 MODIFICATIONS
+
+FILE 1: config.py - 3 changes
+FILE 2: env_helpers.py - 2 changes
+
+Time Required: 20-30 minutes
+Difficulty: Easy (copy-paste replacements)
+
+================================================================================
+CHANGE 1 of 5: INCREASE bonus_constant
+================================================================================
+
+FILE: D:\Thesis\ThesisEnv_refactor\config.py
+FUNCTION: create_bess_env_config()
+LINE NUMBER: 28
+
+WHY: Current bonus_constant (60) creates unstable learning. Need stronger
+     congestion reduction signal to prevent 6k breakdown.
+
+CURRENT CODE (Line 28):
+-------------------
+        'bonus_constant': 60,
+
+
+REPLACE WITH:
+-------------------
+        'bonus_constant': 100,
+
+
+VERIFICATION:
+After change, line 28 should read:
+        'bonus_constant': 100,
+
+Save file.
+
+================================================================================
+CHANGE 2 of 5: EXTEND TRAINING TIMESTEPS
+================================================================================
+
+FILE: D:\Thesis\ThesisEnv_refactor\config.py
+FUNCTION: create_training_config()
+LINE NUMBER: 62
+
+WHY: Current 10,000 timesteps insufficient for agent to learn grid dynamics.
+     Premature convergence at 6k. Need 50k for proper exploration.
+
+CURRENT CODE (Line 62):
+-------------------
+        'total_timesteps': 10000,
+
+
+REPLACE WITH:
+-------------------
+        'total_timesteps': 50000,
+
+
+VERIFICATION:
+After change, line 62 should read:
+        'total_timesteps': 50000,
+
+Save file.
+
+================================================================================
+CHANGE 3 of 5: REDUCE LEARNING RATE
+================================================================================
+
+FILE: D:\Thesis\ThesisEnv_refactor\config.py
+FUNCTION: create_training_config()
+LINE NUMBER: 63
+
+WHY: Current learning rate (0.0003) too aggressive, causing rapid convergence.
+     Slower rate provides more stable learning, prevents premature convergence.
+
+CURRENT CODE (Line 63):
+-------------------
+        'initial_learning_rate': 0.0003,
+
+
+REPLACE WITH:
+-------------------
+        'initial_learning_rate': 0.0001,
+
+
+VERIFICATION:
+After change, line 63 should read:
+        'initial_learning_rate': 0.0001,
+
+Save file.
+
+================================================================================
+CHANGE 4 of 5: FIX soc_drift_penalty - PART 1 (Replace existing code)
+================================================================================
+
+FILE: D:\Thesis\ThesisEnv_refactor\env_helpers.py
+FUNCTION: calculate_bess_reward()
+LINE NUMBERS: 917-921 (5 lines to replace)
+
+WHY: Current soc_drift_penalty penalizes ANY drift from 50%, even when agent
+     needs to discharge heavily to reduce congestion. This creates conflict.
+     New version allows ±10% drift (40-60% SoC range) without penalty.
+
+CURRENT CODE (Lines 917-921):
+-------------------
+    mean_soc = np.mean(env.bess_soc)
+    soc_drift = abs(mean_soc - 0.5)
+    soc_drift_penalty = -10.0 * soc_drift
+    total_reward += soc_drift_penalty
+    reward_breakdown['soc_drift_penalty'] = soc_drift_penalty
+
+
+REPLACE WITH (EXACTLY 11 lines):
+-------------------
+    mean_soc = np.mean(env.bess_soc)
+    drift = abs(mean_soc - 0.5)
+    soc_drift_threshold = 0.10  # Allow ±10% drift (40-60% SoC range)
+
+    # Only penalize SEVERE drift beyond operational range
+    if drift > soc_drift_threshold:
+        excess_drift = drift - soc_drift_threshold
+        soc_drift_penalty = -10.0 * (excess_drift ** 2) / 0.01  # Quadratic penalty
+    else:
+        soc_drift_penalty = 0.0  # No penalty within operational range
+
+    total_reward += soc_drift_penalty
+    reward_breakdown['soc_drift_penalty'] = soc_drift_penalty
+
+
+VERIFICATION:
+After change, lines 917-927 should read:
+
+    917: mean_soc = np.mean(env.bess_soc)
+    918: drift = abs(mean_soc - 0.5)
+    919: soc_drift_threshold = 0.10  # Allow ±10% drift (40-60% SoC range)
+    920:
+    921: # Only penalize SEVERE drift beyond operational range
+    922: if drift > soc_drift_threshold:
+    923:     excess_drift = drift - soc_drift_threshold
+    924:     soc_drift_penalty = -10.0 * (excess_drift ** 2) / 0.01  # Quadratic penalty
+    925: else:
+    926:     soc_drift_penalty = 0.0  # No penalty within operational range
+    927:
+    928: total_reward += soc_drift_penalty
+    929: reward_breakdown['soc_drift_penalty'] = soc_drift_penalty
+
+Note: Line numbers will shift by +6 lines (5 original lines became 11 lines)
+
+Save file.
+
+================================================================================
+CHANGE 5 of 5: ADD SoC DRIFT MONITORING TO REWARD BREAKDOWN
+================================================================================
+
+FILE: D:\Thesis\ThesisEnv_refactor\env_helpers.py
+FUNCTION: calculate_bess_reward()
+LINE NUMBER: After the soc_drift_penalty code you just modified
+
+WHY: Adding drift monitoring helps track when penalty activates in WandB logs.
+
+CURRENT STATE (After Change 4):
+After your modifications above, you have:
+    ...
+    total_reward += soc_drift_penalty
+    reward_breakdown['soc_drift_penalty'] = soc_drift_penalty
+
+
+    return total_reward, reward_breakdown
+
+
+ADD THESE 2 LINES (between soc_drift_penalty assignment and return statement):
+-------------------
+    reward_breakdown['soc_drift_penalty'] = soc_drift_penalty
+    reward_breakdown['mean_soc'] = float(mean_soc)  # ← ADD THIS LINE
+    reward_breakdown['soc_drift_amount'] = float(drift)  # ← ADD THIS LINE
+
+
+    return total_reward, reward_breakdown
+
+
+VERIFICATION:
+The final section should look like:
+
+    total_reward += soc_drift_penalty
+    reward_breakdown['soc_drift_penalty'] = soc_drift_penalty
+    reward_breakdown['mean_soc'] = float(mean_soc)
+    reward_breakdown['soc_drift_amount'] = float(drift)
+
+
+    return total_reward, reward_breakdown
+
+Save file.
+
+================================================================================
+SUMMARY OF ALL CHANGES
+================================================================================
+
+FILE 1: config.py (3 changes)
+├─ Line 28: bonus_constant: 60 → 100
+├─ Line 62: total_timesteps: 10000 → 50000
+└─ Line 63: initial_learning_rate: 0.0003 → 0.0001
+
+FILE 2: env_helpers.py (2 changes)
+├─ Lines 917-921: Replace 5 lines with 11 lines (soc_drift_penalty redesign)
+└─ After line 929 (new numbering): Add 2 monitoring lines
+
+Total: 5 modifications across 2 files
+
+================================================================================
+VERIFICATION CHECKLIST
+================================================================================
+
+After making ALL changes above:
+
+STEP 1: Syntax Check
+□ Open terminal
+□ Run: python -c "import config, env_helpers"
+□ Expected: No errors
+□ If error: Check indentation (Python is indent-sensitive!)
+
+STEP 2: Visual Verification - config.py
+□ Open config.py
+□ Line 28 shows: 'bonus_constant': 100,
+□ Line 62 shows: 'total_timesteps': 50000,
+□ Line 63 shows: 'initial_learning_rate': 0.0001,
+□ Save file if not saved
+
+STEP 3: Visual Verification - env_helpers.py
+□ Open env_helpers.py
+□ Around line 917: See "mean_soc = np.mean(env.bess_soc)"
+□ Around line 919: See "soc_drift_threshold = 0.10"
+□ Around line 922: See "if drift > soc_drift_threshold:"
+□ Around line 924: See "soc_drift_penalty = -10.0 * (excess_drift ** 2) / 0.01"
+□ Around line 926: See "else: soc_drift_penalty = 0.0"
+□ Before return: See "reward_breakdown['mean_soc'] = float(mean_soc)"
+□ Before return: See "reward_breakdown['soc_drift_amount'] = float(drift)"
+□ Save file if not saved
+
+STEP 4: Test Import
+□ Open terminal
+□ Run: python -c "from config import create_bess_env_config, create_training_config; from config import load_config; init = load_config(); env_cfg = create_bess_env_config(init); train_cfg = create_training_config(init); print('bonus_constant:', env_cfg['bonus_constant']); print('total_timesteps:', train_cfg['total_timesteps']); print('learning_rate:', train_cfg['initial_learning_rate'])"
+□ Expected output:
+  bonus_constant: 100
+  total_timesteps: 50000
+  learning_rate: 0.0001
+
+================================================================================
+BEFORE YOU TRAIN - UNDERSTAND THE CHANGES
+================================================================================
+
+WHAT THESE CHANGES DO:
+
+CHANGE 1 (bonus_constant 60→100):
+├─ Strengthens congestion reduction reward
+├─ Previously: Activity bonuses (~25) were 42% of congestion reward (60)
+├─ Now: Activity bonuses (~25) are 25% of congestion reward (100)
+├─ Effect: Agent prioritizes congestion more, but activity still matters
+└─ Prevents: Reward imbalance that caused 6k breakdown
+
+CHANGE 2 (timesteps 10k→50k):
+├─ 5× more training time
+├─ Previously: Agent converged at 6k (before learning enough)
+├─ Now: Agent has 50k steps to explore before committing to strategy
+├─ Effect: More time to find optimal policy
+└─ Prevents: Premature convergence to local minimum
+
+CHANGE 3 (learning_rate 0.0003→0.0001):
+├─ 3× slower learning
+├─ Previously: Aggressive updates → rapid but unstable convergence
+├─ Now: Gradual updates → stable, reliable convergence
+├─ Effect: Smoother learning curve, less volatility
+└─ Prevents: Overshooting optimal policy
+
+CHANGE 4 (soc_drift_penalty redesign):
+├─ Allows 40-60% SoC range without penalty
+├─ Previously: ANY drift from 50% penalized
+├─ Now: Only severe drift (<40% or >60%) penalized
+├─ Effect: Agent can discharge heavily when needed for congestion
+└─ Prevents: Conflict between "reduce congestion" and "maintain SoC"
+
+CHANGE 5 (monitoring additions):
+├─ Adds mean_soc and drift amount to WandB logs
+├─ Previously: Only saw penalty value
+├─ Now: Can track exact SoC levels and when penalty activates
+├─ Effect: Better visibility into agent behavior
+└─ Helps: Debug and tune if issues arise
+
+================================================================================
+RUNNING THE NEW TRAINING
+================================================================================
+
+STEP 1: Start Training
+□ Open terminal
+□ Run your normal training command (e.g., python main_training.py)
+□ Training will run for 50,000 timesteps (~3-4 hours)
+
+STEP 2: Monitor Progress
+Check WandB at these critical checkpoints:
+
+CHECKPOINT 1: 6,000 steps (where previous training broke down)
+├─ Check: rollout/ep_rew_mean
+├─ Good: Should be POSITIVE or trending upward
+├─ Bad: If negative or declining, STOP and adjust bonus_constant higher
+├─ Target: >0
+
+CHECKPOINT 2: 10,000 steps
+├─ Check: congestion_episode/success_rate
+├─ Good: Should be >50%
+├─ Bad: If <40%, may need more exploration
+├─ Target: >50%
+
+CHECKPOINT 3: 20,000 steps
+├─ Check: bess/avg_soc
+├─ Good: Should be 40-55% (stable)
+├─ Bad: If <35% or >65%, SoC management failing
+├─ Target: 40-55%
+
+CHECKPOINT 4: 30,000 steps
+├─ Check: rollout/ep_rew_mean trend
+├─ Good: Trending upward or stable at positive value
+├─ Bad: Still declining
+├─ Target: Positive and stable
+
+CHECKPOINT 5: 40,000 steps
+├─ Check: congestion_episode/success_rate
+├─ Good: Should be >60%
+├─ Bad: If still ~50%, agent not learning strategy
+├─ Target: >60%
+
+CHECKPOINT 6: 50,000 steps (FINAL)
+├─ Check: All metrics
+├─ rollout/ep_rew_mean: >50 (ideally 100-200)
+├─ congestion_episode/success_rate: >65%
+├─ bess/avg_soc: 40-55%
+├─ bess_summary/power_utilization: >15%
+
+STEP 3: If Training Fails at Any Checkpoint
+
+IF 6K BREAKDOWN STILL HAPPENS:
+→ Increase bonus_constant to 120
+→ Restart training
+
+IF SoC DRIFTS TOO MUCH (avg_soc <35%):
+→ Reduce soc_drift_threshold to 0.08
+→ Restart training
+
+IF SUCCESS RATE STUCK AT 50%:
+→ Training time may need extension to 75k
+→ Continue current training or restart with 75k
+
+IF REWARD DECLINING AFTER 30K:
+→ May be local minimum issue
+→ Increase entropy_coef to 0.08
+→ Restart training
+
+================================================================================
+EXPECTED RESULTS AFTER FIXES
+================================================================================
+
+BEFORE FIXES (10K training with breakdown):
+├─ Final ep_rew_mean: -448
+├─ Success rate: 50.73%
+├─ Avg SoC: 38.5%
+├─ Power utilization: 13.5%
+├─ Training: Broke down at 6k
+└─ Status: FAILED
+
+AFTER FIXES (50K training expected):
+├─ Final ep_rew_mean: +100 to +250
+├─ Success rate: >65%
+├─ Avg SoC: 45-55%
+├─ Power utilization: 18-25%
+├─ Training: Stable throughout
+└─ Status: SUCCESS
+
+IMPROVEMENT METRICS:
+├─ Reward: -448 → +100~250 (648+ point improvement!)
+├─ Success: 51% → >65% (+14+ percentage points)
+├─ SoC stability: Better (closer to 50%)
+├─ No breakdown: Stable learning curve
+└─ Strategic behavior: Agent learns grid dynamics
+
+CONFIDENCE: 75%
+Rationale:
+✓ Addresses root causes identified in analysis
+✓ Backed by RL theory (reward balance, exploration time)
+✓ Similar fixes worked in comparable projects
+✗ RL inherently uncertain, may need iteration
+
+================================================================================
+TROUBLESHOOTING GUIDE
+================================================================================
+
+PROBLEM: "ModuleNotFoundError" when running syntax check
+SOLUTION:
+├─ Ensure you're in correct directory: D:\Thesis\ThesisEnv_refactor
+├─ Run: cd D:\Thesis\ThesisEnv_refactor
+└─ Try again: python -c "import config, env_helpers"
+
+PROBLEM: "IndentationError" after editing env_helpers.py
+SOLUTION:
+├─ Python requires exact indentation
+├─ All lines in the soc_drift_penalty block should align with previous code
+├─ Use spaces, not tabs (or all tabs, but be consistent)
+├─ Copy the exact indentation from surrounding lines
+
+PROBLEM: Training runs but WandB shows same old values
+SOLUTION:
+├─ Config changes may not be loaded
+├─ Check: Delete any cached .pyc files: python -c "import os; [os.remove(f) for f in os.listdir('.') if f.endswith('.pyc')]"
+├─ Restart Python kernel if using Jupyter
+└─ Re-run training
+
+PROBLEM: Training much slower than before
+SOLUTION:
+├─ This is EXPECTED - 50k timesteps takes 5× longer than 10k
+├─ 10k training: ~20 minutes
+├─ 50k training: ~3-4 hours (normal!)
+└─ Use background mode or let it run overnight
+
+PROBLEM: 6k breakdown STILL happening after fixes
+SOLUTION:
+├─ Increase bonus_constant further (100 → 120 → 150)
+├─ Check if you actually saved the files after editing
+├─ Verify changes were applied: print(config.create_bess_env_config(...)['bonus_constant'])
+└─ If still failing at 120, may need architecture change (contact for help)
+
+================================================================================
+POST-TRAINING VALIDATION
+================================================================================
+
+After 50k training completes:
+
+STEP 1: Run Policy Diagnostic Test
+□ Run: python policy_diagnostic_test.py
+□ Check: improvement_rate
+□ Expected: >65%
+□ Current (before): 0%
+
+STEP 2: Analyze WandB Logs
+□ Open WandB dashboard
+□ Check reward curve: Should be upward trending or stable high
+□ Check success rate: Should reach >65%
+□ Check SoC: Should stay 40-60% range
+□ Check for breakdown: Should NOT see decline after any checkpoint
+
+STEP 3: Manual Inspection
+□ Watch a few test episodes
+□ Verify agent reducing congestion
+□ Verify batteries recharging when needed
+□ Verify strategic behavior (not random)
+
+STEP 4: Compare with 10K Training
+Create comparison table:
+
+| Metric              | 10K (Before) | 50K (After) | Change  |
+|---------------------|--------------|-------------|---------|
+| Final Reward        | -448         | ???         | ???     |
+| Success Rate        | 50.73%       | ???         | ???     |
+| Avg SoC             | 38.5%        | ???         | ???     |
+| Power Utilization   | 13.5%        | ???         | ???     |
+| Breakdown at 6K?    | YES          | ???         | ???     |
+
+Fill in the ??? after your training completes.
+
+================================================================================
+IF SUCCESS - NEXT STEPS
+================================================================================
+
+If training succeeds (>65% success rate, stable rewards):
+
+STEP 1: Save the model
+□ Model already saved as final_model.zip
+□ Backup: Copy to safe location
+□ Tag in git: git tag -a "v1.0-working-agent" -m "First successful agent >65%"
+
+STEP 2: Extended evaluation
+□ Run for 100k timesteps on full test set
+□ Verify consistent performance
+□ Test on different grid conditions
+
+STEP 3: Document for thesis
+□ Include: Training curves from WandB
+□ Include: Comparison table (before/after)
+□ Include: Key insights about reward design
+□ Include: Lessons learned about 6k breakdown
+
+STEP 4: Fine-tuning (optional)
+□ Try bonus_constant 90-110 range to optimize
+□ Try longer training (75k, 100k)
+□ Experiment with entropy schedule
+
+================================================================================
+IF FAILURE - CONTINGENCY PLAN
+================================================================================
+
+If training still fails after these fixes:
+
+OPTION 1: Adjust reward structure further
+├─ Try bonus_constant values: 120, 150, 180
+├─ Try different soc_drift_threshold: 0.08, 0.12, 0.15
+├─ Try removing soc_drift_penalty entirely (test)
+└─ Document what works/doesn't
+
+OPTION 2: Try curriculum learning
+├─ Train first 20k with easier environment (higher bonus_constant)
+├─ Then switch to target environment
+└─ Gradually transition difficulty
+
+OPTION 3: Alternative algorithms
+├─ Try SAC instead of PPO (better for continuous control)
+├─ Try TD3 (more stable than PPO sometimes)
+└─ Keep same reward structure
+
+OPTION 4: Simplified reward structure
+├─ Go back to basics: Only congestion reward
+├─ Once working, gradually add other components
+└─ Build up complexity incrementally
+
+================================================================================
+CONTACT & SUPPORT
+================================================================================
+
+If you encounter issues:
+
+1. Check this guide's troubleshooting section
+2. Review COMPREHENSIVE_10K_TRAINING_ANALYSIS.txt for context
+3. Verify all changes with verification checklist
+4. Check WandB logs at each checkpoint
+5. Document what's failing and at what checkpoint
+
+Common questions:
+
+Q: "How long should 50k training take?"
+A: 3-4 hours typically. Depends on hardware.
+
+Q: "Can I stop and resume training?"
+A: Yes, but PPO doesn't save replay buffer. Better to complete in one run.
+
+Q: "What if I don't have 4 hours?"
+A: Start with 25k timesteps (line 62: 'total_timesteps': 25000)
+   Then extend if needed.
+
+Q: "Should I change anything else?"
+A: NO. Only make these 5 changes. More changes = more variables = harder to debug.
+
+================================================================================
+FINAL CHECKLIST BEFORE TRAINING
+================================================================================
+
+□ Backed up current code (git commit or copy folder)
+□ Made all 5 changes listed above
+□ Verified with syntax check (no errors)
+□ Verified config.py values (100, 50000, 0.0001)
+□ Verified env_helpers.py soc_drift_penalty redesign
+□ Saved all files
+□ Have 4 hours available for training
+□ WandB configured and ready
+□ Understand what to monitor at each checkpoint
+□ Know what to do if breakdown occurs
+□ Read expected results section
+
+If all checked: YOU'RE READY TO TRAIN!
+
+Run your training command and monitor at checkpoints.
+
+Good luck! This should fix the 6k breakdown.
+
+================================================================================
+END OF STEP-BY-STEP IMPLEMENTATION GUIDE
+================================================================================
+
+Total changes: 5 modifications across 2 files
+Difficulty: Easy
+Time: 20-30 minutes
+Training time: 3-4 hours
+Expected success: 75% confidence

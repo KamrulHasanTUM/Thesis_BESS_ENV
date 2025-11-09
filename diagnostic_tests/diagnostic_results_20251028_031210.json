@@ -1,0 +1,23 @@
+{
+  "config": {
+    "num_episodes": 10,
+    "steps_per_episode": 50,
+    "total_steps": 500,
+    "soc_penalty_weight": -50.0,
+    "bonus_constant": 75,
+    "max_step": 50,
+    "flexibility_bonus_weight": 5.0,
+    "soc_clipping_penalty": -10.0
+  },
+  "summary": {
+    "improvement_rate": 0.0,
+    "worsening_rate": 0.0,
+    "violations_per_step": 0.69,
+    "mean_soc": 0.4130132794380188,
+    "flex_band_percentage": 48.28,
+    "avg_total_reward": -54.45835429029196,
+    "charge_percentage": 47.87234042553192
+  },
+  "timestamp": "20251028_031210",
+  "duration_seconds": 147.194765
+}

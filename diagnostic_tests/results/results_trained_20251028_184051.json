@@ -1,0 +1,27 @@
+{
+  "policy_type": "TRAINED",
+  "model_path": "final_model.zip",
+  "config": {
+    "num_episodes": 10,
+    "steps_per_episode": 50,
+    "total_steps": 500,
+    "soc_penalty_weight": -35.0,
+    "bonus_constant": 100,
+    "flexibility_bonus_weight": 10.0,
+    "soc_clipping_penalty": -10.0
+  },
+  "summary": {
+    "improvement_rate": 0.0,
+    "worsening_rate": 0.0,
+    "responsiveness_ratio": 0.0,
+    "violations_per_step": 4.774,
+    "mean_soc": 0.2652387022972107,
+    "flex_band_percentage": 1.4,
+    "avg_total_reward": -214.05924903444878,
+    "avg_loading_before": 10.765741573201014,
+    "avg_loading_after": 10.765741573201014,
+    "net_loading_change": 0.0
+  },
+  "timestamp": "20251028_184051",
+  "duration_seconds": 45.585251
+}

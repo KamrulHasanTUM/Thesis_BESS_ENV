@@ -1,0 +1,13 @@
+{
+    "mean_max_loading": 10.271339724580088,
+    "std_max_loading": 3.3851585797726877,
+    "median_max_loading": 10.563402341632209,
+    "percentile_95_loading": 15.45134160054347,
+    "max_loading_observed": 20.349503244725533,
+    "mean_avg_loading": 3.1153084387375083,
+    "congestion_rate": 0.0,
+    "severe_congestion_rate": 0.0,
+    "num_episodes": 20,
+    "total_steps": 1000,
+    "result_status": "EASY"
+}

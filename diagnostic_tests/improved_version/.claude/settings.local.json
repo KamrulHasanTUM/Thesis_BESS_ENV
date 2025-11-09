@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//d/Thesis/ThesisEnv_refactor/**)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

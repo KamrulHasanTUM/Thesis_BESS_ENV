@@ -1,0 +1,13 @@
+{
+    "overall_success_rate": 0.504,
+    "mean_success_rate": 0.504,
+    "std_success_rate": 0.04270831300812526,
+    "mean_delta": -0.3810536516932724,
+    "std_delta": 19.786997892844294,
+    "median_delta": 0.49575532897041263,
+    "best_delta": 56.90271065461344,
+    "worst_delta": -55.011193764771164,
+    "num_episodes": 20,
+    "total_steps": 1000,
+    "result_status": "MARGINAL"
+}

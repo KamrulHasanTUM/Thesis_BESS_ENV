@@ -1,0 +1,66 @@
+{
+  "total_steps": 10240,
+  "collapse_detected": false,
+  "checkpoints": [
+    {
+      "step": 1000,
+      "avg_action_magnitude": 0.10651936382055283,
+      "avg_reward": 362.1551840000001,
+      "num_recent_episodes": 100
+    },
+    {
+      "step": 2000,
+      "avg_action_magnitude": 0.10940521210432053,
+      "avg_reward": 1125.5438099999997,
+      "num_recent_episodes": 100
+    },
+    {
+      "step": 3000,
+      "avg_action_magnitude": 0.11348751932382584,
+      "avg_reward": 1111.7396430000001,
+      "num_recent_episodes": 100
+    },
+    {
+      "step": 4000,
+      "avg_action_magnitude": 0.11013414710760117,
+      "avg_reward": 1033.080741,
+      "num_recent_episodes": 100
+    },
+    {
+      "step": 5000,
+      "avg_action_magnitude": 0.11642449349164963,
+      "avg_reward": 378.13194699999997,
+      "num_recent_episodes": 100
+    },
+    {
+      "step": 6000,
+      "avg_action_magnitude": 0.1084088683128357,
+      "avg_reward": 62.221236,
+      "num_recent_episodes": 100
+    },
+    {
+      "step": 7000,
+      "avg_action_magnitude": 0.11400821805000305,
+      "avg_reward": 896.437228,
+      "num_recent_episodes": 100
+    },
+    {
+      "step": 8000,
+      "avg_action_magnitude": 0.11017890274524689,
+      "avg_reward": 793.7361229999999,
+      "num_recent_episodes": 100
+    },
+    {
+      "step": 9000,
+      "avg_action_magnitude": 0.11668096482753754,
+      "avg_reward": 1285.0458409999999,
+      "num_recent_episodes": 100
+    },
+    {
+      "step": 10000,
+      "avg_action_magnitude": 0.10716038942337036,
+      "avg_reward": 1069.260284,
+      "num_recent_episodes": 100
+    }
+  ]
+}

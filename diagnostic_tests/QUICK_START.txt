@@ -1,0 +1,257 @@
+================================================================================
+QUICK START GUIDE - Diagnostic Testing
+================================================================================
+
+This folder contains diagnostic tests that will NOT impact your simulation.
+All files are isolated in diagnostic_tests/ folder.
+
+================================================================================
+STEP-BY-STEP: HOW TO USE
+================================================================================
+
+OPTION A: Testing RANDOM POLICY (Before Training)
+--------------------------------------------------
+
+1. Open terminal/command prompt
+
+2. Navigate to diagnostic tests folder:
+   cd "D:\Thesis\ThesisEnv_refactor\diagnostic_tests"
+
+3. Run test:
+   python policy_diagnostic_test.py --random
+
+4. Wait 2-3 minutes for test to complete
+
+5. Read the results on screen + check diagnostic_tests/results/ folder
+
+
+OPTION B: Testing TRAINED POLICY (After Training)
+--------------------------------------------------
+
+1. First, train your agent (from main folder):
+   cd "D:\Thesis\ThesisEnv_refactor"
+   python training.py
+   (Wait for training to complete - creates final_model.zip)
+
+2. Navigate to diagnostic tests folder:
+   cd diagnostic_tests
+
+3. Run test with your trained model:
+   python policy_diagnostic_test.py --model ../final_model.zip
+
+4. Wait 2-3 minutes for test to complete
+
+5. Read the detailed analysis on screen
+
+
+OPTION C: Longer Test (More Accurate)
+--------------------------------------
+
+For more thorough testing, increase episodes:
+
+   python policy_diagnostic_test.py --model ../final_model.zip --episodes 20
+
+Or increase steps per episode:
+
+   python policy_diagnostic_test.py --model ../final_model.zip --steps 75
+
+================================================================================
+WHAT YOU'LL GET FROM THE TEST
+================================================================================
+
+The test will print a comprehensive report showing:
+
+1. CONGESTION REDUCTION ANALYSIS
+   --------------------------------
+   - Loading BEFORE action: X.XX%
+   - Loading AFTER action: X.XX%
+   - Net change: +/-X.XX%
+   - Improvement rate: XX%
+   - Episode-by-episode breakdown
+
+   ANSWERS YOUR QUESTION: "Is congestion reducing?"
+
+2. LEARNING QUALITY ANALYSIS
+   --------------------------
+   - Responsiveness ratio: 0.XX
+   - Responsive actions: XX%
+   - Harmful actions: XX%
+   - Interpretation (blind vs learning)
+
+   ANSWERS YOUR QUESTION: "Is agent learning or taking blind actions?"
+
+3. BESS OPERATION ANALYSIS
+   ------------------------
+   - Individual activity for all 5 units:
+     * Unit 0: Charge XX%, Discharge XX%, Idle XX%
+     * Unit 1: Charge XX%, Discharge XX%, Idle XX%
+     * ... (all 5 units)
+   - Overall status: ALL 5 OPERATIONAL or WARNING
+
+   ANSWERS YOUR QUESTION: "Are all 5 BESS working?"
+
+4. REWARD COMPONENT ANALYSIS
+   --------------------------
+   - Congestion reward: +/-XX.XX
+   - SoC penalty: +/-XX.XX
+   - Flexibility bonus: +/-XX.XX
+   - Clipping penalty: +/-XX.XX
+   - Balance ratio: X.X:1
+   - Status: BALANCED or IMBALANCED
+
+   ANSWERS YOUR QUESTION: "Are rewards working accurately?"
+
+5. SOC VIOLATION ANALYSIS
+   -----------------------
+   - Lower bound (10%) hits: XXX
+   - Upper bound (90%) hits: XXX
+   - Violations per step: X.XX
+   - Lower/Upper ratio: X.X:1
+   - Episode-by-episode trends
+
+   ANSWERS YOUR QUESTION: "SoC boundary hitting upper and lower?"
+
+================================================================================
+INTERPRETING RESULTS
+================================================================================
+
+FOR RANDOM POLICY (BASELINE):
+-----------------------------
+Expected:
+  - Improvement rate: ~0% (random can't systematically help)
+  - Responsiveness: ~0.50 (50/50 chance)
+  - Violations: 0.5-0.7 per step
+  - Mean SoC: 0.40-0.43
+
+This is NORMAL for random. It establishes your baseline.
+
+
+FOR TRAINED POLICY (AFTER TRAINING):
+------------------------------------
+GOOD performance:
+  - Improvement rate: >50% (preferably >65%)
+  - Responsiveness: >0.65 (preferably >0.75)
+  - Violations: <0.3 per step
+  - Mean SoC: 0.48-0.52
+  - Net loading: NEGATIVE (reducing congestion)
+
+BAD performance (agent not learning):
+  - Improvement rate: <40%
+  - Responsiveness: <0.55 (no better than random)
+  - → Need to check reward balance or train longer
+
+
+RED FLAGS TO WATCH:
+-------------------
+1. "BESS Unit X: NO ACTIVITY DETECTED"
+   → Indentation bug or configuration issue
+
+2. "Responsiveness Ratio: 0.48" (for trained agent)
+   → Agent not learning, performing like random
+
+3. "Reward Balance Ratio: 15:1" or "0.5:1"
+   → Reward imbalance preventing learning
+
+4. "Violations per step: 1.2" (for trained agent)
+   → Agent not managing SoC properly
+
+================================================================================
+FILE LOCATIONS
+================================================================================
+
+Test Results Saved To:
+  diagnostic_tests/results/results_XXXXX.json
+
+Previous Reports:
+  diagnostic_tests/CONFIG_V3_DIAGNOSTIC_REPORT.txt
+  diagnostic_tests/QUICK_SUMMARY_CONFIG_V3.txt
+  diagnostic_tests/BEFORE_AFTER_COMPARISON_REPORT.txt
+
+Full Documentation:
+  diagnostic_tests/README.md
+
+
+IMPORTANT: All files stay in diagnostic_tests/ folder.
+           They do NOT affect your original code or simulation!
+
+================================================================================
+TYPICAL WORKFLOW
+================================================================================
+
+1. Run baseline test (random policy):
+   python policy_diagnostic_test.py --random
+
+   → This shows performance BEFORE training
+
+2. Train your agent:
+   cd ..
+   python training.py
+
+   → This creates final_model.zip
+
+3. Test trained agent:
+   cd diagnostic_tests
+   python policy_diagnostic_test.py --model ../final_model.zip
+
+   → This shows performance AFTER training
+
+4. Compare results:
+   - Did improvement rate increase? (0% → 65%?)
+   - Did responsiveness improve? (0.50 → 0.75?)
+   - Did violations decrease? (0.69 → 0.25?)
+   - Did mean SoC improve? (0.41 → 0.49?)
+
+5. If agent not learning well:
+   - Check reward balance ratio (should be 2-10:1)
+   - Train longer (more timesteps)
+   - Adjust hyperparameters
+
+6. Re-test after changes
+
+================================================================================
+GETTING HELP
+================================================================================
+
+To see all available options:
+  python policy_diagnostic_test.py --help
+
+For detailed documentation:
+  Read diagnostic_tests/README.md
+
+To understand previous test results:
+  Read diagnostic_tests/CONFIG_V3_DIAGNOSTIC_REPORT.txt
+
+================================================================================
+QUESTIONS ANSWERED 100%
+================================================================================
+
+✓ "Is congestion reducing between loading before and after?"
+  → YES, test tracks this for EVERY action and shows average
+
+✓ "Is agent learning upward or taking blind actions?"
+  → YES, test calculates responsiveness ratio and interprets it
+
+✓ "Are all 5 BESS working?"
+  → YES, test shows per-unit activity for all 5 units
+
+✓ "Are rewards working accurately?"
+  → YES, test breaks down all reward components and checks balance
+
+✓ "What about SoC boundary hitting upper and lower?"
+  → YES, test counts violations and shows lower/upper ratio
+
+================================================================================
+SAFE TO USE
+================================================================================
+
+This diagnostic test:
+  ✓ Does NOT modify your original code
+  ✓ Does NOT interfere with training
+  ✓ Does NOT affect wandb logging
+  ✓ Runs in isolated environment instances
+  ✓ Saves results to diagnostic_tests/results/
+  ✓ Can be run anytime without side effects
+
+================================================================================
+END OF QUICK START GUIDE
+================================================================================

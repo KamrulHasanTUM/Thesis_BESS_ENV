@@ -1,0 +1,6 @@
+ {
+      "exp_code": "improved_v1",
+      "exp_id": 3,
+      "exp_name": "soc_clipping_improved_reward",
+      "grid_env": "bess"
+  }

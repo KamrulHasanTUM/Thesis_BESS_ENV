@@ -1,0 +1,221 @@
+{
+    "statistics": {
+        "simplified": {
+            "mean": -4.583084150000164,
+            "std": 195.48224830633634,
+            "min": -500.0,
+            "max": 500.0,
+            "median": -3.6277929628541017
+        },
+        "improved": {
+            "mean": -46.856235133985706,
+            "std": 1966.569038057803,
+            "min": -6393.148021728726,
+            "max": 5978.715731280701,
+            "median": -36.97792962854102
+        },
+        "loading_delta": {
+            "mean": -0.46215835133985694,
+            "std": 19.665441171808382
+        },
+        "num_samples": 2500,
+        "correlations": {
+            "simplified_vs_delta": 0.999571877138481,
+            "improved_vs_delta": 0.9999999943316678
+        },
+        "result_status": "EXCELLENT",
+        "recommended": "IMPROVED"
+    },
+    "examples": [
+        {
+            "episode": 0,
+            "step": 0,
+            "loading_before": 7.723580895271076,
+            "loading_after": 33.63090458055319,
+            "delta": -25.907323685282115,
+            "simplified_reward": -259.07323685282114,
+            "improved_reward": -2591.3323685282116,
+            "simplified_breakdown": {
+                "congestion": -259.07323685282114,
+                "delta_loading": -25.907323685282115
+            },
+            "improved_breakdown": {
+                "congestion": -2590.7323685282117,
+                "soc_penalty": -0.6000000000000001,
+                "delta_loading": -25.907323685282115,
+                "num_near_bounds": 3
+            }
+        },
+        {
+            "episode": 0,
+            "step": 1,
+            "loading_before": 33.62318402807386,
+            "loading_after": 60.968583802862355,
+            "delta": -27.345399774788497,
+            "simplified_reward": -273.45399774788496,
+            "improved_reward": -2735.33997747885,
+            "simplified_breakdown": {
+                "congestion": -273.45399774788496,
+                "delta_loading": -27.345399774788497
+            },
+            "improved_breakdown": {
+                "congestion": -2734.53997747885,
+                "soc_penalty": -0.8,
+                "delta_loading": -27.345399774788497,
+                "num_near_bounds": 4
+            }
+        },
+        {
+            "episode": 0,
+            "step": 2,
+            "loading_before": 60.69508258642679,
+            "loading_after": 35.48337055312319,
+            "delta": 25.211712033303606,
+            "simplified_reward": 252.11712033303604,
+            "improved_reward": 2520.3712033303605,
+            "simplified_breakdown": {
+                "congestion": 252.11712033303604,
+                "delta_loading": 25.211712033303606
+            },
+            "improved_breakdown": {
+                "congestion": 2521.1712033303606,
+                "soc_penalty": -0.8,
+                "delta_loading": 25.211712033303606,
+                "num_near_bounds": 4
+            }
+        },
+        {
+            "episode": 0,
+            "step": 3,
+            "loading_before": 35.51653834060683,
+            "loading_after": 39.92850487143293,
+            "delta": -4.411966530826099,
+            "simplified_reward": -44.11966530826099,
+            "improved_reward": -441.79665308260996,
+            "simplified_breakdown": {
+                "congestion": -44.11966530826099,
+                "delta_loading": -4.411966530826099
+            },
+            "improved_breakdown": {
+                "congestion": -441.19665308260994,
+                "soc_penalty": -0.6000000000000001,
+                "delta_loading": -4.411966530826099,
+                "num_near_bounds": 3
+            }
+        },
+        {
+            "episode": 0,
+            "step": 4,
+            "loading_before": 40.19413260793243,
+            "loading_after": 27.513884964258274,
+            "delta": 12.680247643674157,
+            "simplified_reward": 126.80247643674157,
+            "improved_reward": 1267.4247643674157,
+            "simplified_breakdown": {
+                "congestion": 126.80247643674157,
+                "delta_loading": 12.680247643674157
+            },
+            "improved_breakdown": {
+                "congestion": 1268.0247643674156,
+                "soc_penalty": -0.6000000000000001,
+                "delta_loading": 12.680247643674157,
+                "num_near_bounds": 3
+            }
+        },
+        {
+            "episode": 0,
+            "step": 5,
+            "loading_before": 27.496524698703297,
+            "loading_after": 23.091481389552598,
+            "delta": 4.405043309150699,
+            "simplified_reward": 44.05043309150699,
+            "improved_reward": 439.90433091506986,
+            "simplified_breakdown": {
+                "congestion": 44.05043309150699,
+                "delta_loading": 4.405043309150699
+            },
+            "improved_breakdown": {
+                "congestion": 440.5043309150699,
+                "soc_penalty": -0.6000000000000001,
+                "delta_loading": 4.405043309150699,
+                "num_near_bounds": 3
+            }
+        },
+        {
+            "episode": 0,
+            "step": 6,
+            "loading_before": 22.793496356115227,
+            "loading_after": 24.609211250288293,
+            "delta": -1.815714894173066,
+            "simplified_reward": -18.15714894173066,
+            "improved_reward": -182.57148941730662,
+            "simplified_breakdown": {
+                "congestion": -18.15714894173066,
+                "delta_loading": -1.815714894173066
+            },
+            "improved_breakdown": {
+                "congestion": -181.57148941730662,
+                "soc_penalty": -1.0,
+                "delta_loading": -1.815714894173066,
+                "num_near_bounds": 5
+            }
+        },
+        {
+            "episode": 0,
+            "step": 7,
+            "loading_before": 24.59214618400341,
+            "loading_after": 21.29195384646121,
+            "delta": 3.3001923375421995,
+            "simplified_reward": 33.001923375421995,
+            "improved_reward": 329.21923375421994,
+            "simplified_breakdown": {
+                "congestion": 33.001923375421995,
+                "delta_loading": 3.3001923375421995
+            },
+            "improved_breakdown": {
+                "congestion": 330.01923375421995,
+                "soc_penalty": -0.8,
+                "delta_loading": 3.3001923375421995,
+                "num_near_bounds": 4
+            }
+        },
+        {
+            "episode": 0,
+            "step": 8,
+            "loading_before": 21.152521804625223,
+            "loading_after": 29.547633709053166,
+            "delta": -8.395111904427942,
+            "simplified_reward": -83.95111904427942,
+            "improved_reward": -840.1111904427943,
+            "simplified_breakdown": {
+                "congestion": -83.95111904427942,
+                "delta_loading": -8.395111904427942
+            },
+            "improved_breakdown": {
+                "congestion": -839.5111904427943,
+                "soc_penalty": -0.6000000000000001,
+                "delta_loading": -8.395111904427942,
+                "num_near_bounds": 3
+            }
+        },
+        {
+            "episode": 0,
+            "step": 9,
+            "loading_before": 29.475138311517433,
+            "loading_after": 17.788813210060933,
+            "delta": 11.6863251014565,
+            "simplified_reward": 116.86325101456501,
+            "improved_reward": 1167.83251014565,
+            "simplified_breakdown": {
+                "congestion": 116.86325101456501,
+                "delta_loading": 11.6863251014565
+            },
+            "improved_breakdown": {
+                "congestion": 1168.63251014565,
+                "soc_penalty": -0.8,
+                "delta_loading": 11.6863251014565,
+                "num_near_bounds": 4
+            }
+        }
+    ]
+}

@@ -1,0 +1,18 @@
+{
+    "exp_id": 7,
+    "exp_code": "local_awareness",
+    "exp_name": "bess_local_line_loadings",
+    "logdir": "logs\\20251029-002610",
+    "env_name": "ENV_bess",
+    "policy": "MultiInputPolicy",
+    "n_epochs": 10,
+    "n_steps": 2048,
+    "batch_size": 256,
+    "gamma": 0.99,
+    "gae_lambda": 0.95,
+    "clip_range": 0.2,
+    "ent_coef": 0.05,
+    "max_grad_norm": 0.5,
+    "total_timesteps": 50000,
+    "initial_learning_rate": 0.0002
+}

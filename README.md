@@ -255,7 +255,7 @@ R_total = R_congestion + R_soc_penalty + R_efficiency
 ### Episode Configuration
 
 - **Length:** 50 timesteps (configurable)
-- **Timestep duration:** 1 hour
+- **Timestep duration:** 0.25 hour
 - **Real-world span:** ~2 days per episode
 - **Network:** SimBench 1-HV-mixed (110 kV)
 
@@ -281,7 +281,7 @@ env = ENV_BESS(
     soc_max=0.9,                 # Maximum SoC (90%)
     initial_soc=0.5,             # Starting SoC (50%)
     efficiency=0.9,              # Round-trip efficiency (90%)
-    time_step_hours=1.0,         # Timestep duration
+    time_step_hours=0.25,         # Timestep duration
 
     # Grid Configuration
     simbench_code="1-HV-mixed--0-sw",
@@ -289,6 +289,28 @@ env = ENV_BESS(
     bonus_constant=10.0,         # Congestion reward weight
 )
 ```
+
+#### Verifying SoC Drift & Tuning the SoC Penalty
+
+1. **Warm up with zero power** – confirm the environment resets and telemetry prints:
+   ```bash
+   python soc_drift_check.py --warmup 2 --steps 4
+   ```
+
+2. **Apply a small discharge** – for example 0.5 MW per unit – and observe that SoC changes by ≈0.5 % per step and that `num_near_bounds` stays at zero:
+   ```bash
+   python soc_drift_check.py --action 0.5 --steps 6
+   ```
+
+   The single helper script works on every platform—use PowerShell, CMD, or a POSIX shell with the same invocation.
+
+3. **Adjust the SoC penalty** – edit `soc_penalty_weight` in `config.py` (start around `-2.0`). Re-run the previous command and compare the `congestion` and `soc_penalty` values in the printed `reward_breakdown`.
+
+4. **Reward mid-band recovery** – tune `flexibility_bonus_weight` (and optionally `soc_flex_width`) if you want the policy to recharge after aggressive discharge. Batteries operating inside this mid-band earn a positive `flexibility_bonus`, giving the agent a reason to restore headroom before the next peak.
+
+5. **Repeat until balanced** – the target is a penalty structure that discourages pegging the SoC limits without overpowering positive congestion rewards.
+
+6. **Retrain the agent** once satisfied so PPO experiences the corrected physics and reward scaling.
 
 ### Training Hyperparameters
 
@@ -329,7 +351,8 @@ Thesis_BESS_ENV/
 │   ├── test_multiple_episodes.py # Multi-episode stability
 │   └── test_gym_api.py           # Gymnasium API compliance
 │
-├── init_meta.json.example        # Example configuration
+├── init_meta.json.example
+    soc_drift_check.py                                # Helper to inspect SoC drift        # Example configuration
 ├── README.md                     # This file
 └── LICENSE                       # MIT License
 ```
